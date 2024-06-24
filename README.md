@@ -31,8 +31,8 @@ Cet projet a pour fonctionnalité principal d'intégrer un système de gestion d
 ### Maquette
 
 <div style="display: flex; flex-direction: row; justify-content: space-around;">
-<img src="./images-readme/home ligth.png" width="50%">
-<img src="./images-readme/home dark.png" width="50%">
+<img src="./images-readme/home ligth.png" width="45%">
+<img src="./images-readme/home dark.png" width="45%">
 </div>
 
 
