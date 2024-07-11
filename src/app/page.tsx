@@ -2,7 +2,9 @@
 import Button from "@/components/Button";
 import { useEffect, useState } from "react";
 import LogForm from "@/components/LogForm";
-import Backdrop from "@/components/Backdrop";
+// import Backdrop from "@/components/Backdrop";
+// import { Button } from "facu-ui";
+import { Backdrop, Icon } from "facu-ui";
 import { useTheme } from "next-themes";
 import HomeImage from "../../public/images/HomeImage";
 
@@ -24,7 +26,7 @@ export default function Home() {
           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab odit tempora dolore et, minima tenetur perspiciatis quo alias ipsam aporem ipsum dolor sit amet consectetur adipisicing elit. Ab odit tempora dolore et, minima tenetur perspiciatis quo alias ipsam aporem ipsum dolor sit amet consectetur adipisicing elit. Ab odit tempora dolore et, minima tenetur perspiciatis quo alias ipsam aperiam aspernatur eius libero ratione expedita laboriosam velit ipsum sed. Asperiores.</p>
           <div className="flex gap-8">
             <Button onClick={ () => showForm() } >SigIn!</Button>
-            <Button>LogIn!</Button>
+            <Button className="bg-light-yellow" >LogIn!</Button>
           </div>
         </div>
         <HomeImage className="hidden lg:block w-[500px]" theme={mounted ? theme : "dark"}/>
