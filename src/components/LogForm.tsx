@@ -19,15 +19,25 @@ export default function LogForm() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value);
   };
-  const inputClasses = "bg-light-grey text-dark-bg dark:text-dark-grey dark:bg-dark-bg border-[1px] p-2 border-light-blue dark:border-dark-grey focus:border-light-yellow  focus:dark:border-dark-yellowLight";
+  const inputClasses = "bg-light-grey test-current dark:bg-dark-bg border-[1px] p-2 border-light-blue dark:border-dark-grey focus:border-light-yellow  focus:dark:border-light-yellow";
   return (
     <form 
-      className="flex flex-col  w-full max-w-md p-7 bg-light-blue border border-light-yellow dark:bg-dark-bg"
+      className="flex flex-col w-full max-w-md p-7 bg-light-blue border border-light-yellow dark:bg-dark-bg"
       onSubmit={(e: React.FormEvent<HTMLFormElement>) => handleSubmit(e)}
       >
       <Input className={inputClasses} required={true} error={{message: 'errorcito', value: false}}  label="Nom" ref={nameRef} type="text" id="name" name="name" placeholder="Name"/>
       <Input className={inputClasses} required={true} label="Email" ref={emailRef} type="email" id="Email" name="email" placeholder="Email"/>
-      <Input className={inputClasses} required={true} label="Mot de passe" ref={passwordRef} type="password" id="password" name="password" placeholder="Password"/>
+      <Input
+        regexp={{message: 'Characters @ - _ ; " \' are not allowed', pattern: /[@-_;"']/ }}
+        className={inputClasses}
+        required={true}
+        label="Mot de passe"
+        ref={passwordRef}
+        type="password"
+        name="password"
+        placeholder="Password"
+        onChange={(e) => handleChange(e)}
+      />
       <br></br>
       <Button type="submit">log</Button>
     </form>
