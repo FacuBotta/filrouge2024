@@ -6,10 +6,10 @@ import { usePathname } from "next/navigation";
 export default function Header() {
   const pathname = usePathname();
   const isActive = (href: string) => pathname === href;
-  const itemActive = 'bg-light-red px-2 border-t-[1px] border-l-[1px] border-r-[1px] border-dark-bg dark:bg-dark-yellowLight dark:border-none dark:text-dark-bg';
+  const itemActive = 'bg-light-red px-2 border-t-[1px] border-l-[1px] border-r-[1px] border-dark-bg dark:bg-light-yellow dark:border-none dark:text-dark-bg';
   
   return (
-    <header className="absolute top-0 left-0 right-0 h-11 flex justify-between items-end px-5 border-b-[1px] border-dark-bg dark:border-dark-yellowLight">
+    <header className="absolute top-0 left-0 right-0 h-11 flex justify-between items-end px-5 border-b-[1px] border-dark-bg dark:border-light-yellow">
       <ThemeSwitcher/>
       <nav>
         <ul className="flex gap-4 place-items-start font-bold text-dark-bg dark:text-dark-grey">
