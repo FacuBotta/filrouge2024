@@ -3,6 +3,7 @@ import { Fredoka } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import { ThemeProvider } from "next-themes";
+import React from "react";
 
 const fredoka = Fredoka({ subsets: ["latin"]});
 
@@ -13,17 +14,18 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  auth,
 }: Readonly<{
   children: React.ReactNode;
+  auth: React.ReactNode;
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={fredoka.className}>
         <ThemeProvider attribute="class">
           <Header/>
-          {
-            children
-          }
+          {children}
+          {auth}
         </ThemeProvider>
       </body>
     </html>
