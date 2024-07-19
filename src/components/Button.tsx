@@ -1,4 +1,4 @@
-"use client";
+import React from "react";
 
 type ButtonProps = {
   onClick?: () => void;
@@ -6,7 +6,7 @@ type ButtonProps = {
   width?: string;
   /** The type of button */
   type?: 'button' | 'submit' | 'reset';
-  children: string;
+  children: React.ReactNode;
 };
 
 export default function Button({ onClick, width, children, type }: ButtonProps) {

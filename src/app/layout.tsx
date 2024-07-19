@@ -13,17 +13,18 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  log,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode,
+  log: React.ReactNode,
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={fredoka.className}>
         <ThemeProvider attribute="class">
           <Header/>
-          {
-            children
-          }
+          {children}
+          {log}
         </ThemeProvider>
       </body>
     </html>
