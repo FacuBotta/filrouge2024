@@ -1,3 +1,4 @@
+import { useRef, useState } from "react";
 import Button from "./Button";
 import { Icon, Input } from "facu-ui";
 
@@ -54,7 +55,7 @@ export default function LogForm({onClick}: LogFormProps) {
       <p 
         className="text-[1rem] mt-1 cursor-pointer hover:underline"
       >
-        {type === 'Sign-In' ? "Vous Avez déjà un compte ?" : "Vous n'avez pas de compte ?"}
+        {formType === 'Sign-In' ? "Vous Avez déjà un compte ?" : "Vous n'avez pas de compte ?"}
       </p>
     </form>
   );
