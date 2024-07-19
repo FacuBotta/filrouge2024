@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function Home() {
 
   return (
-    <main className="flex min-h-screen flex-col">
+    <main className="flex min-h-screen flex-col select-none">
       <section className="flex items-center justify-center w-full min-h-screen bg-light-ciel dark:bg-dark-bg">
         <div className="flex h-full w-[90%] m-auto items-center justify-center text-center lg:!text-start">
           <div className="text-dark-bg dark:text-dark-grey lg:mr-10 sm:w-[70%] lg:w-[40%] max-w-[500px] ">

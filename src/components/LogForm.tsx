@@ -49,11 +49,12 @@ export default function LogForm({onClick}: LogFormProps) {
       />
       <Button width='100%' type="submit">{formType === 'Sign-In' ? 'log in' : 'sign up'}</Button>
       <p
-        className="mt-4 text-[1rem] cursor-pointer hover:underline"
+        className="mt-4 text-[1rem] select-none cursor-pointer hover:underline"
       >
         Ou vous pouvez initier avec votre compte <strong>Google</strong></p>
       <p 
-        className="text-[1rem] mt-1 cursor-pointer hover:underline"
+        className="text-[1rem] mt-1 cursor-pointer select-none hover:underline"
+        onClick={() => setFormType(formType === 'Sign-In' ? 'Sign-Up' : 'Sign-In')}
       >
         {formType === 'Sign-In' ? "Vous Avez déjà un compte ?" : "Vous n'avez pas de compte ?"}
       </p>

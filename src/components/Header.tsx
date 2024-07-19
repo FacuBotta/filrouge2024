@@ -9,7 +9,7 @@ export default function Header() {
   const itemActive = 'bg-light-red px-2 border-t-[1px] border-l-[1px] border-r-[1px] border-dark-bg dark:bg-light-yellow dark:border-none dark:text-dark-bg';
   
   return (
-    <header className="absolute top-0 left-0 right-0 min-h-11 flex flex-wrap justify-between items-end px-5 border-b-[1px] border-dark-bg dark:border-light-yellow">
+    <header className="absolute top-0 left-0 right-0 min-h-11 flex flex-wrap justify-between items-end select-none px-5 border-b-[1px] border-dark-bg dark:border-light-yellow">
       <ThemeSwitcher/>
       <nav>
         <ul className="flex gap-4 place-items-start font-bold text-dark-bg dark:text-dark-grey">
