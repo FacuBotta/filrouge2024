@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Button from "./Button";
 import { Icon, Input } from "facu-ui";
+import { handleGoogleSignIn } from "@/lib/auth/googleSignInServerAction";
 
 export default function LogForm() {
   const Router = useRouter();
@@ -39,21 +40,29 @@ export default function LogForm() {
       />
       <h2 className="text-2xl mb-3 font-bold text-center">{formType === 'Sign-In' ? 'Content de te revoir !' : 'Bienvenue sur EventHub !'}</h2>
       <Input className={inputClasses} required={true} error={{ message: 'errorcito', value: false }} label="Nom" ref={nameRef} type="text" id="name" name="name" placeholder="Name" />
-      <Input className={inputClasses} required={true} label="Email" ref={emailRef} type="email" id="Email" name="email" placeholder="Email" />
-      <Input
-        regexp={{ message: 'Characters @ - _ ; " \' are not allowed', pattern: /[@-_;"']/ }}
-        className={inputClasses}
-        required={true}
-        label="Mot de passe"
-        ref={passwordRef}
-        type="password"
-        name="password"
-        placeholder="Password"
-        onChange={handleChange}
-      />
+      { formType === 'Sign-Up' ? 
+        (
+          <Input className={inputClasses} required={true} label="Email" ref={emailRef} type="email" id="Email" name="email" placeholder="Email" />
+        ) 
+      : 
+        (
+          <Input
+            regexp={{ message: 'Characters @ - _ ; " \' are not allowed', pattern: /[@-_;"']/ }}
+            className={inputClasses}
+            required={true}
+            label="Mot de passe"
+            ref={passwordRef}
+            type="password"
+            name="password"
+            placeholder="Password"
+            onChange={handleChange}
+          />
+        )
+      }
       <Button width='100%' type="submit">{formType === 'Sign-In' ? 'log in' : 'sign up'}</Button>
       <p
         className="mt-4 text-[1rem] select-none cursor-pointer hover:underline"
+        onClick={() => handleGoogleSignIn()}
       >
         Ou vous pouvez initier avec votre compte <strong>Google</strong></p>
       <p

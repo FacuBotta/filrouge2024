@@ -26,13 +26,13 @@ Le but de ce projet est de valider les competences pour la obtention du titre Co
 Cet projet a pour fonctionnalité principal d'intégrer un système de gestion des événements pour les utilisateurs. La application permettre de créer et gérer des événements dans la plateforme et les synchroniser avec le calendrier de google. Il y a aussi un système de commentaires et ponctuation pour les utilisateurs, ainsi comme un système de messagerie et notifications.
 
 ### Charte graphique
-<img src="./images-readme/charte-graphique.png" width="100%">
+<img src="./tpFiles/images-readme/charte-graphique.png" width="100%">
 
 ### Maquette
 
 <div style="display: flex; flex-direction: row; justify-content: space-around;">
-<img src="./images-readme/home ligth.png" width="45%">
-<img src="./images-readme/home dark.png" width="45%">
+<img src="./tpFiles/images-readme/home ligth.png" width="45%">
+<img src="./tpFiles/images-readme/home dark.png" width="45%">
 </div>
 
 

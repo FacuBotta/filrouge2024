@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Fredoka } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
 import { ThemeProvider } from "next-themes";
 import React from "react";
+import Header from "../components/Header";
 
 const fredoka = Fredoka({ subsets: ["latin"]});
 
