@@ -1,6 +1,6 @@
 import React from "react";
 
-type ButtonProps = {
+type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   onClick?: () => void;
   /** The width of the button, default is fit-content */
   width?: string;

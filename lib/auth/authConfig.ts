@@ -2,6 +2,9 @@ import NextAuth from "next-auth"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { PrismaClient } from "@prisma/client"
 import Google from "next-auth/providers/google"
+import Nodemailer from "next-auth/providers/nodemailer"
+import selectUserByMail from "../userServerActions/selectUserByMail"
+import { error } from "console"
  
 const prisma = new PrismaClient()
  
@@ -30,7 +33,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return token
     },
     async session({ session, token }) {
-      console.log("session callback", { session, token })
       return {
         ...session,
         user: {
@@ -38,7 +40,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           id: token.id as string
         }
       }
-    }
+    },
+    // TODO: handle the case where the user already exists
+    /* async signIn({ account, profile }) {
+      if (account?.provider === "google") {
+        const userMail = profile?.email;
+        const userExists = await selectUserByMail(userMail as string);
+        if (!userExists) {
+          throw new Error("Il n'y a pas de compte pour ce mail, veuillez créer un compte pour continuer");
+        }
+      }
+      return true;
+    }, */
   },
   providers: [
     Google({
@@ -53,6 +66,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           response_type: "code"
         }
       }
+    }),
+    Nodemailer({
+      server: {
+        host: process.env.EMAIL_SERVER_HOST,
+        port: parseInt(process.env.EMAIL_SERVER_PORT!, 10),
+        auth: {
+          user: process.env.EMAIL_SERVER_USER,
+          pass: process.env.EMAIL_SERVER_PASSWORD,
+        },
+      },
+      from: process.env.EMAIL_FROM,
     })
   ],
 })

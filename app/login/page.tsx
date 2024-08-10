@@ -7,7 +7,6 @@ import { checkIsAuthenticated } from "@/lib/auth/checkIsAuthenticated";
 const LoginPage: React.FC = async () => {
 
   const isAuthenticated = await checkIsAuthenticated();
-  console.log("isAuthenticated", isAuthenticated);
   if (isAuthenticated) {
     redirect("/dashboard");
   } else {
