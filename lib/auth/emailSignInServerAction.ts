@@ -6,7 +6,7 @@ export async function handleEmailSignIn(email: string) {
   try {
     const user = await selectUserByMail(email);
     if (user) {
-      return { error: { message: "Cet email est deja utilisé", value: true } };
+      return { ok: false, message: 'Cet email est déjà associé à un compte' };
     }
     await signIn("nodemailer", { email, callbackUrl: "/dashboard" });
   } catch (error) {

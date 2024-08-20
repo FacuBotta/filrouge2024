@@ -17,15 +17,13 @@ export default function PasswordForm({id}: PasswordFormProps) {
     const formData = new FormData(e.currentTarget);
     const password = formData.get('password') as string;
     const confirmPassword = formData.get('confirmPassword') as string;
+    // compare passwords
     if (password !== confirmPassword) {
       setError({password: { message: 'Les mots de passe ne correspondent pas', value: true } });
       return;
     }
     try {
-      const result = await updatePassword(formData);
-      if (result.ok) {
-        redirect("/dashboard");
-      }
+      await updatePassword(formData);
     } catch (error) {
       console.error(error);
     }

@@ -1,13 +1,13 @@
 'use client';
 
 import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import Button from "./Button";
 import { Icon, Input } from "facu-ui";
 import { handleGoogleSignIn } from "@/lib/auth/googleSignInServerAction";
 import { handleEmailSignIn } from "@/lib/auth/emailSignInServerAction";
 import Link from "next/link";
-import selectUserByMail from "@/lib/userServerActions/selectUserByMail";
+import { handleCredentialsSignIn } from "@/lib/auth/CredentialsLoginServerAction";
 
 export default function LogForm() {
   const Router = useRouter();
@@ -15,13 +15,12 @@ export default function LogForm() {
   const [isPending, startTransition] = useTransition();
   const [conditionsAccepted, setConditionsAccepted] = useState(false); 
   const [error, setError] = useState({ mail: { message: '', value: false }, password: { message: '', value: false }, conditions: { message: '', value: false } });
-  console.log(error.mail);
+
   const handleLogInSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    console.log(formData.get('email'));
-    console.log(formData.get('password'));
-    
+    const response = await handleCredentialsSignIn(formData);
+    console.log(response);
   };
   const handleGoogleSignInSubmit = async () => {
     try {
@@ -41,8 +40,9 @@ export default function LogForm() {
     try {
       startTransition(async () => {
         const result = await handleEmailSignIn(email as string);
-        if (result?.error.value) {
-          setError({ ...error, mail: { message: result.error.message, value: true } });
+        if (!result?.ok) {
+          console.log(result);
+          setError({ ...error, mail: { message: result?.message as string, value: true } });
           return;
         }
       });
