@@ -1,9 +1,11 @@
+import "./globals.css";
 import type { Metadata } from "next";
 import { Fredoka } from "next/font/google";
-import "./globals.css";
-import { ThemeProvider } from "next-themes";
+import { Providers } from "./providers";
+
 import React from "react";
-import Header from "../components/Header";
+import Header from "../components/layouts/Header";
+import Footer from "@/components/layouts/Footer";
 
 const fredoka = Fredoka({ subsets: ["latin"]});
 
@@ -22,11 +24,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={fredoka.className}>
-        <ThemeProvider attribute="class">
+        <Providers>
           <Header/>
           {children}
           {auth}
-        </ThemeProvider>
+          <Footer/>
+        </Providers>
       </body>
     </html>
   );

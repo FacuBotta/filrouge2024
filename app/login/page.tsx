@@ -1,6 +1,6 @@
-import LogForm from "@/components/LogForm";
+import LogForm from "@/components/forms/LogForm";
 import HomeImage from "../../public/images/HomeImage";
-import Modal from "@/components/Modal";
+import Modal from "@/components/ui/Modal";
 import { redirect } from "next/navigation";
 import { checkIsAuthenticated } from "@/lib/auth/checkIsAuthenticated";
 

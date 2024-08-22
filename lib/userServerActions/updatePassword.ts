@@ -13,7 +13,6 @@ export const updatePassword = async (formData: FormData) => {
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     return hashedPassword;
   }
-
   
   try {
     const hashedPassword = await hashPassword(password);
