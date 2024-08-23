@@ -3,11 +3,10 @@ import { PrismaAdapter } from "@auth/prisma-adapter"
 import { PrismaClient } from "@prisma/client"
 import Google from "next-auth/providers/google"
 import Nodemailer from "next-auth/providers/nodemailer"
-import selectUserByMail from "../userServerActions/selectUserByMail"
-import { error } from "console"
- 
+import Credentials from "next-auth/providers/credentials"
+
 const prisma = new PrismaClient()
- 
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   trustHost: true, // This is required for NextAuth to work properly in localHost
   adapter: PrismaAdapter(prisma),
@@ -77,6 +76,20 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         },
       },
       from: process.env.EMAIL_FROM,
-    })
+    }),
+    Credentials({
+      name: 'Credentials',
+      async authorize(credentials : Partial<Record<string, unknown>>) {
+        if (!credentials) {
+          return null;
+        }
+        return {
+          id: credentials.id as string,
+          name: credentials.name as string || null,
+          email: credentials.email as string,
+          image: credentials.image as string || null,
+        }
+      },
+    }),
   ],
 })

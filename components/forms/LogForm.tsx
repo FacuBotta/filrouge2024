@@ -1,13 +1,13 @@
 'use client';
 
 import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
-import Button from "./Button";
-import { Icon, Input } from "facu-ui";
 import { handleGoogleSignIn } from "@/lib/auth/googleSignInServerAction";
 import { handleEmailSignIn } from "@/lib/auth/emailSignInServerAction";
+import { handleCredentialsSignIn } from "@/lib/auth/CredentialsLoginServerAction";
+import { useRouter } from "next/navigation";
+import { Icon, Input } from "facu-ui";
+import Button from "../ui/Button";
 import Link from "next/link";
-import selectUserByMail from "@/lib/userServerActions/selectUserByMail";
 
 export default function LogForm() {
   const Router = useRouter();
@@ -15,14 +15,26 @@ export default function LogForm() {
   const [isPending, startTransition] = useTransition();
   const [conditionsAccepted, setConditionsAccepted] = useState(false); 
   const [error, setError] = useState({ mail: { message: '', value: false }, password: { message: '', value: false }, conditions: { message: '', value: false } });
-  console.log(error.mail);
+
+  // Login with credentials
+  // TODO: sometimes give a render error. to many renders...
   const handleLogInSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    console.log(formData.get('email'));
-    console.log(formData.get('password'));
-    
+    const response = await handleCredentialsSignIn(formData);
+    if (!response?.ok) {
+      console.log(response);
+      if (response?.typeError === 'email') {
+        setError({ ...error, mail: { message: response?.message as string, value: true } });
+        return;
+      } else if (response?.typeError === 'password') {
+        setError({ ...error, password: { message: response?.message as string, value: true } });
+        return;
+      }
+    }
   };
+  // Login with Google link
+  // TODO: handle the case where the user already exists
   const handleGoogleSignInSubmit = async () => {
     try {
       await handleGoogleSignIn();
@@ -30,6 +42,7 @@ export default function LogForm() {
       console.error(error);
     }
   }
+  // Sign up with email
   const handleSignUpSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!conditionsAccepted) {
@@ -41,8 +54,9 @@ export default function LogForm() {
     try {
       startTransition(async () => {
         const result = await handleEmailSignIn(email as string);
-        if (result?.error.value) {
-          setError({ ...error, mail: { message: result.error.message, value: true } });
+        if (!result?.ok) {
+          console.log(result);
+          setError({ ...error, mail: { message: result?.message as string, value: true } });
           return;
         }
       });
@@ -74,6 +88,7 @@ export default function LogForm() {
         name="email"
         placeholder="Email"
         disabled={isPending}
+        autoComplete="email"
         error={{ message: error.mail?.message, value: error.mail?.value }}
       />
       {
@@ -87,6 +102,7 @@ export default function LogForm() {
             name="password"
             placeholder="Password"
             disabled={isPending}
+            autoComplete="current-password"
             error={{ message: error.password?.message, value: error.password?.value }}
           />
         ) : (

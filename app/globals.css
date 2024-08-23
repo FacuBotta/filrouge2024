@@ -1,8 +1,35 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap'); */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
   font-size: 1.2rem;
+}
+
+footer a:hover {
+  @apply text-light-blue dark:text-dark-yellow;
+}
+
+/* used to change the color of the homeImage acording to the theme (only solution to evit 'use client') */
+.path-home-image {
+  @apply fill-light-blue dark:fill-dark-green;
+}
+
+/* can't use this animation with tailwind besause animation-timeline is not suported by tailwind */
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+  }
+}
+section h1,
+section div {
+  animation: appear linear;
+  animation-timeline: view();
+  animation-fill-mode: both;
+  animation-duration: 1ms; /* Firefox requires this to apply the animation */
+  animation-range: entry 0% cover 20%;
 }
