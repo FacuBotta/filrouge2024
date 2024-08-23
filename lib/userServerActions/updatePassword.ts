@@ -4,6 +4,8 @@ import prisma from "@/lib/prisma";
 export const updatePassword = async (formData: FormData) => {
   const id = formData.get("id") as string;
   const password = formData.get("password") as string;
+  // TODO: hash the password
+  
   try {
     await prisma.user.update({
       where: {
