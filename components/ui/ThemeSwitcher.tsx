@@ -16,13 +16,8 @@ export default function ThemeSwitcher() {
 
   if (!mounted) {
     return (
-      <div className="p-1 m-1  rounded-full">
-        <Icon
-          className="m-[1px]"
-          strokeWidth={2}
-          type="lightTheme"
-          width={25}
-        />
+      <div className="p-2 mt-2 w-[29px] h-[29px] cursor-pointer rounded-full bg-white/50">
+        
       </div>
     )
   }

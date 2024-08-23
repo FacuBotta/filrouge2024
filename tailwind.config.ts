@@ -8,6 +8,9 @@ const config: Config = {
   ],
   darkMode: "class",
   theme: {
+    fontFamily: {
+      fredoka: ["var(--font-fredoka)"],
+    },
     extend: {
       keyframes: {
         swing: {

@@ -1,5 +1,6 @@
 import FooterImage from "@/public/images/FooterImage";
 import Link from "next/link";
+import IconWrapper from "../ui/IconWrapper";
 
 export default function Footer() {
   // TODO: update links
@@ -32,8 +33,11 @@ export default function Footer() {
         </div>
       </div>
       <div className="w-full h-[1px] my-5 bg-dark-bg dark:bg-light-yellow"></div>
-      <div>
-        Made with ❤️ by <a href="https://github.com/FacuBotta" target="_blank" rel="noreferrer">Facu Botta</a>
+      <div className="flex">
+        <p className="mr-2">Made with ❤️ by Facu Botta</p>
+        <Link target="_blank" href={"https://www.linkedin.com/in/facundo-botta"}><IconWrapper type="linkedIn" color="black"/></Link>
+        {/* TODO: add github icon */}
+        <Link target="_blank" href={"https://github.com/FacuBotta"}><IconWrapper type="faceBook" color="black"/></Link>
       </div>
     </footer>
   )

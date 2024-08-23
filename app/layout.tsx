@@ -1,13 +1,12 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Fredoka } from "next/font/google";
 import { Providers } from "./providers";
-
 import React from "react";
 import Header from "../components/layouts/Header";
 import Footer from "@/components/layouts/Footer";
+import { Fredoka } from "@/public/fonts/localFonts";
 
-const fredoka = Fredoka({ subsets: ["latin"]});
+
 
 export const metadata: Metadata = {
   title: "EventHub",
@@ -22,8 +21,8 @@ export default function RootLayout({
   auth: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={fredoka.className}>
+    <html className="overflow-y-scroll scroll-smooth snap-y snap-proximity" lang="en" suppressHydrationWarning>
+      <body className={`${Fredoka.variable} font-fredoka`}>
         <Providers>
           <Header/>
           {children}

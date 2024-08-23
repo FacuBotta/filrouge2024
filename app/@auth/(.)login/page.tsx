@@ -1,5 +1,5 @@
 import LogForm from "@/components/forms/LogForm";
-import Modal from "@/components/ui/Modal";
+import Modal from "@/components/layouts/Modal";
 import { checkIsAuthenticated } from "@/lib/auth/checkIsAuthenticated";
 import { redirect } from "next/navigation";
 
