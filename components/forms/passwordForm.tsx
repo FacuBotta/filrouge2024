@@ -1,7 +1,7 @@
 "use client";
 
 import { Input } from "facu-ui";
-import Button from "./Button";
+import Button from "../ui/Button";
 import { updatePassword } from "@/lib/userServerActions/updatePassword";
 import { useState } from "react";
 import { redirect } from "next/navigation";

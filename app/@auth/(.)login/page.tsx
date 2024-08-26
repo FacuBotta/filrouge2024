@@ -1,5 +1,5 @@
 import LogForm from "@/components/forms/LogForm";
-import Modal from "@/components/layouts/Modal";
+import Backdrop from "@/components/layouts/Backdrop";
 import { checkIsAuthenticated } from "@/lib/auth/checkIsAuthenticated";
 import { redirect } from "next/navigation";
 
@@ -10,9 +10,9 @@ const LoginPage: React.FC = async () => {
     redirect("/dashboard");
   } else {
     return (
-      <Modal>
+      <Backdrop>
         <LogForm/>
-      </Modal>
+      </Backdrop>
     );
   }
 }

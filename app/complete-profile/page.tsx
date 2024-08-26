@@ -1,4 +1,4 @@
-import PasswordForm from "@/components/ui/passwordForm";
+import PasswordForm from "@/components/forms/passwordForm";
 import { checkIsAuthenticated } from "@/lib/auth/checkIsAuthenticated";
 import { redirect } from "next/navigation";
 

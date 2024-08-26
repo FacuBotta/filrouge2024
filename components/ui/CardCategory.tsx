@@ -10,11 +10,14 @@ interface cardCategoryProps {
 export default function CardCategory(props: cardCategoryProps) {
   const categoryLink = props.title.toLowerCase().replaceAll(" ", "-");
   return (
-    <div className={`flex flex-col items-center justify-between aspect-square p-5 border-2 border-black ${props.color}`}>
+    <Link 
+      href={`categories/${categoryLink}`} 
+      className={`flex flex-col items-center justify-between aspect-square p-5 border-2 border-black ${props.color} sm:hover:scale-105 transition-all duration-300 ease-in-out`}
+    >
       <div className="flex w-full max-h-[70%] items-center justify-center">
         {props.image}
       </div>
-      <Link className="font-bold text-dark-bg" href={`categories/${categoryLink}`}>{props.title}</Link>
-    </div>
+      <p className="font-bold text-dark-bg" >{props.title}</p>
+    </Link>
   )
 }

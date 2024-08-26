@@ -69,7 +69,7 @@ export default function LogForm() {
 
   return (
     <form
-      className="relative flex flex-col items-center gap-3 w-full max-w-md p-5 bg-light-blue border border-light-yellow dark:bg-dark-bg"
+      className="relative flex flex-col items-center gap-3 w-full max-w-md p-5 mx-2 bg-light-blue border border-light-yellow dark:bg-dark-bg"
       onSubmit={formType === 'Sign-Up' ? handleSignUpSubmit : handleLogInSubmit}
     >
       <Icon
