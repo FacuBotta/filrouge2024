@@ -5,7 +5,21 @@
 body {
   font-size: 1.2rem;
 }
-
+/* used to disable the scroll on the page when the modal is open */
+.no-scroll {
+  overflow: hidden;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
 footer a:hover {
   @apply text-light-blue dark:text-dark-yellow;
 }

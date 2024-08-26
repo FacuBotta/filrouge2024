@@ -1,8 +1,8 @@
 import LogForm from "@/components/forms/LogForm";
 import HomeImage from "../../public/images/HomeImage";
-import Modal from "@/components/layouts/Modal";
 import { redirect } from "next/navigation";
 import { checkIsAuthenticated } from "@/lib/auth/checkIsAuthenticated";
+import Backdrop from "@/components/layouts/Backdrop";
 
 const LoginPage: React.FC = async () => {
 
@@ -28,9 +28,9 @@ const LoginPage: React.FC = async () => {
           <HomeImage className="hidden lg:block w-[500px] h-full"/>
         </div>
       </section>
-      <Modal>
+      <Backdrop>
         <LogForm/>
-      </Modal>
+      </Backdrop>
     </>
   )
   }

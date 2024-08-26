@@ -7,7 +7,7 @@ export const DashboardPage: React.FC<{ user: User }> = ({ user }) => {
     redirect("/complete-profile");
   }
   return (
-    <div className="flex bg-slate flex-col items-center justify-center p-24">
+    <div className="min-h-screen flex bg-slate flex-col items-center justify-center p-24">
       <SignOutButton />
       <h1>Dashboard coming solution</h1>
       <p>Welcome, {user.name || user.email}!</p>

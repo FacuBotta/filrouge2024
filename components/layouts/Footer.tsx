@@ -33,11 +33,13 @@ export default function Footer() {
         </div>
       </div>
       <div className="w-full h-[1px] my-5 bg-dark-bg dark:bg-light-yellow"></div>
-      <div className="flex">
+      <div className="flex justify-center flex-wrap">
         <p className="mr-2">Made with ❤️ by Facu Botta</p>
-        <Link target="_blank" href={"https://www.linkedin.com/in/facundo-botta"}><IconWrapper type="linkedIn" color="black"/></Link>
+        <div className="flex">
+        <Link target="_blank" href={"https://www.linkedin.com/in/facundo-botta"} aria-label="Facundo botta linkedin" ><IconWrapper type="linkedIn" color="black"/></Link>
         {/* TODO: add github icon */}
-        <Link target="_blank" href={"https://github.com/FacuBotta"}><IconWrapper type="faceBook" color="black"/></Link>
+        <Link target="_blank" href={"https://github.com/FacuBotta"}><IconWrapper aria-label="Facundo botta github" type="faceBook" color="black"/></Link>
+        </div>
       </div>
     </footer>
   )

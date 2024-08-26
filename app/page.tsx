@@ -42,7 +42,7 @@ export default async function Home() {
       </section>
       <section className="flex flex-col p-5 items-center justify-center w-full min-h-screen bg-light-red dark:bg-dark-bg snap-start scroll-mt-20 sm:scroll-mt-0">
         <h1 className="text-3xl sm:text-6xl font-bold mb-8 dark:text-dark-greenLight">Catégories</h1>
-        <div className="my-5 grid grid-cols-1 sm:grid-cols-3 gap-10 w-full max-w-[900px]">
+        <div className="my-5 grid grid-cols-2 sm:grid-cols-3 gap-10 w-full max-w-[900px]">
           <CardCategory
             color="bg-light-yellow"
             image={<SportImage/>}
@@ -74,6 +74,12 @@ export default async function Home() {
             title="Autres"
           />
         </div>
+        <Link
+          className="inline-flex items-center justify-center px-4 py-1 border-2 border-transparent text-lg rounded-lg bg-light-yellow text-dark-bg font-bold hover:border-dark-bg dark:hover:border-dark-grey"
+          href="/Category"
+        >
+          Voir plus
+        </Link>
       </section>
       <section className="flex flex-col px-5 items-center justify-center w-full min-h-screen bg-light-yellow dark:bg-dark-bg snap-start ">
         <h1 className="text-3xl sm:text-6xl font-bold mb-8 dark:text-dark-greenLight">Fonctionnalités</h1>
