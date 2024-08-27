@@ -24,11 +24,72 @@ footer a:hover {
   @apply text-light-blue dark:text-dark-yellow;
 }
 
+/* SVG styles */
 /* used to change the color of the homeImage acording to the theme (only solution to evit 'use client') */
+
+/* homeImage (first section of the page)*/
 .path-home-image {
   @apply fill-light-blue dark:fill-dark-green;
 }
 
+/* Slider images */
+
+/* messagesImage */
+.message_border {
+  @apply fill-dark-grey dark:fill-[#3F3D56];
+}
+.message_background {
+  @apply fill-dark-yellowLight dark:fill-dark-grey;
+}
+@keyframes messageAppear {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+#messages_top {
+  @apply animate-swing;
+}
+/* #messages_top {
+  @apply delay-1000;
+} */
+/* #messages_top {
+  position: relative;
+  view-timeline: --messageReveal x;
+  animation-timeline: --messageReveal;
+
+  animation-name: messageAppear;
+  animation-duration: 1ms;
+  animation-direction: alternate;
+  animation-fill-mode: forwards;
+  animation-range: entry 40% cover 30%;
+} */
+
+/* #messages_center {
+  view-timeline: --messageReveal x;
+  animation-timeline: --messageReveal;
+
+  animation-name: messageAppear;
+  animation-fill-mode: forwards;
+  animation-duration: 1ms;
+  animation-range: entry 20% cover 40%;
+} */
+/* 
+#messages_bottom {
+  view-timeline: --messageReveal x;
+  animation-timeline: --messageReveal;
+
+  animation-name: messageAppear;
+  animation-fill-mode: forwards;
+  animation-duration: 1ms; 
+  animation-range: entry 100% cover 30%;
+} */
+
+/* Home page scroll aanimation */
 /* can't use this animation with tailwind besause animation-timeline is not suported by tailwind */
 @keyframes appear {
   from {
