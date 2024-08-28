@@ -24,8 +24,31 @@ footer a:hover {
   @apply text-light-blue dark:text-dark-yellow;
 }
 
-/* SVG styles */
-/* used to change the color of the homeImage acording to the theme (only solution to evit 'use client') */
+/* ========== Home page scroll animation ========== */
+
+/* can't use this animation with tailwind besause animation-timeline is not suported by tailwind */
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+  }
+}
+section h1,
+section div,
+section a {
+  animation: appear linear;
+  animation-timeline: view();
+  animation-fill-mode: both;
+  animation-duration: 1ms; /* Firefox requires this to apply the animation */
+  animation-range: entry 0% cover 20%;
+}
+
+/* ============ SVG styles ============= */
+
+/* used to change the color of the svg images acording to the theme (only solution to evit 'use client') */
 
 /* homeImage (first section of the page)*/
 .path-home-image {
@@ -38,73 +61,42 @@ footer a:hover {
 .message_border {
   @apply fill-dark-grey dark:fill-[#3F3D56];
 }
-.message_background {
-  @apply fill-dark-yellowLight dark:fill-dark-grey;
+.colored_line_message,
+.t_shirt_person {
+  @apply fill-light-blue dark:fill-dark-green;
 }
-@keyframes messageAppear {
-  from {
-    opacity: 0;
-    transform: scale(0);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+/* reviewImage */
+.comment_container,
+.empty_start {
+  @apply fill-dark-bg dark:fill-dark-greenLight;
 }
-.message_container {
-  @apply animate-swing;
+.comment_line {
+  @apply fill-dark-bg dark:fill-[#3F3D56];
 }
-/* #messages_top {
-  @apply delay-1000;
-} */
-/* #messages_top {
-  position: relative;
-  view-timeline: --messageReveal x;
-  animation-timeline: --messageReveal;
-
-  animation-name: messageAppear;
-  animation-duration: 1ms;
-  animation-direction: alternate;
-  animation-fill-mode: forwards;
-  animation-range: entry 40% cover 30%;
-} */
-
-/* #messages_center {
-  view-timeline: --messageReveal x;
-  animation-timeline: --messageReveal;
-
-  animation-name: messageAppear;
-  animation-fill-mode: forwards;
-  animation-duration: 1ms;
-  animation-range: entry 20% cover 40%;
-} */
-/* 
-#messages_bottom {
-  view-timeline: --messageReveal x;
-  animation-timeline: --messageReveal;
-
-  animation-name: messageAppear;
-  animation-fill-mode: forwards;
-  animation-duration: 1ms; 
-  animation-range: entry 100% cover 30%;
-} */
-
-/* Home page scroll aanimation */
-/* can't use this animation with tailwind besause animation-timeline is not suported by tailwind */
-@keyframes appear {
-  from {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  to {
-    opacity: 1;
-  }
+/* calendarImage */
+.calendar_border,
+.calendar_controls {
+  @apply fill-dark-bg dark:fill-dark-greenLight;
 }
-section h1,
-section div {
-  animation: appear linear;
-  animation-timeline: view();
-  animation-fill-mode: both;
-  animation-duration: 1ms; /* Firefox requires this to apply the animation */
-  animation-range: entry 0% cover 20%;
+.circle_colored,
+.icon_plus,
+.t_shirt_person {
+  @apply fill-light-blue dark:fill-dark-green;
+}
+/* eventsImage */
+#eventsImage .color_1 {
+  @apply fill-[#59585d] dark:fill-dark-green;
+}
+#eventsImage .color_2 {
+  @apply fill-light-blue dark:fill-light-red;
+}
+/* securityImage */
+#securityImage .color_1 {
+  @apply fill-light-red dark:fill-dark-green;
+}
+#securityImage .color_2 {
+  @apply fill-light-ciel dark:fill-dark-grey;
+}
+#securityImage .color_3 {
+  @apply fill-dark-bg dark:fill-dark-greenLight;
 }

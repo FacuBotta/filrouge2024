@@ -22,6 +22,7 @@ export default function MessagesImage () {
             />
           </g>
           <path
+            className="colored_line_message"
             id="colored_line_message"
             d="M218.856 382.769H43.0349V388.105H218.856V382.769Z"
             fill="#9FEDD7"
@@ -53,6 +54,7 @@ export default function MessagesImage () {
             />
           </g>
           <path
+            className="colored_line_message"
             id="colored_line_message_2"
             d="M284.274 211.9H108.453V217.236H284.274V211.9Z"
             fill="#9FEDD7"
@@ -81,11 +83,12 @@ export default function MessagesImage () {
               className="message_background"
               id="message_background_2"
               d="M375.912 12.3608H10.7402V113.906H375.912V12.3608Z"
-              // fill="white"
+              fill="white"
             />
           </g>
           <path
             id="colored_line_message"
+            className="colored_line_message"
             d="M218.856 42.9839H43.0349V48.3196H218.856V42.9839Z"
             fill="#9FEDD7"
           />
@@ -127,6 +130,7 @@ export default function MessagesImage () {
             fill="#2F2E41"
           />
           <path
+            className="t_shirt_person"
             id="tShirt"
             d="M627.85 426.344L627.393 426.162L642.423 288.277L642.862 288.168C658.137 284.348 678.717 284.682 689.626 285.22C691.28 285.306 692.853 285.958 694.082 287.068C695.311 288.177 696.121 289.676 696.374 291.313L714.444 410.325L714.295 410.538C701.802 428.384 682.713 433.235 665.646 433.235C652.751 433.07 639.974 430.74 627.85 426.344Z"
             fill="#5DA2D5"
