@@ -4,7 +4,6 @@ export default function MessagesImage () {
       viewBox="0 0 831 712"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className="h-full"
     >
       <g id="messagesImage" clipPath="url(#clip0_347_1082)" >
         <g id="messages_bottom">
@@ -297,5 +296,6 @@ export default function MessagesImage () {
         </clipPath>
       </defs>
     </svg>
+
   )
 }

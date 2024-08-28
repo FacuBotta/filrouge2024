@@ -5,6 +5,7 @@ import EventsImage from "@/public/images/homeSliderImages/EventsImage";
 import MessagesImage from "@/public/images/homeSliderImages/MessagesImage";
 import ReviewsImage from "@/public/images/homeSliderImages/ReviewsImage";
 import SecurityImage from "@/public/images/homeSliderImages/SecurityImage";
+import { MessagesImage2 } from "@/public/images/homeSliderImages/MessagesImage2";
 
 interface Slide {
   id: number;
@@ -90,7 +91,7 @@ const SliderHome: React.FC = () => {
 
   return (
     <div
-      className="w-full max-w-[1000px] mx-auto h-[70vh] sm:h-[50vh]"
+      className="w-full max-w-[1000px] mx-auto h-[70vh] sm:h-[40vh] lg:h-[50vh]"
       // onMouseEnter={stopAutoSlide} // Detener el auto-slide cuando el usuario interactúa
       // onMouseLeave={startAutoSlide} // Reiniciar el auto-slide cuando el usuario deja de interactuar
     >
@@ -103,14 +104,14 @@ const SliderHome: React.FC = () => {
           {slides.map((slide) => (
             <div
               key={slide.id}
-              className={` flex-shrink-0 w-full h-full flex justify-center items-start  sm:border-b border-dark-bg dark:border-dark-greenLight snap-center`}
+              className={`w-full h-full flex justify-center items-start sm:border-b border-dark-bg dark:border-dark-greenLight snap-center`}
               style={{ minWidth: "100%" }}
             >
-              <article className="text-wrap text-center sm:text-left w-full sm:max-w-[50%] mt-5 ml-5">
+              <article className="text-wrap text-center sm:text-left w-full sm:max-w-[50%] mt-5 sm:ml-5">
                 <h2 className="text-xl sm:text-3xl font-bold mb-5">{slide.title}</h2>
-                <p className="px-5">{slide.content}</p>
+                <p className="sm:px-5">{slide.content}</p>
               </article>
-              <div className="hidden sm:flex justify-center items-center h-full w-[50%]">
+              <div className="hidden sm:flex items-end h-full w-[50%]">
                 {slide.image}
               </div>
             </div>
