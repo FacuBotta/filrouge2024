@@ -82,10 +82,8 @@ export default async function Home() {
         </Link>
       </section>
       <section className="flex flex-col px-5 items-center justify-center w-full min-h-screen bg-light-yellow dark:bg-dark-bg snap-start ">
-        <h1 className="text-3xl sm:text-6xl font-bold mb-8 dark:text-dark-greenLight">Fonctionnalités</h1>
-        {/* DOING: add slider of features */}
+        <h1 className="mb-14 text-3xl sm:text-6xl font-bold dark:text-dark-greenLight">Fonctionnalités</h1>
         <SliderHome/>
-        
       </section>
     </main>
   );

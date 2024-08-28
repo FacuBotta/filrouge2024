@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, FC } from "react";
 import CalendarImage from "@/public/images/homeSliderImages/CalendarImage";
 import EventsImage from "@/public/images/homeSliderImages/EventsImage";
 import MessagesImage from "@/public/images/homeSliderImages/MessagesImage";
@@ -11,7 +11,7 @@ interface Slide {
   title: string;
   content: string;
   color: string;
-  image: React.ReactNode;
+  image: React.ReactNode
 }
 
 const SliderHome: React.FC = () => {
@@ -80,32 +80,33 @@ const SliderHome: React.FC = () => {
     }
   }, [currentIndex]);
 
-  useEffect(() => {
+  /* useEffect(() => {
     startAutoSlide();
 
     return () => {
       stopAutoSlide();
     };
-  }, []);
+  }, []); */
 
   return (
     <div
       className="w-full max-w-[1000px] mx-auto h-[70vh] sm:h-[50vh]"
-      onMouseEnter={stopAutoSlide} // Detener el auto-slide cuando el usuario interactúa
-      onMouseLeave={startAutoSlide} // Reiniciar el auto-slide cuando el usuario deja de interactuar
+      // onMouseEnter={stopAutoSlide} // Detener el auto-slide cuando el usuario interactúa
+      // onMouseLeave={startAutoSlide} // Reiniciar el auto-slide cuando el usuario deja de interactuar
     >
-      <div className="relative overflow-hidden w-full  h-full ">
+      <div className="relative overflow-hidden w-full h-full">
         <div
+          id="slider-category"
           className="flex h-full w-full overflow-x-scroll overflow-y-hidden no-scrollbar snap-x snap-mandatory"
           ref={sliderRef}
         >
           {slides.map((slide) => (
             <div
               key={slide.id}
-              className={`flex-shrink-0 w-full h-full flex justify-center items-center gap-5 sm:p-6 sm:border-b border-dark-bg dark:border-dark-greenLight snap-center`}
+              className={` flex-shrink-0 w-full h-full flex justify-center items-start  sm:border-b border-dark-bg dark:border-dark-greenLight snap-center`}
               style={{ minWidth: "100%" }}
             >
-              <article className="text-wrap text-center sm:text-left w-full sm:max-w-[50%] mt-[-2rem]">
+              <article className="text-wrap text-center sm:text-left w-full sm:max-w-[50%] mt-5 ml-5">
                 <h2 className="text-xl sm:text-3xl font-bold mb-5">{slide.title}</h2>
                 <p className="px-5">{slide.content}</p>
               </article>
