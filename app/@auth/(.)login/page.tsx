@@ -1,13 +1,13 @@
-import LogForm from "@/components/forms/LogForm";
-import Backdrop from "@/components/layouts/Backdrop";
-import { checkIsAuthenticated } from "@/actions/authServerActions/checkIsAuthenticated";
-import { redirect } from "next/navigation";
+import LogForm from '@/components/forms/LogForm';
+import React from 'react';
+import Backdrop from '@/components/layouts/Backdrop';
+import { checkIsAuthenticated } from '@/actions/authServerActions/checkIsAuthenticated';
+import { redirect } from 'next/navigation';
 
 const LoginPage: React.FC = async () => {
-
   const isAuthenticated = await checkIsAuthenticated();
   if (isAuthenticated) {
-    redirect("/dashboard");
+    redirect('/dashboard');
   } else {
     return (
       <Backdrop>
@@ -15,6 +15,6 @@ const LoginPage: React.FC = async () => {
       </Backdrop>
     );
   }
-}
+};
 
 export default LoginPage;

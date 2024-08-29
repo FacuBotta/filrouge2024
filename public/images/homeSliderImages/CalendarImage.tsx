@@ -1,4 +1,4 @@
-export default function CalendarImage() {
+export default function CalendarImage () {
   return (
     <svg viewBox="0 0 972 782" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g id="calendarImage" clipPath="url(#clip0_359_83)">
@@ -55,5 +55,5 @@ export default function CalendarImage() {
 </clipPath>
 </defs>
 </svg>
-  )
+  );
 }

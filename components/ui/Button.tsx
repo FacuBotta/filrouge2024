@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   onClick?: () => void;
@@ -9,7 +9,12 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   children: React.ReactNode;
 };
 
-export default function Button({ onClick, width, children, type }: ButtonProps) {
+export default function Button({
+  onClick,
+  width,
+  children,
+  type,
+}: ButtonProps) {
   return (
     <button
       type={type || 'button'}

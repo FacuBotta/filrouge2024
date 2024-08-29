@@ -1,45 +1,45 @@
-import NextAuth from "next-auth"
-import { PrismaAdapter } from "@auth/prisma-adapter"
-import { PrismaClient } from "@prisma/client"
-import Google from "next-auth/providers/google"
-import Nodemailer from "next-auth/providers/nodemailer"
-import Credentials from "next-auth/providers/credentials"
+import NextAuth from 'next-auth';
+import { PrismaAdapter } from '@auth/prisma-adapter';
+import { PrismaClient } from '@prisma/client';
+import Google from 'next-auth/providers/google';
+import Nodemailer from 'next-auth/providers/nodemailer';
+import Credentials from 'next-auth/providers/credentials';
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   trustHost: true, // This is required for NextAuth to work properly in localHost
   adapter: PrismaAdapter(prisma),
   secret: process.env.AUTH_SECRET,
   session: {
-    strategy: "jwt",
+    strategy: 'jwt',
     maxAge: 60 * 60 * 24 * 7, // 7 days
-    updateAge: 60 * 60 * 24 * 7, // 7 days
+    updateAge: 60 * 60 * 24 * 7 // 7 days
   },
   pages: {
-    signIn: "/app/login", // ver si no causa problemas por la ruta paralela...
+    signIn: '/app/login' // ver si no causa problemas por la ruta paralela...
     // TODO: add a page for the error page
     // error: "/login",
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt ({ token, user }) {
       if (user) {
         return {
           ...token,
           id: user.id
-        }
+        };
       }
-      return token
+      return token;
     },
-    async session({ session, token }) {
+    async session ({ session, token }) {
       return {
         ...session,
         user: {
           ...session.user,
           id: token.id as string
         }
-      }
-    },
+      };
+    }
     // TODO: handle the case where the user already exists
     /* async signIn({ account, profile }) {
       if (account?.provider === "google") {
@@ -60,9 +60,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       allowDangerousEmailAccountLinking: true,
       authorization: {
         params: {
-          prompt: "consent",
-          access_type: "offline",
-          response_type: "code"
+          prompt: 'consent',
+          access_type: 'offline',
+          response_type: 'code'
         }
       }
     }),
@@ -72,14 +72,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         port: parseInt(process.env.EMAIL_SERVER_PORT!, 10),
         auth: {
           user: process.env.EMAIL_SERVER_USER,
-          pass: process.env.EMAIL_SERVER_PASSWORD,
-        },
+          pass: process.env.EMAIL_SERVER_PASSWORD
+        }
       },
-      from: process.env.EMAIL_FROM,
+      from: process.env.EMAIL_FROM
     }),
     Credentials({
       name: 'Credentials',
-      async authorize(credentials : Partial<Record<string, unknown>>) {
+      async authorize (credentials : Partial<Record<string, unknown>>) {
         if (!credentials) {
           return null;
         }
@@ -87,9 +87,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           id: credentials.id as string,
           name: credentials.name as string || null,
           email: credentials.email as string,
-          image: credentials.image as string || null,
-        }
-      },
-    }),
-  ],
-})
+          image: credentials.image as string || null
+        };
+      }
+    })
+  ]
+});

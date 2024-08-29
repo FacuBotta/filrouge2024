@@ -1,12 +1,12 @@
-"use server";
+'use server';
 
-import prisma from "@/lib/prisma";
+import prisma from '@/lib/prisma';
 
-export default async function selectUserByMail(mail: string) {
+export default async function selectUserByMail (mail: string) {
   const user = await prisma.user.findFirst({
     where: {
-      email: mail,
-    },
+      email: mail
+    }
   });
   return user;
 }

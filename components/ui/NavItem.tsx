@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 interface NavItemProps {
   href: string;
@@ -11,9 +11,12 @@ interface NavItemProps {
 export default function NavItem(props: NavItemProps) {
   const pathname = usePathname();
   const isActive = (href: string) => pathname === href;
-  const itemActiveClass = 'bg-light-red px-2 sm:border-t-[1px] sm:border-l-[1px] sm:border-r-[1px] sm:border-dark-bg dark:bg-light-yellow dark:border-none dark:text-dark-bg';
+  const itemActiveClass =
+    'bg-light-red px-2 sm:border-t-[1px] sm:border-l-[1px] sm:border-r-[1px] sm:border-dark-bg dark:bg-light-yellow dark:border-none dark:text-dark-bg';
 
   return (
-    <li className={isActive(props.href)? itemActiveClass : 'px-2'}><Link  href={props.href}>{props.children}</Link></li>
-  )
+    <li className={isActive(props.href) ? itemActiveClass : 'px-2'}>
+      <Link href={props.href}>{props.children}</Link>
+    </li>
+  );
 }

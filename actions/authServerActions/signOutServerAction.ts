@@ -1,10 +1,10 @@
-"use server";
+'use server';
 
-import { signOut } from "../../lib/auth/authConfig";
+import { signOut } from '../../lib/auth/authConfig';
 
-export async function handleSignOut() {
+export async function handleSignOut () {
   try {
-    await signOut({ redirectTo:'/' });
+    await signOut({ redirectTo: '/' });
   } catch (error) {
     console.log(error);
     throw error;

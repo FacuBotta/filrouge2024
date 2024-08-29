@@ -1,16 +1,16 @@
-import LogForm from "@/components/forms/LogForm";
-import HomeImage from "../../public/images/HomeImage";
-import { redirect } from "next/navigation";
-import { checkIsAuthenticated } from "@/actions/authServerActions/checkIsAuthenticated";
-import Backdrop from "@/components/layouts/Backdrop";
+import LogForm from '@/components/forms/LogForm';
+import HomeImage from '../../public/images/HomeImage';
+import { redirect } from 'next/navigation';
+import { checkIsAuthenticated } from '@/actions/authServerActions/checkIsAuthenticated';
+import Backdrop from '@/components/layouts/Backdrop';
+import React from 'react';
 
 const LoginPage: React.FC = async () => {
-
   const isAuthenticated = await checkIsAuthenticated();
   if (isAuthenticated) {
-    redirect("/dashboard");
+    redirect('/dashboard');
   } else {
-  return (
+    return (
     <>
       <section className="flex items-center justify-center w-full min-h-screen bg-light-ciel dark:bg-dark-bg">
         <div className="flex h-full w-[90%] m-auto items-center justify-center text-center lg:!text-start">
@@ -32,8 +32,8 @@ const LoginPage: React.FC = async () => {
         <LogForm/>
       </Backdrop>
     </>
-  )
+    );
   }
-}
+};
 
 export default LoginPage;

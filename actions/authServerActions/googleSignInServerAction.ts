@@ -1,10 +1,11 @@
-"use server";
-import { signIn } from "@/lib/auth/authConfig";
+'use server';
+import { signIn } from '@/lib/auth/authConfig';
 
-export async function handleGoogleSignIn() {
+export async function handleGoogleSignIn () {
   try {
-    await signIn("google", { redirectTo: "/dashboard" });
+    await signIn('google', { redirectTo: '/dashboard' });
   } catch (error) {
-    throw error;
+    console.error('Error during Google Sign-In:', error);
+    throw error; // Vuelve a lanzar el error si deseas que se propague
   }
 }

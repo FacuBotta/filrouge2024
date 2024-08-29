@@ -1,4 +1,4 @@
-export default function SecurityImage() {
+export default function SecurityImage () {
   return (
     <svg viewBox="0 0 817 709" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g id="securityImage" clipPath="url(#clip0_374_1083)">
@@ -50,5 +50,5 @@ export default function SecurityImage() {
 </defs>
 </svg>
 
-  )
+  );
 }

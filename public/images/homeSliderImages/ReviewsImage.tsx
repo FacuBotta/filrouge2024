@@ -1,4 +1,4 @@
-export default function ReviewsImage() {
+export default function ReviewsImage () {
   return (
     <svg viewBox="0 0 770 537" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g id="reviewsImage">
@@ -54,5 +54,5 @@ export default function ReviewsImage() {
 </g>
 </svg>
 
-  )
+  );
 }

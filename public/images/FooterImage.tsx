@@ -1,4 +1,4 @@
-export default function FooterImage() {
+export default function FooterImage () {
   return (
     <svg width="567" height="303" viewBox="0 0 567 303" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clipPath="url(#clip0_269_1676)">
@@ -41,5 +41,5 @@ export default function FooterImage() {
 </defs>
 </svg>
 
-  )
+  );
 }

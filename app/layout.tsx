@@ -1,21 +1,19 @@
-import "./globals.css";
-import type { Metadata } from "next";
-import { Providers } from "./providers";
-import React from "react";
-import Header from "../components/layouts/Header";
-import Footer from "@/components/layouts/Footer";
-import { Fredoka } from "@/public/fonts/localFonts";
-
-
+import './globals.css';
+import type { Metadata } from 'next';
+import { Providers } from './providers';
+import React from 'react';
+import Header from '../components/layouts/Header';
+import Footer from '@/components/layouts/Footer';
+import { Fredoka } from '@/public/fonts/localFonts';
 
 export const metadata: Metadata = {
-  title: "EventHub",
-  description: "EventHub is your solution for event management and appointment booking. Simplify your organization's activities with our modern and intuitive interface. With EventHub, you can easily sync your events with Google Calendar, manage your tasks, and communicate effectively with your colleagues. Whether you're planning a small gathering or a large event, EventHub offers the necessary tools to succeed.",
+  title: 'EventHub',
+  description: "EventHub is your solution for event management and appointment booking. Simplify your organization's activities with our modern and intuitive interface. With EventHub, you can easily sync your events with Google Calendar, manage your tasks, and communicate effectively with your colleagues. Whether you're planning a small gathering or a large event, EventHub offers the necessary tools to succeed."
 };
 
-export default function RootLayout({
+export default function RootLayout ({
   children,
-  auth,
+  auth
 }: Readonly<{
   children: React.ReactNode;
   auth: React.ReactNode;

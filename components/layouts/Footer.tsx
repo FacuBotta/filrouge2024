@@ -1,8 +1,8 @@
-import FooterImage from "@/public/images/FooterImage";
-import Link from "next/link";
-import IconWrapper from "../ui/IconWrapper";
+import FooterImage from '@/public/images/FooterImage';
+import Link from 'next/link';
+import IconWrapper from '../ui/IconWrapper';
 
-export default function Footer() {
+export default function Footer () {
   // TODO: update links
   return (
     <footer className="flex flex-col min-w-full items-center p-4 lg:py-24 bg-dark-grey dark:bg-dark-green">
@@ -36,11 +36,11 @@ export default function Footer() {
       <div className="flex justify-center flex-wrap">
         <p className="mr-2">Made with ❤️ by Facu Botta</p>
         <div className="flex">
-        <Link target="_blank" href={"https://www.linkedin.com/in/facundo-botta"} aria-label="Facundo botta linkedin" ><IconWrapper type="linkedIn" color="black"/></Link>
+        <Link target="_blank" href={'https://www.linkedin.com/in/facundo-botta'} aria-label="Facundo botta linkedin" ><IconWrapper type="linkedIn" color="black"/></Link>
         {/* TODO: add github icon */}
-        <Link target="_blank" href={"https://github.com/FacuBotta"}><IconWrapper aria-label="Facundo botta github" type="faceBook" color="black"/></Link>
+        <Link target="_blank" href={'https://github.com/FacuBotta'}><IconWrapper aria-label="Facundo botta github" type="faceBook" color="black"/></Link>
         </div>
       </div>
     </footer>
-  )
+  );
 }

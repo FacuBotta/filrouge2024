@@ -1,4 +1,4 @@
-export default function OthersImage() {
+export default function OthersImage () {
   return (
     <svg width="133" height="148" viewBox="0 0 133 148" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clipPath="url(#clip0_293_1480)">
@@ -69,5 +69,5 @@ export default function OthersImage() {
 </defs>
 </svg>
 
-  )
+  );
 }

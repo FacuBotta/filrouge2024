@@ -1,4 +1,4 @@
-export default function LanguageImage() {
+export default function LanguageImage () {
   return (
     <svg width="186" height="98" viewBox="0 0 186 98" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clipPath="url(#clip0_293_1420)">
@@ -64,5 +64,5 @@ export default function LanguageImage() {
 </defs>
 </svg>
 
-  )
+  );
 }

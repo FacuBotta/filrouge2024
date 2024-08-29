@@ -1,19 +1,19 @@
 'use client';
 
-import { useState, useTransition } from "react";
-import { handleGoogleSignIn } from "@/actions/authServerActions/googleSignInServerAction";
-import { handleEmailSignIn } from "@/actions/authServerActions/emailSignInServerAction";
-import { handleCredentialsSignIn } from "@/actions/authServerActions/CredentialsLoginServerAction";
-import { useRouter } from "next/navigation";
-import { Icon, Input } from "facu-ui";
-import Button from "../ui/Button";
-import Link from "next/link";
+import React, { useState, useTransition } from 'react';
+import { handleGoogleSignIn } from '@/actions/authServerActions/googleSignInServerAction';
+import { handleEmailSignIn } from '@/actions/authServerActions/emailSignInServerAction';
+import { handleCredentialsSignIn } from '@/actions/authServerActions/CredentialsLoginServerAction';
+import { useRouter } from 'next/navigation';
+import { Icon, Input } from 'facu-ui';
+import Button from '../ui/Button';
+import Link from 'next/link';
 
-export default function LogForm() {
+export default function LogForm () {
   const Router = useRouter();
   const [formType, setFormType] = useState<string>('Sign-In');
   const [isPending, startTransition] = useTransition();
-  const [conditionsAccepted, setConditionsAccepted] = useState(false); 
+  const [conditionsAccepted, setConditionsAccepted] = useState(false);
   const [error, setError] = useState({ mail: { message: '', value: false }, password: { message: '', value: false }, conditions: { message: '', value: false } });
 
   // Login with credentials
@@ -26,10 +26,8 @@ export default function LogForm() {
       console.log(response);
       if (response?.typeError === 'email') {
         setError({ ...error, mail: { message: response?.message as string, value: true } });
-        return;
       } else if (response?.typeError === 'password') {
         setError({ ...error, password: { message: response?.message as string, value: true } });
-        return;
       }
     }
   };
@@ -41,7 +39,7 @@ export default function LogForm() {
     } catch (error) {
       console.error(error);
     }
-  }
+  };
   // Sign up with email
   const handleSignUpSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -57,7 +55,6 @@ export default function LogForm() {
         if (!result?.ok) {
           console.log(result);
           setError({ ...error, mail: { message: result?.message as string, value: true } });
-          return;
         }
       });
     } catch (error) {
@@ -65,7 +62,7 @@ export default function LogForm() {
     }
   };
 
-  const inputClasses = "bg-light-grey dark:bg-dark-bg border-[1px] p-2 border-light-blue dark:border-dark-grey focus:border-light-yellow  focus:dark:border-light-yellow";
+  const inputClasses = 'bg-light-grey dark:bg-dark-bg border-[1px] p-2 border-light-blue dark:border-dark-grey focus:border-light-yellow  focus:dark:border-light-yellow';
 
   return (
     <form
@@ -80,8 +77,8 @@ export default function LogForm() {
       />
       <h2 className="text-2xl mb-3 font-bold text-center">{formType === 'Sign-In' ? 'Content de te revoir !' : 'Bienvenue sur EventHub !'}</h2>
       <Input
-        className={inputClasses} 
-        required={true} 
+        className={inputClasses}
+        required={true}
         label={formType === 'Sign-In' ? 'Email' : 'On va te envoyer un mail de confirmation !'}
         type="email"
         id="Email"
@@ -92,7 +89,8 @@ export default function LogForm() {
         error={{ message: error.mail?.message, value: error.mail?.value }}
       />
       {
-        formType === 'Sign-In' ? (
+        formType === 'Sign-In'
+          ? (
           <Input
             regexp={{ message: 'Characters @ - _ ; " \' are not allowed', pattern: /[@-_;"']/ }}
             className={inputClasses}
@@ -105,7 +103,8 @@ export default function LogForm() {
             autoComplete="current-password"
             error={{ message: error.password?.message, value: error.password?.value }}
           />
-        ) : (
+            )
+          : (
           <>
             <label htmlFor="terms" className="flex gap-2">
               <input
@@ -121,7 +120,7 @@ export default function LogForm() {
               <span className="text-red-500 text-sm">{error.conditions?.message}</span>
             )}
           </>
-        )
+            )
       }
       <Button width='100%' type="submit">{formType === 'Sign-In' ? 'Se connecter' : "S'inscrire"}</Button>
       {
@@ -141,7 +140,7 @@ export default function LogForm() {
         className="text-[1rem] mt-1 cursor-pointer select-none hover:underline"
         onClick={() => setFormType(formType === 'Sign-In' ? 'Sign-Up' : 'Sign-In')}
       >
-        {formType === 'Sign-Up' ? "Vous Avez déjà un compte ?" : "Vous n'avez pas de compte ?"}
+        {formType === 'Sign-Up' ? 'Vous Avez déjà un compte ?' : "Vous n'avez pas de compte ?"}
       </p>
     </form>
   );

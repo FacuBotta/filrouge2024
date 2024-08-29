@@ -1,4 +1,4 @@
-export function MessagesImage2() {
+export function MessagesImage2 () {
   return (
     <div className="flex justify-center items-center bg-fuchsia-300 h-full w-full">
 
@@ -26,5 +26,5 @@ export function MessagesImage2() {
       </svg>
 
     </div>
-  )
+  );
 }

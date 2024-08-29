@@ -1,15 +1,14 @@
-"use client";
+'use client';
 
-import { Input } from "facu-ui";
-import Button from "../ui/Button";
-import { updatePassword } from "@/actions/userServerActions/updatePassword";
-import { useState } from "react";
-import { redirect } from "next/navigation";
+import { Input } from 'facu-ui';
+import Button from '../ui/Button';
+import { updatePassword } from '@/actions/userServerActions/updatePassword';
+import React, { useState } from 'react';
 
 type PasswordFormProps = {
   id: string;
 };
-export default function PasswordForm({id}: PasswordFormProps) {
+export default function PasswordForm ({ id }: PasswordFormProps) {
   const [error, setError] = useState({ password: { message: '', value: false } });
 
   const handlePasswordSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -19,7 +18,7 @@ export default function PasswordForm({id}: PasswordFormProps) {
     const confirmPassword = formData.get('confirmPassword') as string;
     // compare passwords
     if (password !== confirmPassword) {
-      setError({password: { message: 'Les mots de passe ne correspondent pas', value: true } });
+      setError({ password: { message: 'Les mots de passe ne correspondent pas', value: true } });
       return;
     }
     try {
@@ -27,8 +26,7 @@ export default function PasswordForm({id}: PasswordFormProps) {
     } catch (error) {
       console.error(error);
     }
-
-  }
+  };
   return (
     <form className="flex flex-col w-[400px] items-center justify-center p-24 gap-2 bg-light-ciel" onSubmit={handlePasswordSubmit}>
       <input type="hidden" name="id" value={id} />

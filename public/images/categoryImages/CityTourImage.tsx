@@ -1,4 +1,4 @@
-export default function CityTourImage() {
+export default function CityTourImage () {
   return (
     <svg width="194" height="153" viewBox="0 0 194 153" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clipPath="url(#clip0_293_1292)">
@@ -96,5 +96,5 @@ export default function CityTourImage() {
 </defs>
 </svg>
 
-  )
+  );
 }

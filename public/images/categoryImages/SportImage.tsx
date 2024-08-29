@@ -1,4 +1,4 @@
-export default function SportImage() {
+export default function SportImage () {
   return (
     <svg width="220" height="178" viewBox="0 0 220 178" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g opacity="0.2">
@@ -99,5 +99,5 @@ export default function SportImage() {
 </defs>
 </svg>
 
-  )
+  );
 }

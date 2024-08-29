@@ -1,6 +1,6 @@
-export default function EventsImage() {
+export default function EventsImage () {
   return (
-    <svg style={{ marginBottom: "20px"}} viewBox="0 0 1086 812" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg style={{ marginBottom: '20px' }} viewBox="0 0 1086 812" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g id="eventsImage" clipPath="url(#clip0_366_5)">
 <path className="color_1" opacity="0.5" d="M222.68 26.82C220.26 23.53 215.26 27.1 217.52 30.51C218.11 31.4 218.76 32.26 219.37 33.09C226.82 43.09 230.68 55.36 234.01 67.44C234.82 70.44 235.61 73.56 234.68 76.44C236.01 68.6 235.15 60.5 233.14 52.8C231.13 45.1 228 37.79 224.77 30.52C224.205 29.2168 223.504 27.9766 222.68 26.82Z" fill="#026670"/>
 <path className="color_1" d="M174.33 47.98C169.33 47.83 168.67 55.45 173.67 55.85C174.98 55.96 176.31 55.99 177.57 56.02C192.96 56.44 207.52 62.02 221.51 68.02C224.94 69.49 228.51 71.14 230.51 74.29C224.2 66.98 215.9 61.63 207.07 57.69C198.24 53.75 188.83 51.17 179.43 48.76C177.763 48.3188 176.053 48.0573 174.33 47.98Z" fill="#026670"/>
@@ -250,5 +250,5 @@ export default function EventsImage() {
 </defs>
 </svg>
 
-  )
+  );
 }

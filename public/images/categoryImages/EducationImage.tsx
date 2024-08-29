@@ -1,4 +1,4 @@
-export default function EducationImage() {
+export default function EducationImage () {
   return (
     <svg width="216" height="156" viewBox="0 0 216 156" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clipPath="url(#clip0_293_1204)">
@@ -42,5 +42,5 @@ export default function EducationImage() {
 </defs>
 </svg>
 
-  )
+  );
 }

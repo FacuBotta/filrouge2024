@@ -301,5 +301,5 @@ export default function MessagesImage () {
       </defs>
     </svg>
 
-  )
+  );
 }

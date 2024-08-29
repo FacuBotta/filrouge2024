@@ -1,10 +1,11 @@
-"use client";
-import React, { useState, useRef, useEffect } from "react";
-import SlideData from "@/components/ui/SlideData"; // Importa el server component
+'use client';
+import React, { useState, useRef, useEffect } from 'react';
+import SlideData from '@/components/ui/SlideData'; // Importa el server component
 
 const SliderHome: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const sliderRef = useRef<HTMLDivElement | null>(null);
+  // eslint-disable-next-line no-undef
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Llama a SlideData para obtener los datos de los slides
@@ -28,10 +29,10 @@ const SliderHome: React.FC = () => {
       const slideWidth = slider.scrollWidth / slides.length;
       slider.scrollTo({
         left: currentIndex * slideWidth,
-        behavior: "smooth",
+        behavior: 'smooth',
       });
     }
-  }, [currentIndex]);
+  }, [currentIndex, slides.length]);
 
   useEffect(() => {
     startAutoSlide();
@@ -56,11 +57,15 @@ const SliderHome: React.FC = () => {
           {slides.map((slide) => (
             <div
               key={slide.id}
-              className={`w-full h-full flex flex-col-reverse sm:flex-row justify-end sm:justify-center items-start sm:border-b border-dark-bg dark:border-dark-greenLight snap-center`}
-              style={{ minWidth: "100%" }}
+              className={
+                'w-full h-full flex flex-col-reverse sm:flex-row justify-end sm:justify-center items-start sm:border-b border-dark-bg dark:border-dark-greenLight snap-center'
+              }
+              style={{ minWidth: '100%' }}
             >
               <article className="text-wrap text-center sm:text-left w-full sm:max-w-[50%] mt-5 sm:ml-5">
-                <h2 className="text-xl sm:text-3xl font-bold mb-5">{slide.title}</h2>
+                <h2 className="text-xl sm:text-3xl font-bold mb-5">
+                  {slide.title}
+                </h2>
                 <p className="sm:px-5">{slide.content}</p>
               </article>
               <div className=" sm:flex items-end sm:h-full w-full sm:w-[50%]">
@@ -75,7 +80,7 @@ const SliderHome: React.FC = () => {
           <button
             key={slide.id}
             onClick={() => setCurrentIndex(index)}
-            className={`bg-black size-3 lg:size-2 flex rounded-full ${currentIndex == index ? 'bg-light-red dark:bg-dark-greenLight scale-125' : 'bg-black'}`}
+            className={`bg-black size-3 lg:size-2 flex rounded-full ${currentIndex === index ? 'bg-light-red dark:bg-dark-greenLight scale-125' : 'bg-black'}`}
             aria-label={`Slide ${slide.id}`}
           />
         ))}
