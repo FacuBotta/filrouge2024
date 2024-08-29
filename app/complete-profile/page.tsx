@@ -1,5 +1,5 @@
 import PasswordForm from "@/components/forms/passwordForm";
-import { checkIsAuthenticated } from "@/lib/auth/checkIsAuthenticated";
+import { checkIsAuthenticated } from "@/actions/authServerActions/checkIsAuthenticated";
 import { redirect } from "next/navigation";
 
 

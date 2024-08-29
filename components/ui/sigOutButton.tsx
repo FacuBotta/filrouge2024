@@ -1,5 +1,5 @@
 "use client";
-import { handleSignOut } from "@/lib/auth/signOutServerAction";
+import { handleSignOut } from "@/actions/authServerActions/signOutServerAction";
 
 export const SignOutButton: React.FC = () => {
   return (

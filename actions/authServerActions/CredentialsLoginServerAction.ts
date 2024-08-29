@@ -2,7 +2,7 @@
 
 import { checkPassword } from "../userServerActions/checkPassword";
 import selectUserByMail from "../userServerActions/selectUserByMail";
-import { signIn } from "./authConfig";
+import { signIn } from "../../lib/auth/authConfig";
 
 export const handleCredentialsSignIn = async (formData: FormData) => {
   const email = formData.get('email') as string;

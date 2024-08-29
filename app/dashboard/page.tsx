@@ -1,4 +1,4 @@
-import { checkIsAuthenticated } from "@/lib/auth/checkIsAuthenticated";
+import { checkIsAuthenticated } from "@/actions/authServerActions/checkIsAuthenticated";
 import { redirect } from "next/navigation";
 import React from "react";
 import { DashboardPage } from "./dashboard";

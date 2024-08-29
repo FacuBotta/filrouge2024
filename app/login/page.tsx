@@ -1,7 +1,7 @@
 import LogForm from "@/components/forms/LogForm";
 import HomeImage from "../../public/images/HomeImage";
 import { redirect } from "next/navigation";
-import { checkIsAuthenticated } from "@/lib/auth/checkIsAuthenticated";
+import { checkIsAuthenticated } from "@/actions/authServerActions/checkIsAuthenticated";
 import Backdrop from "@/components/layouts/Backdrop";
 
 const LoginPage: React.FC = async () => {

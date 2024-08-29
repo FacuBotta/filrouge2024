@@ -2,7 +2,7 @@
 
 import { Input } from "facu-ui";
 import Button from "../ui/Button";
-import { updatePassword } from "@/lib/userServerActions/updatePassword";
+import { updatePassword } from "@/actions/userServerActions/updatePassword";
 import { useState } from "react";
 import { redirect } from "next/navigation";
 

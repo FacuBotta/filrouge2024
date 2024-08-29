@@ -19,10 +19,10 @@ export const DashboardPage: React.FC<{ user: User }> = async ({ user }) => {
       <aside className="bg-dark-greenLight row-span-4">
         algo
       </aside>
-      <section className="bg-light-blue col-span-2 row-span-3">
+      <section className="bg-light-blue col-span-2 row-span-3 ">
+        <MessageForm  />
         fonction render zone
       </section>
-      {/* <MessageForm user={user} /> */}
     </div>
   );
 };

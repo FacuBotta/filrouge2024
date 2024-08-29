@@ -1,5 +1,5 @@
 import ThemeSwitcher from "../ui/ThemeSwitcher";
-import { checkIsAuthenticated } from "@/lib/auth/checkIsAuthenticated";
+import { checkIsAuthenticated } from "@/actions/authServerActions/checkIsAuthenticated";
 import NavMenuButton from "../ui/NavMenuButton";
 import NavItem from "../ui/NavItem";
 

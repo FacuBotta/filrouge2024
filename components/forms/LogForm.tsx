@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useTransition } from "react";
-import { handleGoogleSignIn } from "@/lib/auth/googleSignInServerAction";
-import { handleEmailSignIn } from "@/lib/auth/emailSignInServerAction";
-import { handleCredentialsSignIn } from "@/lib/auth/CredentialsLoginServerAction";
+import { handleGoogleSignIn } from "@/actions/authServerActions/googleSignInServerAction";
+import { handleEmailSignIn } from "@/actions/authServerActions/emailSignInServerAction";
+import { handleCredentialsSignIn } from "@/actions/authServerActions/CredentialsLoginServerAction";
 import { useRouter } from "next/navigation";
 import { Icon, Input } from "facu-ui";
 import Button from "../ui/Button";

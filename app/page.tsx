@@ -1,6 +1,6 @@
 import HomeImage from "../public/images/HomeImage";
 import Link from "next/link";
-import { checkIsAuthenticated } from "@/lib/auth/checkIsAuthenticated";
+import { checkIsAuthenticated } from "@/actions/authServerActions/checkIsAuthenticated";
 import CardCategory from "@/components/ui/CardCategory";
 import SportImage from "@/public/images/categoryImages/SportImage";
 import EducationImage from "@/public/images/categoryImages/EducationImage";

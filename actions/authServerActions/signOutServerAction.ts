@@ -1,6 +1,6 @@
 "use server";
 
-import { signOut } from "./authConfig";
+import { signOut } from "../../lib/auth/authConfig";
 
 export async function handleSignOut() {
   try {
