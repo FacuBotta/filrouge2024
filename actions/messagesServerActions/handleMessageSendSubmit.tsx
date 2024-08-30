@@ -16,8 +16,8 @@ export async function handleMessageSendSubmit(formData: FormData) {
   const sujet = formData.get('sujet') as string;
   const message = formData.get('message') as string;
 
-  if (!recipientId || !sujet || !message) {
-    console.error('Incomplete form data:', { recipientId, sujet, message });
+  if (!recipientId || !message) {
+    console.error('Incomplete form data:', { recipientId, message });
     return;
   }
 
@@ -57,7 +57,7 @@ export async function handleMessageSendSubmit(formData: FormData) {
     });
     console.log('New conversation created:', conversation);
   }
-  // check if the sender and recipient are participants in the conversation
+  /* // check if the sender and recipient are participants in the conversation
   const senderIsParticipant = await prisma.userConversation.findUnique({
     where: {
       userId_conversationId: {
@@ -89,7 +89,7 @@ export async function handleMessageSendSubmit(formData: FormData) {
         conversationId: conversation.id,
       },
     });
-  }
+  } */
   // create the message
   await prisma.message.create({
     data: {
