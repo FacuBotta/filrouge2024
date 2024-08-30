@@ -2,7 +2,7 @@
 
 import { auth } from '@/lib/auth/authConfig';
 import prisma from '@/lib/prisma';
-
+// TODO: make import of the basicUser info type
 export async function getUserConversations() {
   const { user: sender } = (await auth()) || {};
   if (!sender) {
@@ -14,6 +14,21 @@ export async function getUserConversations() {
       participants: {
         some: {
           userId: sender.id,
+        },
+      },
+    },
+    include: {
+      participants: {
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              username: true,
+              email: true,
+              image: true,
+            },
+          },
         },
       },
     },

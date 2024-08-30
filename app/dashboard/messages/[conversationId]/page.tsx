@@ -19,32 +19,36 @@ export default async function ConversationPage({
     },
   });
 
-  // console.log('params from conversation page', currentConversation);
+  console.log('params from conversation page', currentConversation);
   return (
-    <div className="bg-dark-yellowLight dark:bg-light-grey/20 p-5">
-      <h2>
-        {currentConversation?.title}{' '}
-        <span className="font-extralight text-sm">
-          Createt At: {currentConversation?.createdAt.toLocaleString()}
-        </span>
-      </h2>
-      <div className="flex flex-col gap-2 bg-gray-200 w-[80%] h-[300px] m-auto p-10 mb-8">
+    <section className="flex flex-col min-w-full">
+      <div>
+        <h2>
+          {currentConversation?.title}{' '}
+          <span className="font-extralight text-sm">
+            Createt At: {currentConversation?.createdAt.toLocaleString()}
+          </span>
+        </h2>
+      </div>
+      {/* messages window */}
+      <div className="flex flex-col gap-2 bg-dark-grey/20 w-full h-[300px] m-auto p-2 rounded-xl overflow-y-scroll scroll-smooth">
         {currentConversation?.messages?.map((message) => (
           <div
             key={message.id}
-            className="border border-gray-800 p-2 flex flex-col dark:bg-dark-bg/80"
+            className="border border-gray-800 p-2 flex flex-col dark:bg-dark-bg/80 w-[80%] m-auto"
           >
             <p>{message.content} </p>
-            <div className="flex flex-col text-sm border-t border-gray-900">
+            <div className="flex gap-5 text-sm border-t border-gray-900">
+              <span>From : {message.sender.email}</span>
               <span className="text-green-600 font-extralight">
                 At : {message.createdAt.toLocaleTimeString()}
               </span>
-              <span>From :{message.sender.email}</span>
             </div>
+            {/* <img src={message?.sender?.image} alt="user avatar" /> */}
           </div>
         ))}
       </div>
       <MessageForm />
-    </div>
+    </section>
   );
 }

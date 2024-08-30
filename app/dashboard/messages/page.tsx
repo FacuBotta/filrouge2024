@@ -6,11 +6,7 @@ const MessagePage: React.FC = async () => {
   const messages = (await getUserMessages()) || [];
   const conversations = (await getUserConversations()) || [];
 
-  return (
-    <div className="flex min-w-full min-h-screen bg-light-ciel">
-      messages page
-    </div>
-  );
+  return <section className="flex min-h-screen ">messages page</section>;
 };
 
 export default MessagePage;

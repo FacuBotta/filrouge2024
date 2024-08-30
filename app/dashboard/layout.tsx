@@ -11,7 +11,7 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <div className="min-h-screen w-full p-2 flex flex-col gap-2">
+    <main className="min-h-screen w-full p-2 flex flex-col gap-2 bg-light-blue dark:bg-dark-bg">
       <div className="bg-light-yellow col-span-3 h-[100px]">
         <SignOutButton />
         <ul>
@@ -21,10 +21,8 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
           <Link href="/dashboard/settings">Settings</Link>
         </ul>
       </div>
-      <main className="bg-light-blue dark:bg-dark-bg flex justify-between gap-10">
-        {children}
-      </main>
-    </div>
+      {children}
+    </main>
   );
 };
 
