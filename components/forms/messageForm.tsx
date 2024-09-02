@@ -2,6 +2,7 @@ import { handleMessageSendSubmit } from '@/actions/messagesServerActions/handleM
 import React from 'react';
 import prisma from '@/lib/prisma';
 import { User } from '@prisma/client';
+import { UsersList } from '../ui/dashboard/usersList';
 
 type RegisteredUsers = Pick<
   User,
@@ -23,21 +24,20 @@ export const MessageForm: React.FC = async () => {
 
   return (
     <form action={handleMessageSendSubmit} className="text-center">
-      <div className="flex gap-2 w-[80%] m-auto">
-        <select name="userRecipientId">
-          <option value="">Select a user</option>
-          {registeredUsers?.map((user) => (
-            <option value={user.id} key={user.id}>
-              {/* TODO: add image and name */}
-              {user.email}
-            </option>
-          ))}
-        </select>
-        <input name="sujet" type="text" placeholder="sujet" />
+      <input type="checkbox" id="userList" className="hidden peer" />
+
+      <label htmlFor="userList" className="cursor-pointer block mb-2">
+        Toggle User List
+      </label>
+      <input name="sujet" type="text" placeholder="sujet" />
+      <div className="hidden peer-checked:block">
+        <UsersList users={registeredUsers} />
       </div>
+
       <div className="w-full mt-2">
         <textarea className="w-full p-2" name="message" placeholder="message" />
       </div>
+
       <button
         className="bg-light-yellow p-2 rounded-md w-[80%] m-auto"
         type="submit"

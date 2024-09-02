@@ -1,5 +1,5 @@
 import { checkIsAuthenticated } from '@/actions/authServerActions/checkIsAuthenticated';
-import SignOutButton from '@/components/ui/sigOutButton';
+import SignOutButton from '@/components/ui/dashboard/sigOutButton';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import React from 'react';

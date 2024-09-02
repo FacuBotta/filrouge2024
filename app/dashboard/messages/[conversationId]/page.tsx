@@ -19,19 +19,19 @@ export default async function ConversationPage({
     },
   });
 
-  console.log('params from conversation page', currentConversation);
+  // console.log('currentConversation from conversation page', currentConversation);
   return (
     <section className="flex flex-col min-w-full">
       <div>
         <h2>
           {currentConversation?.title}{' '}
           <span className="font-extralight text-sm">
-            Createt At: {currentConversation?.createdAt.toLocaleString()}
+            Create At: {currentConversation?.createdAt.toLocaleString()}
           </span>
         </h2>
       </div>
       {/* messages window */}
-      <div className="flex flex-col gap-2 bg-dark-grey/20 w-full h-[300px] m-auto p-2 rounded-xl overflow-y-scroll scroll-smooth">
+      <div className="flex flex-col gap-2 bg-dark-grey/20 w-full h-[300px] m-auto p-2 rounded-xl overflow-y-scroll scroll-smooth ">
         {currentConversation?.messages?.map((message) => (
           <div
             key={message.id}
