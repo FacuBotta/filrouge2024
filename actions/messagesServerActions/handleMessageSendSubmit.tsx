@@ -12,17 +12,37 @@ export async function handleMessageSendSubmit(formData: FormData) {
     console.error('handleMessageSendSubmit: no sender found');
     return;
   }
-  const recipientId = formData.get('userRecipientId') as string;
-  const sujet = formData.get('sujet') as string;
+  const conversationId = formData.get('conversationId') as string;
   const message = formData.get('message') as string;
 
-  if (!recipientId || !message) {
-    console.error('Incomplete form data:', { recipientId, message });
+  if (!message) {
+    console.error('Incomplete form data:', { sender, message });
     return;
   }
+  // check if the sender is participant in the conversation
+  const senderIsParticipant = await prisma.userConversation.findUnique({
+    where: {
+      userId_conversationId: {
+        userId: sender.id as string,
+        conversationId: conversationId,
+      },
+    },
+  });
+  if (!senderIsParticipant) {
+    console.error('handleMessageSendSubmit: sender is not participant');
+    return;
+  }
+  // send the message
+  await prisma.message.create({
+    data: {
+      conversationId: conversationId,
+      senderId: sender.id as string,
+      content: message,
+    },
+  });
 
   // check if a conversation already exists
-  let conversation = await prisma.conversation.findFirst({
+  /* let conversation = await prisma.conversation.findFirst({
     where: {
       AND: [
         {
@@ -56,7 +76,7 @@ export async function handleMessageSendSubmit(formData: FormData) {
       },
     });
     console.log('New conversation created:', conversation);
-  }
+  } */
   /* // check if the sender and recipient are participants in the conversation
   const senderIsParticipant = await prisma.userConversation.findUnique({
     where: {
@@ -91,12 +111,5 @@ export async function handleMessageSendSubmit(formData: FormData) {
     });
   } */
   // create the message
-  await prisma.message.create({
-    data: {
-      conversationId: conversation.id,
-      senderId: sender.id as string,
-      content: message,
-    },
-  });
   revalidatePath('/Dashboard');
 }

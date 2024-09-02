@@ -2,25 +2,7 @@
 
 import { auth } from '@/lib/auth/authConfig';
 import prisma from '@/lib/prisma';
-import { join } from 'path';
-
-interface Participant {
-  id: string;
-  name: string | null;
-  username: string | null;
-  email: string | null;
-  image: string | null;
-  joinedAt: Date;
-  updatedAt: Date;
-}
-
-interface Conversation {
-  id: string;
-  title: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-  participants: Participant[];
-}
+import { Conversation } from '@/types/types';
 
 export async function getUserConversations(): Promise<
   Conversation[] | undefined

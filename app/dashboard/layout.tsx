@@ -11,10 +11,11 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <main className="min-h-screen w-full p-2 flex flex-col gap-2 bg-light-blue dark:bg-dark-bg">
-      <div className="bg-light-yellow col-span-3 h-[100px]">
+    // TODO: add margin top tu scroll...
+    <main className="max-h-screen w-full p-2 flex flex-col gap-2 bg-light-ciel dark:bg-dark-bg scroll-pt-[100px] snap-y snap-start ">
+      <div className="bg-light-yellow dark:bg-dark-greenLight/50 rounded-xl h-[100px] p-2 flex justify-between items-end">
         <SignOutButton />
-        <ul>
+        <ul className="flex gap-2 text-xl">
           <Link href="/dashboard">Profile</Link>
           <Link href="/dashboard/messages">Messages</Link>
           <Link href="/dashboard/Calendar">Calendar</Link>

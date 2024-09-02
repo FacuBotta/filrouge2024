@@ -3,7 +3,18 @@
 import Backdrop from '@/components/layouts/Backdrop';
 
 export const UsersList = ({ users }: { users: any }) => {
-  console.log('users from usersList', users);
+  // console.log('users from usersList', users);
+  {
+    /* <input type="checkbox" id="userList" className="hidden peer" />
+
+      <label htmlFor="userList" className="cursor-pointer block mb-2">
+        Toggle User List
+      </label>
+      <input name="sujet" type="text" placeholder="sujet" />
+      <div className="hidden peer-checked:block">
+        <UsersList users={registeredUsers} />
+      </div> */
+  }
   return (
     <Backdrop>
       <select multiple name="userRecipientId" className="w-full p-2">

@@ -1,6 +1,6 @@
 import { getUserConversations } from '@/actions/messagesServerActions/getUserConversations';
 import { ConversationsList } from '@/components/ui/dashboard/conversationsList';
-import Image from 'next/image';
+import IconWrapper from '@/components/ui/IconWrapper';
 import Link from 'next/link';
 import React from 'react';
 
@@ -12,26 +12,26 @@ const MessagesLayout = async ({
   const conversations = (await getUserConversations()) || [];
   /* console.log(
     'conversations from messages layout',
-    conversations[0].participants[1].user.image
+    conversations[0].participants
   ); */
   return (
-    <main className="min-h-screen w-full flex items-start justify-start bg-light-ciel dark:bg-dark-grey/20">
-      <div className="flex flex-col gap-2 sm:w-[30%] min-h-full p-3 ">
-        <div className="">
-          <h2>Conversations</h2>
-          <Link
-            href={'/dashboard/messages/new'}
-            className="border bg-gray-400 rounded-sm"
-          >
-            New conversation
+    <div className="h-screen w-full flex items-start justify-start">
+      <div className="flex flex-col gap-2 sm:w-[40%] min-h-full p-3 border-r">
+        <div className="flex w-full items-center justify-between px-5 pb-2 border-b">
+          <h2 className="text-2xl">Chats</h2>
+          <Link href={'/dashboard/messages/new'}>
+            <IconWrapper
+              type="add"
+              strokeWidth={2}
+              width={50}
+              className="hover:scale-110 transition-all ease-in-out "
+            />
           </Link>
         </div>
         <ConversationsList conversations={conversations} />
       </div>
-      <section className="border-l p-3 sm:w-[70%] min-h-screen">
-        {children}
-      </section>
-    </main>
+      {children}
+    </div>
   );
 };
 

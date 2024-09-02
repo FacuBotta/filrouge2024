@@ -36,9 +36,10 @@ footer a:hover {
     opacity: 1;
   }
 }
-section h1,
-section div,
-section a {
+
+.animate h1,
+.animate div,
+.animate a {
   animation: appear linear;
   animation-timeline: view();
   animation-fill-mode: both;

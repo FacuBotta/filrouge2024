@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 const MessagePage: React.FC = async () => {
   const messages = (await getUserMessages()) || [];
-  console.log('messages from message page', messages);
+  // console.log('messages from message page', messages);
 
   return (
     <div className="flex flex-col gap-2 min-h-full p-3 ">
