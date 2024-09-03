@@ -6,7 +6,7 @@ export const SendMessageInput: React.FC = async () => {
     <div className=" flex w-full mt-2 items-center justify-center">
       <textarea
         cols={3}
-        className="w-full min-h-14 p-2 rounded-xl"
+        className="w-full min-h-14 p-2 rounded-xl border border-dark-bg shadow-lg"
         name="message"
         placeholder="message"
       />

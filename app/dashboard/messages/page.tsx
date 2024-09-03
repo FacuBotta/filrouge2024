@@ -5,9 +5,9 @@ import Link from 'next/link';
 const MessagePage: React.FC = async () => {
   const messages = (await getUserMessages()) || [];
   // console.log('messages from message page', messages);
-
+  // TODO: terminar esta pagina, agregar estilos a la lista de mensajes
   return (
-    <div className="flex flex-col gap-2 min-h-full p-3 ">
+    <section className="flex flex-col gap-2 px-2 w-full h-full">
       <div className="">
         <h2>Messages</h2>
       </div>
@@ -26,7 +26,7 @@ const MessagePage: React.FC = async () => {
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 

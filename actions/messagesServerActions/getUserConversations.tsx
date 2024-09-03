@@ -12,7 +12,6 @@ export async function getUserConversations(): Promise<
     console.error('getUserConversations: no sender found');
     return;
   }
-
   const conversations = await prisma.conversation.findMany({
     where: {
       participants: {

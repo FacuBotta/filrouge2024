@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `UserConversation` ADD COLUMN `role` ENUM('CREATOR', 'GUEST') NOT NULL DEFAULT 'CREATOR';

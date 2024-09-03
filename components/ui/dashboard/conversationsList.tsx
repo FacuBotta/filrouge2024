@@ -1,18 +1,17 @@
 'use client';
 
 import { DefaultUserAvatar } from '@/public/images/DefaultUserAvatar';
+import { UserAvatar } from '@/public/images/UserAvartar';
 import { Conversation, Participant } from '@/types/types';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export const ConversationsList = ({
   conversations,
 }: {
   conversations: Conversation[];
 }) => {
-  console.log('conversations from conversationsList', conversations);
-
-  // teke id of the conversation that is selected from url
   const ulVariants = {
     hidden: { opacity: 0 },
     show: {
@@ -22,41 +21,47 @@ export const ConversationsList = ({
       },
     },
   };
-
   const liVariants = {
     hidden: { opacity: 0 },
     show: { opacity: 1 },
   };
+
+  const pathName = usePathname();
+  const currentConversationId = pathName.split('/')[3];
+
   return (
     <div>
       <motion.ul
         variants={ulVariants}
         initial="hidden"
         animate="show"
-        className="no-scrollbar flex flex-col gap-2 overflow-y-scroll h-[80vh] w-full "
+        className="no-scrollbar flex flex-col gap-2 overflow-y-scroll h-[80vh] w-full"
       >
         {conversations.map((conversation: any) => (
           <motion.li
             variants={liVariants}
             key={conversation.id}
-            className="hover:scale-x-[1.01] transition-transform ease-in-out border p-2 mx-2 bg-slate-600/50 rounded-lg "
+            className={`hover:scale-x-[1.01] transition-transform ease-in-out border ${currentConversationId === conversation.id ? 'border-light-yellow' : 'border-dark-bg/50'} p-2 mx-2 max-h-16 bg-slate-600/50 rounded-lg shadow-xl`}
           >
             <Link
               className={`flex justify-between`}
               href={`/dashboard/messages/${conversation.id}`}
             >
-              <p>{conversation.title}</p>
-              <span className="font-extralight text-sm">
-                {conversation.updatedAt.toLocaleDateString()}
-              </span>
-              <div className="flex justify-start max-h-12">
+              <div>
+                <p className="text-xl">{conversation.title}</p>
+                <span className="font-extralight text-sm">
+                  {conversation.updatedAt.toLocaleDateString()}
+                  {' - '}
+                  {conversation?.participants.length} participants
+                </span>
+              </div>
+              <div className="flex justify-end items-center w-[40%] overflow-hidden max-h-12">
                 {conversation?.participants.map((participant: Participant) =>
                   participant.image ? (
-                    <img
+                    <UserAvatar
                       key={participant.id}
-                      alt="user avatar"
                       src={participant.image}
-                      className="h-full aspect-square rounded-full border"
+                      className="h-full"
                     />
                   ) : (
                     <DefaultUserAvatar
