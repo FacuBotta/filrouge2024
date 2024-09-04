@@ -21,6 +21,14 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "lib/auth/authConfig.ts", "app/api/auth/[...nextauth]"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "lib/auth/authConfig.ts",
+    "app/api/auth/[...nextauth]",
+    "database/seed.mjs"
+  ],
   "exclude": ["node_modules"]
 }

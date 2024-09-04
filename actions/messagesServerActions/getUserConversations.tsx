@@ -41,6 +41,9 @@ export async function getUserConversations(): Promise<
         },
       },
     },
+    orderBy: {
+      createdAt: 'desc',
+    },
   });
 
   const formattedConversations = conversations.map((conversation) => ({

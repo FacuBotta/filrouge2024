@@ -1,7 +1,8 @@
 import { getUserConversations } from '@/actions/messagesServerActions/getUserConversations';
-import { ConversationsList } from '@/components/ui/dashboard/conversationsList';
+import { ConversationsList } from '@/components/ui/dashboard/ConversationsList';
 import IconWrapper from '@/components/ui/IconWrapper';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import React from 'react';
 
 const MessagesLayout = async ({
@@ -10,6 +11,7 @@ const MessagesLayout = async ({
   children: React.ReactNode;
 }): Promise<React.JSX.Element> => {
   const conversations = (await getUserConversations()) || [];
+
   return (
     <section className="min-h-[95%] w-full flex items-start justify-start">
       <div className="flex flex-col gap-2 sm:w-[40%] h-[90%] p-3 border-r ">

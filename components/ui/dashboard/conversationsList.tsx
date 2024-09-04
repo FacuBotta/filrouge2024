@@ -1,7 +1,7 @@
 'use client';
 
 import { DefaultUserAvatar } from '@/public/images/DefaultUserAvatar';
-import { UserAvatar } from '@/public/images/UserAvartar';
+import { UserAvatar } from '@/public/images/UserAvatar';
 import { Conversation, Participant } from '@/types/types';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -35,7 +35,7 @@ export const ConversationsList = ({
         variants={ulVariants}
         initial="hidden"
         animate="show"
-        className="no-scrollbar flex flex-col gap-2 overflow-y-scroll h-[80vh] w-full"
+        className="no-scrollbar flex flex-col gap-2 overflow-y-scroll h-[75vh] w-full"
       >
         {conversations.map((conversation: any) => (
           <motion.li
@@ -56,19 +56,22 @@ export const ConversationsList = ({
                 </span>
               </div>
               <div className="flex justify-end items-center w-[40%] overflow-hidden max-h-12">
-                {conversation?.participants.map((participant: Participant) =>
-                  participant.image ? (
-                    <UserAvatar
-                      key={participant.id}
-                      src={participant.image}
-                      className="h-full"
-                    />
-                  ) : (
-                    <DefaultUserAvatar
-                      key={participant.id}
-                      className="h-full opacity-50"
-                    />
-                  )
+                {conversation?.participants.map(
+                  (participant: Participant, key: number) =>
+                    // show only the first 3 participants
+                    key < 3 &&
+                    (participant.image ? (
+                      <UserAvatar
+                        key={participant.id}
+                        src={participant.image}
+                        className="h-full"
+                      />
+                    ) : (
+                      <DefaultUserAvatar
+                        key={participant.id}
+                        className="h-full opacity-50"
+                      />
+                    ))
                 )}
               </div>
             </Link>

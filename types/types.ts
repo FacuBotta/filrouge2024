@@ -1,3 +1,5 @@
+import { User } from '@prisma/client';
+
 // Conversation types for messages
 export interface Participant {
   id: string;
@@ -25,3 +27,7 @@ export interface Message {
   updatedAt: Date;
   sender: Participant;
 }
+export type RegisteredUsers = Pick<
+  User,
+  'id' | 'email' | 'name' | 'username' | 'image'
+>;

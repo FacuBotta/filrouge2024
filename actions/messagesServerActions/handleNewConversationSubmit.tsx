@@ -3,6 +3,7 @@
 import { auth } from '@/lib/auth/authConfig';
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 
 export async function handleNewConversationSubmit(formData: FormData) {
   const { user: sender } = (await auth()) || {};
@@ -12,36 +13,35 @@ export async function handleNewConversationSubmit(formData: FormData) {
   }
 
   const sujet = formData.get('sujet') as string;
-  const messageContent = formData.get('message') as string;
-  const userRecipientId = formData.get('userRecipientId') as string;
+  const participantsId = formData.getAll('participantsId') as string[];
+  const participantsIdArray = participantsId[0].split(',');
 
   try {
     // Crear la conversación y los participantes asociados
     const newConversation = await prisma.conversation.create({
       data: {
         title: sujet,
-        participants: {
-          create: [
-            { userId: sender.id as string },
-            { userId: userRecipientId },
-          ],
-        },
-        messages: {
-          create: {
-            senderId: sender.id as string,
-            content: messageContent,
-          },
-        },
-      },
-      include: {
-        participants: true,
-        messages: true,
       },
     });
+    // create de userConversation
+    const participantsFormate = participantsIdArray.map((id) => {
+      return { userId: id, conversationId: newConversation.id };
+    });
 
-    console.log('New conversation created:', newConversation);
-    revalidatePath(`/dashboard/messages/${newConversation.id}`);
+    await prisma.userConversation.createMany({
+      data: [
+        {
+          userId: sender.id as string,
+          conversationId: newConversation.id,
+          role: 'CREATOR',
+        },
+        ...participantsFormate,
+      ],
+    });
+
+    return { ok: true, conversation: newConversation };
   } catch (error) {
     console.error('Error creating new conversation:', error);
+    return { ok: false, message: error };
   }
 }

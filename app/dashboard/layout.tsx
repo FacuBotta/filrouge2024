@@ -2,7 +2,7 @@ import { checkIsAuthenticated } from '@/actions/authServerActions/checkIsAuthent
 import SignOutButton from '@/components/ui/dashboard/sigOutButton';
 import { NotificationSpan } from '@/components/ui/NotificationSpan';
 import { DefaultUserAvatar } from '@/public/images/DefaultUserAvatar';
-import { UserAvatar } from '@/public/images/UserAvartar';
+import { UserAvatar } from '@/public/images/UserAvatar';
 import { user } from '@nextui-org/react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
