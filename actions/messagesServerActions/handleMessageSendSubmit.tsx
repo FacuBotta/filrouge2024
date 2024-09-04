@@ -33,7 +33,7 @@ export async function handleMessageSendSubmit(formData: FormData) {
     return;
   }
   // send the message
-  await prisma.message.create({
+  const newMessage = await prisma.message.create({
     data: {
       conversationId: conversationId,
       senderId: sender.id as string,
@@ -41,75 +41,20 @@ export async function handleMessageSendSubmit(formData: FormData) {
     },
   });
 
-  // check if a conversation already exists
-  /* let conversation = await prisma.conversation.findFirst({
-    where: {
-      AND: [
-        {
-          participants: {
-            some: { userId: sender.id },
-          },
-        },
-        {
-          participants: {
-            some: { userId: recipientId },
-          },
-        },
-      ],
-    },
+  // get the participants of the conversation
+  // to set the messageStatus for each participant
+  const participants = await prisma.userConversation.findMany({
+    where: { conversationId: conversationId },
   });
-  if (!conversation) {
-    // create a new conversation
-    conversation = await prisma.conversation.create({
+  for (const participant of participants) {
+    await prisma.messageStatus.create({
       data: {
-        title: sujet,
-        participants: {
-          create: [
-            {
-              userId: sender.id as string,
-            },
-            {
-              userId: recipientId,
-            },
-          ],
-        },
-      },
-    });
-    console.log('New conversation created:', conversation);
-  } */
-  /* // check if the sender and recipient are participants in the conversation
-  const senderIsParticipant = await prisma.userConversation.findUnique({
-    where: {
-      userId_conversationId: {
-        userId: sender.id as string,
-        conversationId: conversation.id,
-      },
-    },
-  });
-  if (!senderIsParticipant) {
-    await prisma.userConversation.create({
-      data: {
-        userId: sender.id as string,
-        conversationId: conversation.id,
+        userId: participant.userId,
+        messageId: newMessage.id,
+        status: 'UNSEEN',
       },
     });
   }
-  const recipientIsParticipant = await prisma.userConversation.findUnique({
-    where: {
-      userId_conversationId: {
-        userId: recipientId,
-        conversationId: conversation.id,
-      },
-    },
-  });
-  if (!recipientIsParticipant) {
-    await prisma.userConversation.create({
-      data: {
-        userId: recipientId,
-        conversationId: conversation.id,
-      },
-    });
-  } */
-  // create the message
+
   revalidatePath('/Dashboard');
 }

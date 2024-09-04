@@ -1,34 +1,51 @@
 'use server';
+import { auth } from '@/lib/auth/authConfig';
 import prisma from '@/lib/prisma';
 import { Conversation } from '@/types/types';
 
 export const getConversationById = async (conversationId: string) => {
-  console.log(conversationId);
-  const conversation = await prisma.conversation.findFirst({
+  const session = await auth();
+  if (!session) {
+    console.error('getConversationById: no session found');
+    return;
+  }
+  const userId = session.user?.id;
+  const userConversation = await prisma.userConversation.findUnique({
     where: {
-      id: conversationId,
+      userId_conversationId: {
+        userId: userId as string,
+        conversationId: conversationId,
+      },
     },
     include: {
-      messages: {
+      conversation: {
         include: {
-          sender: {
-            select: {
-              id: true,
-              name: true,
-              username: true,
-              email: true,
-              image: true,
-              updatedAt: true,
+          messages: {
+            include: {
+              sender: {
+                select: {
+                  id: true,
+                  name: true,
+                  username: true,
+                  email: true,
+                  image: true,
+                  updatedAt: true,
+                },
+              },
             },
           },
         },
       },
     },
   });
-
-  const formateConversation = {
-    ...conversation,
-    messages: conversation?.messages.map((message) => ({
+  const formateUserConversation = {
+    id: userConversation?.conversationId as string,
+    title: userConversation?.conversation?.title,
+    createdAt: userConversation?.conversation?.createdAt,
+    updatedAt: userConversation?.conversation?.updatedAt,
+    joinedAt: userConversation?.joinedAt,
+    role: userConversation?.role,
+    messages: userConversation?.conversation?.messages.map((message) => ({
       id: message.id,
       content: message.content,
       createdAt: message.createdAt,
@@ -43,5 +60,6 @@ export const getConversationById = async (conversationId: string) => {
       },
     })),
   };
-  return formateConversation as Conversation;
+
+  return formateUserConversation as Conversation;
 };

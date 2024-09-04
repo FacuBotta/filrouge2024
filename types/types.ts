@@ -18,6 +18,8 @@ export interface Conversation {
   updatedAt: Date;
   participants?: Participant[];
   messages?: Message[];
+  unreadMessages?: number;
+  role?: string;
 }
 
 export interface Message {

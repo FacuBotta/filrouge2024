@@ -5,6 +5,7 @@ import { SendMessageInput } from '@/components/forms/SendMessageInput';
 import DashboardMessagesWindow from '@/components/ui/dashboard/DashboardMessagesWindow';
 import IconWrapper from '@/components/ui/IconWrapper';
 import { auth } from '@/lib/auth/authConfig';
+import prisma from '@/lib/prisma';
 import { Conversation, Message } from '@/types/types';
 import { redirect } from 'next/navigation';
 
@@ -26,6 +27,19 @@ export default async function ConversationPage({
   if (!currentConversation || currentConversation.id === undefined) {
     redirect('/dashboard/messages');
   }
+  // actualize the status of the messages in this conversation to SEEN
+  await prisma.messageStatus.updateMany({
+    where: {
+      userId: session?.user?.id,
+      message: {
+        conversationId: currentConversation.id,
+      },
+      status: 'UNSEEN',
+    },
+    data: {
+      status: 'SEEN',
+    },
+  });
   const messages: Message[] = currentConversation.messages || [];
   return (
     <section className="flex flex-col items-start justify-between px-2 pb-20 w-full h-[95%]">
@@ -45,12 +59,19 @@ export default async function ConversationPage({
             value={currentConversation.id}
           />
           <button>
-            {/* TODO: change icon if the user is not the creator */}
-            <IconWrapper
-              type="delete"
-              strokeWidth={2}
-              className="hover:text-red-600 dark:hover:text-dark-greenLight hover:scale-110"
-            />
+            {currentConversation.role === 'CREATOR' ? (
+              <IconWrapper
+                type="delete"
+                strokeWidth={2}
+                className="hover:text-red-600 dark:hover:text-dark-greenLight hover:scale-110"
+              />
+            ) : (
+              <IconWrapper
+                type="logOut"
+                strokeWidth={2}
+                className="hover:text-red-600 dark:hover:text-dark-greenLight hover:scale-110"
+              />
+            )}
           </button>
         </form>
       </div>

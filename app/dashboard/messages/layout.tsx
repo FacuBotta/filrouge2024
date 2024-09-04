@@ -2,7 +2,6 @@ import { getUserConversations } from '@/actions/messagesServerActions/getUserCon
 import { ConversationsList } from '@/components/ui/dashboard/ConversationsList';
 import IconWrapper from '@/components/ui/IconWrapper';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
 import React from 'react';
 
 const MessagesLayout = async ({

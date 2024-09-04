@@ -11,10 +11,14 @@ interface NavItemProps {
 export default function NavItem(props: NavItemProps) {
   const pathname = usePathname();
   const isActive = (href: string) => {
-    return pathname === href || pathname.startsWith(href + '/');
+    // TODO: arreglar esto para que funcione el link marcado como activo
+    return (
+      pathname === href ||
+      (href.match('messages') &&
+        pathname.startsWith('/dashboard/messages' + '/'))
+    );
   };
-  const itemActiveClass =
-    'bg-light-red px-2 sm:border-t-[1px] sm:border-l-[1px] sm:border-r-[1px] sm:border-dark-bg dark:bg-light-yellow dark:border-none dark:text-dark-bg';
+  const itemActiveClass = 'px-2 border border-dark-bg dark:border-light-yellow';
 
   return (
     <li className={isActive(props.href) ? itemActiveClass : 'px-2'}>

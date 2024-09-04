@@ -25,6 +25,20 @@ export async function getUserConversations(): Promise<
       title: true,
       createdAt: true,
       updatedAt: true,
+      messages: {
+        select: {
+          id: true,
+          messageStatuses: {
+            where: {
+              userId: sender.id,
+              status: 'UNSEEN',
+            },
+            select: {
+              id: true,
+            },
+          },
+        },
+      },
       participants: {
         select: {
           joinedAt: true,
@@ -46,21 +60,28 @@ export async function getUserConversations(): Promise<
     },
   });
 
-  const formattedConversations = conversations.map((conversation) => ({
-    id: conversation.id,
-    title: conversation.title,
-    createdAt: conversation.createdAt,
-    updatedAt: conversation.updatedAt,
-    participants: conversation.participants.map((participant) => ({
-      id: participant.user.id,
-      name: participant.user.name,
-      username: participant.user.username,
-      email: participant.user.email,
-      image: participant.user.image,
-      joinedAt: participant.joinedAt,
-      updatedAt: participant.user.updatedAt,
-    })),
-  }));
+  const formattedConversations = conversations.map((conversation) => {
+    const unreadMessages = conversation.messages.reduce((count, message) => {
+      return count + message.messageStatuses.length;
+    }, 0);
+
+    return {
+      id: conversation.id,
+      title: conversation.title,
+      createdAt: conversation.createdAt,
+      updatedAt: conversation.updatedAt,
+      unreadMessages,
+      participants: conversation.participants.map((participant) => ({
+        id: participant.user.id,
+        name: participant.user.name,
+        username: participant.user.username,
+        email: participant.user.email,
+        image: participant.user.image,
+        joinedAt: participant.joinedAt,
+        updatedAt: participant.user.updatedAt,
+      })),
+    };
+  });
 
   return formattedConversations;
 }

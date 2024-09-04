@@ -30,6 +30,7 @@ model User {
   Events           Events[]
   MessagesSent     Message[]          @relation("SentMessages")
   UserConversation UserConversation[]
+  MessageStatus    MessageStatus[]
 }
 
 model Account {
@@ -218,6 +219,23 @@ model UserConversation {
   @@index([userId])
   @@index([conversationId])
 }
+enum Status {
+  UNSEEN
+  SEEN
+}
+model MessageStatus {
+  id String @id @default(cuid())
+  userId String
+  messageId String
+  status Status @default(UNSEEN)
+  uptadateAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+  message Message @relation(fields: [messageId], references: [id])
+
+  @@index([userId])
+  @@index([messageId])
+}
 
 model Message {
   id             String   @id @default(cuid())
@@ -230,6 +248,7 @@ model Message {
   sender          User         @relation("SentMessages", fields: [senderId], references: [id])
   conversation    Conversation @relation(fields: [conversationId], references: [id])
 
+  messageStatuses MessageStatus[]
   @@index([senderId])
   @@index([conversationId])
 }
