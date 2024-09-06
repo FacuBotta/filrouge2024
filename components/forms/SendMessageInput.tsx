@@ -1,7 +1,7 @@
 import React from 'react';
 import IconWrapper from '../ui/IconWrapper';
 
-export const SendMessageInput: React.FC = async () => {
+export const SendMessageInput: React.FC = () => {
   return (
     <div className=" flex w-full mt-2 items-center justify-center">
       <textarea

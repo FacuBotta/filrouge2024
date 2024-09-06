@@ -50,10 +50,10 @@ export const ConversationsList = ({
                 : 'border-dark-bg/50'
             } p-2 mx-2 max-h-16 bg-slate-600/50 rounded-lg shadow-xl`}
           >
-            <Link
+            <div
               onClick={() => handleConversationClick(conversation.id)}
               className={`flex justify-between`}
-              href={`/dashboard/messages/${conversation.id}`}
+              // href={`/dashboard/messages/${conversation.id}`}
             >
               <div>
                 <p className="text-xl">
@@ -89,7 +89,7 @@ export const ConversationsList = ({
                     ))
                 )}
               </div>
-            </Link>
+            </div>
           </motion.li>
         ))}
       </motion.ul>

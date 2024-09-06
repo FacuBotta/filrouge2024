@@ -4,9 +4,7 @@ import { auth } from '@/lib/auth/authConfig';
 import prisma from '@/lib/prisma';
 import { Conversation } from '@/types/types';
 
-export async function getUserConversations(): Promise<
-  Conversation[] | undefined
-> {
+export async function getUserConversations() {
   const { user: sender } = (await auth()) || {};
   if (!sender) {
     console.error('getUserConversations: no sender found');
@@ -28,6 +26,19 @@ export async function getUserConversations(): Promise<
       messages: {
         select: {
           id: true,
+          content: true,
+          createdAt: true,
+          updatedAt: true,
+          sender: {
+            select: {
+              id: true,
+              name: true,
+              username: true,
+              email: true,
+              image: true,
+              updatedAt: true,
+            },
+          },
           messageStatuses: {
             where: {
               userId: sender.id,
@@ -71,6 +82,7 @@ export async function getUserConversations(): Promise<
       createdAt: conversation.createdAt,
       updatedAt: conversation.updatedAt,
       unreadMessages,
+      messages: conversation.messages,
       participants: conversation.participants.map((participant) => ({
         id: participant.user.id,
         name: participant.user.name,

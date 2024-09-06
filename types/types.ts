@@ -7,7 +7,7 @@ export interface Participant {
   username: string | null;
   email: string | null;
   image: string | null;
-  joinedAt: Date;
+  joinedAt?: Date;
   updatedAt: Date;
 }
 
