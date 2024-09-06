@@ -3,7 +3,6 @@
 import { auth } from '@/lib/auth/authConfig';
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
 
 export async function handleNewConversationSubmit(formData: FormData) {
   const { user: sender } = (await auth()) || {};
@@ -38,7 +37,7 @@ export async function handleNewConversationSubmit(formData: FormData) {
         ...participantsFormate,
       ],
     });
-
+    revalidatePath('/dashboard/messages');
     return { ok: true, conversation: newConversation };
   } catch (error) {
     console.error('Error creating new conversation:', error);

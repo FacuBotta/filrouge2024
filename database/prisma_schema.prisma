@@ -244,6 +244,10 @@ model Message {
   content        String @db.Text
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+  replyToId      String?
+
+  replyTo        Message?  @relation("ReplyTo", fields: [replyToId], references: [id])
+  replies        Message[] @relation("ReplyTo")
 
   sender          User         @relation("SentMessages", fields: [senderId], references: [id])
   conversation    Conversation @relation(fields: [conversationId], references: [id])

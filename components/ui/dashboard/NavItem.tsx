@@ -2,10 +2,13 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { ReactElement } from 'react';
+import { NotificationSpan } from '../NotificationSpan';
 
 interface NavItemProps {
   href: string;
-  children: string;
+  notifications?: number;
+  children: JSX.Element;
 }
 
 export default function NavItem(props: NavItemProps) {
@@ -18,11 +21,16 @@ export default function NavItem(props: NavItemProps) {
         pathname.startsWith('/dashboard/messages' + '/'))
     );
   };
-  const itemActiveClass = 'px-2 border border-dark-bg dark:border-light-yellow';
+  const itemActiveClass = 'px-2 text-light-red dark:text-light-yellow';
 
   return (
-    <li className={isActive(props.href) ? itemActiveClass : 'px-2'}>
+    <li
+      className={`${isActive(props.href) ? itemActiveClass : 'px-2'} flex items-start`}
+    >
       <Link href={props.href}>{props.children}</Link>
+      {props.notifications && (
+        <NotificationSpan notifications={props.notifications} />
+      )}
     </li>
   );
 }

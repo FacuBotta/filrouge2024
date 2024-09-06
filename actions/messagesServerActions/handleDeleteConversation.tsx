@@ -24,13 +24,35 @@ export async function handleDeleteConversation(formData: FormData) {
     console.error('handleDeleteConversation: user is not the creator');
     return;
   }
-  // delete the messages, userConversations and conversation
+
+  // Fetch all the message IDs related to the conversation
+  const messages = await prisma.message.findMany({
+    where: { conversationId },
+    select: { id: true },
+  });
+  const messageIds = messages.map((message) => message.id);
+
+  // delete the messageStatuses, messages, userConversations, and conversation
   await prisma.$transaction([
-    prisma.message.deleteMany({ where: { conversationId } }),
-    prisma.userConversation.deleteMany({ where: { conversationId } }),
-    prisma.conversation.delete({ where: { id: conversationId } }),
+    // Delete the related message statuses
+    prisma.messageStatus.deleteMany({
+      where: {
+        messageId: { in: messageIds },
+      },
+    }),
+    // Delete the messages
+    prisma.message.deleteMany({
+      where: { conversationId },
+    }),
+    // Delete the user conversations
+    prisma.userConversation.deleteMany({
+      where: { conversationId },
+    }),
+    // Delete the conversation
+    prisma.conversation.delete({
+      where: { id: conversationId },
+    }),
   ]);
 
-  console.log('conversation deleted');
   revalidatePath('/dashboard/messages');
 }

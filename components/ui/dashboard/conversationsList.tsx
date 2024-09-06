@@ -2,24 +2,45 @@
 
 import { DefaultUserAvatar } from '@/public/images/DefaultUserAvatar';
 import { UserAvatar } from '@/public/images/UserAvatar';
-import { Conversation, Participant } from '@/types/types';
+import { Conversation } from '@/types/types';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { NotificationSpan } from '../NotificationSpan';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+import { updateMessagesStatus } from '@/actions/messagesServerActions/updateMessagesStatus';
 
 export const ConversationsList = ({
+  session,
   conversations,
 }: {
+  session: any;
   conversations: Conversation[];
 }) => {
   const [conversationsOpen, setConversationsOpen] = useState<string[]>([]);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const currentConversationId = searchParams.get('id');
 
-  const pathName = usePathname();
-  const currentConversationId = pathName.split('/')[3];
+  const pushConversationIdToSearchParams = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(name, value);
+      return params.toString();
+    },
+    [searchParams]
+  );
 
-  const handleConversationClick = (conversationId: string) => {
+  const handleClick = async (conversationId: string) => {
+    router.push(
+      '/dashboard/messages/?' +
+        pushConversationIdToSearchParams('id', conversationId)
+    );
+    // update the messages status to SEEN for the conversation opened
+    await updateMessagesStatus({
+      user_id: session?.user?.id,
+      conversation_id: conversationId,
+    });
+    // update the conversations opened to update the notifications in client side
     setConversationsOpen((prev) => [...prev, conversationId]);
   };
 
@@ -51,9 +72,8 @@ export const ConversationsList = ({
             } p-2 mx-2 max-h-16 bg-slate-600/50 rounded-lg shadow-xl`}
           >
             <div
-              onClick={() => handleConversationClick(conversation.id)}
-              className={`flex justify-between`}
-              // href={`/dashboard/messages/${conversation.id}`}
+              onClick={() => handleClick(conversation.id)}
+              className={`flex justify-between cursor-pointer`}
             >
               <div>
                 <p className="text-xl">

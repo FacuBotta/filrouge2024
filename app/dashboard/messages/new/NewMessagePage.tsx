@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { RegisteredUsers } from '@/types/types';
 import { useState } from 'react';
 import Button from '@/components/ui/Button';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 
 export const NewMessagePage = ({ users }: { users: RegisteredUsers[] }) => {
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
@@ -22,7 +22,7 @@ export const NewMessagePage = ({ users }: { users: RegisteredUsers[] }) => {
 
     const response = await handleNewConversationSubmit(formData);
     if (response?.ok) {
-      router.push(`/dashboard/messages/${response.conversation?.id}`);
+      router.push(`/dashboard/messages`);
     } else {
       console.error(response);
     }
@@ -37,7 +37,7 @@ export const NewMessagePage = ({ users }: { users: RegisteredUsers[] }) => {
 
   return (
     <Backdrop>
-      <div className="w-full max-w-[400px] h-fit max-h-[600px] flex flex-col gap-2 p-4 bg-light-blue dark:bg-dark-bg rounded-xl">
+      <div className="w-full max-w-[400px] h-fit max-h-[600px] flex flex-col gap-2 p-4 mx-2 bg-light-blue dark:bg-dark-bg rounded-xl">
         <Link href="/dashboard/messages">
           <IconWrapper
             type="plus"

@@ -34,7 +34,7 @@ export default function DashboardMessagesWindow({
   return (
     <div
       ref={messagesWindowRef}
-      className="no-scrollbar flex flex-col gap-2 w-full h-full mx-auto mt-2 px-2 pb-10 rounded-b-xl overflow-y-scroll scroll-smooth"
+      className="no-scrollbar flex flex-col gap-2 w-full h-full mx-auto  px-2 pb-10 rounded-b-xl overflow-y-scroll scroll-smooth"
     >
       {messages?.reduce((acc, message, index, arr) => {
         if (index > 0) {
@@ -81,14 +81,14 @@ export default function DashboardMessagesWindow({
               <Image
                 width={40}
                 height={40}
-                className="size-12 aspect-square rounded-full border mx-2"
+                className="size-12 aspect-square rounded-full border mx-2 hidden sm:block"
                 src={message.sender.image}
                 alt="user avatar"
               />
             ) : (
               <DefaultUserAvatar
                 key={message.sender.id}
-                className="size-12 mx-2 opacity-40"
+                className="size-12 mx-2 opacity-40 hidden sm:block"
               />
             )}
           </div>
