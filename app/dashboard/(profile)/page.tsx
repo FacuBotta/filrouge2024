@@ -1,6 +1,8 @@
 import { checkIsAuthenticated } from '@/actions/authServerActions/checkIsAuthenticated';
+import { selectUserTasks } from '@/actions/TasksServerActions/selectUserTasks';
 import TasksProfile from '@/components/ui/dashboard/TasksProfile';
 import IconWrapper from '@/components/ui/IconWrapper';
+import { Tasks } from '@prisma/client';
 import Image from 'next/image';
 import { redirect } from 'next/navigation';
 
@@ -11,13 +13,12 @@ const DashboardPage: React.FC = async () => {
   }
   const { id, name, username, email, image } = userAuthenticated;
 
-  console.log(
-    'userAuthenticated from dashboard profile page',
-    userAuthenticated
-  );
+  const userTasks: Tasks[] = await selectUserTasks(id as string);
+
+  // console.log('userAuthenticated from dashboard profile page', userTasks);
 
   return (
-    <section className="max-h-[95%] px-2 w-full flex flex-col sm:!flex-row items-start justify-start gap-5 overflow-y-scroll scroll-smooth sm:divide-x my-auto">
+    <section className="no-scrollbar max-h-[95%] px-2 w-full max-w-[1200px] mx-auto flex flex-col sm:!flex-row items-start justify-start gap-5 overflow-y-scroll scroll-smooth sm:divide-x my-auto">
       <div className="w-full sm:w-[40%] h-full flex-col flex items-center justify-start pt-5 gap-5">
         <div className="relative">
           <IconWrapper
@@ -42,10 +43,10 @@ const DashboardPage: React.FC = async () => {
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos?
         </p>
       </div>
-      <div className="flex flex-col w-full sm:w-[70%] text-center sm:text-left h-full gap-5 px-2 sm:px-5">
+      <div className="flex flex-col w-full sm:w-[70%] text-center sm:text-left h-full gap-5 lg:gap-10 px-2 sm:px-5">
         <div>
           <h1 className="font-bold text-2xl">Mes notes</h1>
-          <TasksProfile />
+          <TasksProfile tasks={userTasks} />
         </div>
         <div>
           <h1 className="font-bold text-2xl">Mes événements</h1>
