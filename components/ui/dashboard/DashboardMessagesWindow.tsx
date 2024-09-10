@@ -63,18 +63,16 @@ export default function DashboardMessagesWindow({
           >
             {/* message box */}
             <div
-              className={`border border-gray-800 p-2 flex flex-col w-full shadow-xl ${
+              className={`border border-gray-800 px-2 pt-2 flex flex-col w-full shadow-xl ${
                 session?.user?.id === message?.sender?.id
                   ? 'bg-dark-yellowLight/50 dark:bg-dark-greenLight/20'
                   : 'bg-slate-600/50'
               }`}
             >
               <p>{message.content} </p>
-              <div className="flex gap-5 text-sm border-t border-gray-900">
-                <span>From: {message.sender.email}</span>
-                <span className="text-green-600 font-extralight">
-                  At: {message.createdAt.toLocaleTimeString()}
-                </span>
+              <div className="flex justify-between items-start text-sm pt-1 font-extralight border-t border-gray-900">
+                <span>{message.sender.email}</span>
+                <span>{message.createdAt.toLocaleTimeString()}</span>
               </div>
             </div>
             {message.sender.image ? (

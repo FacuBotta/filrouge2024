@@ -15,6 +15,7 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  description   String?
 
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
@@ -28,11 +29,21 @@ model User {
   Trash            Trash[]
   Ratings          Ratings[]
   Events           Events[]
+  Tasks            Tasks[]
   MessagesSent     Message[]          @relation("SentMessages")
   UserConversation UserConversation[]
   MessageStatus    MessageStatus[]
 }
 
+model Tasks {
+  id         String   @id @default(cuid())
+  userId     String
+  content    String
+  completed  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  User       User   @relation(fields: [userId], references: [id])
+}
 model Account {
   id                       String  @id @default(cuid())
   userId                   String  @unique

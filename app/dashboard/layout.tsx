@@ -1,7 +1,7 @@
 import { checkIsAuthenticated } from '@/actions/authServerActions/checkIsAuthenticated';
 import { checkUnseenMessages } from '@/actions/messagesServerActions/checkUnseenMessages';
 import NavItem from '@/components/ui/dashboard/NavItem';
-import SignOutButton from '@/components/ui/dashboard/sigOutButton';
+import SignOutButton from '@/components/ui/dashboard/SignOutButton';
 import IconWrapper from '@/components/ui/IconWrapper';
 import { NotificationSpan } from '@/components/ui/NotificationSpan';
 import { DefaultUserAvatar } from '@/public/images/DefaultUserAvatar';
@@ -68,6 +68,7 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
           <NavItem href="/dashboard/calendar">
             <IconWrapper type="calendar" strokeWidth={2} />
           </NavItem>
+          <SignOutButton />
         </ul>
       </div>
       {children}

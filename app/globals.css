@@ -5,6 +5,7 @@
 body {
   font-size: 1.2rem;
 }
+
 /* used to disable the scroll on the page when the modal is open */
 .no-scroll {
   overflow: hidden;
