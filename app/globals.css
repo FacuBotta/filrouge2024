@@ -21,6 +21,22 @@ body {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+.soft-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: dark-greenLight light-blue;
+}
+.soft-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+.soft-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.soft-scrollbar::-webkit-scrollbar-thumb {
+  background-color: dark-greenLight;
+  border-radius: 10px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
 footer a:hover {
   @apply text-light-blue dark:text-dark-yellow;
 }
@@ -56,7 +72,14 @@ footer a:hover {
 .path-home-image {
   @apply fill-light-blue dark:fill-dark-green;
 }
-
+/* Messages default page image */
+#default_message_image .color_1,
+#default_message_image .color_3 {
+  @apply fill-light-blue dark:fill-dark-green;
+}
+#default_message_image .color_2 {
+  @apply fill-dark-bg/50 dark:fill-dark-greenLight/50;
+}
 /* Slider images */
 
 /* messagesImage */

@@ -18,8 +18,8 @@ const DashboardPage: React.FC = async () => {
   // console.log('userAuthenticated from dashboard profile page', userTasks);
 
   return (
-    <section className="no-scrollbar max-h-[95%] px-2 w-full max-w-[1200px] mx-auto flex flex-col sm:!flex-row items-start justify-start gap-5 overflow-y-scroll scroll-smooth sm:divide-x my-auto">
-      <div className="w-full sm:w-[40%] h-full flex-col flex items-center justify-start pt-5 gap-5">
+    <section className="no-scrollbar max-h-[95%] px-2 w-full max-w-[1300px] mx-auto flex flex-col sm:!flex-row items-start justify-start gap-5 overflow-y-scroll scroll-smooth sm:divide-x my-auto">
+      <div className="w-full sm:w-[40%] h-full flex-col flex items-center justify-center pt-5 gap-5">
         <div className="relative">
           <IconWrapper
             type="edit"
@@ -43,13 +43,25 @@ const DashboardPage: React.FC = async () => {
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos?
         </p>
       </div>
-      <div className="flex flex-col w-full sm:w-[70%] text-center sm:text-left h-full gap-5 lg:gap-10 px-2 sm:px-5">
+      <div className="flex flex-col w-full sm:w-[70%] text-center sm:text-left h-full gap-5 lg:gap-10 pb-10 px-2 sm:px-5 sm:overflow-x-hidden sm:overflow-y-scroll soft-scrollbar">
         <div>
-          <h1 className="font-bold text-2xl">Mes notes</h1>
+          <h1 className="font-bold text-2xl mb-5">Mes notes</h1>
           <TasksProfile tasks={userTasks} />
         </div>
         <div>
           <h1 className="font-bold text-2xl">Mes événements</h1>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi
+            velit eaque, veniam error molestias nemo tempora suscipit pariatur.
+            Provident quas at cum debitis quibusdam consequatur nam repellendus
+            natus, voluptate deserunt!
+          </p>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi
+            velit eaque, veniam error molestias nemo tempora suscipit pariatur.
+            Provident quas at cum debitis quibusdam consequatur nam repellendus
+            natus, voluptate deserunt!
+          </p>
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi
             velit eaque, veniam error molestias nemo tempora suscipit pariatur.

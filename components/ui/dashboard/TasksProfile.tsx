@@ -12,7 +12,7 @@ export default function TasksProfile({ tasks }: { tasks: Tasks[] }) {
   const [currentTask, setCurrentTask] = useState<any>(null);
   const [currentContent, setCurrentContent] = useState<string>('');
   const tasksFormRef = useRef<HTMLFormElement>(null);
-  const newTaskInputRef = useRef<HTMLInputElement>(null);
+  const newTaskInputRef = useRef<HTMLTextAreaElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement[]>([]);
 
   // This useEffect is used to set the textarea height to the content
@@ -26,7 +26,8 @@ export default function TasksProfile({ tasks }: { tasks: Tasks[] }) {
     });
 
     if (newTaskInputRef.current) {
-      newTaskInputRef.current.style.width = `${newTaskInputRef.current.value.length - 1}ch`;
+      newTaskInputRef.current.style.height = '10px';
+      newTaskInputRef.current.style.height = `${newTaskInputRef.current.scrollHeight + 1}px`;
     }
   }, [clientTasks]);
 
@@ -129,7 +130,8 @@ export default function TasksProfile({ tasks }: { tasks: Tasks[] }) {
       }
     } else {
       if (newTaskInputRef.current) {
-        newTaskInputRef.current.style.width = `${e.target.value.length - 1}ch`;
+        newTaskInputRef.current.style.height = '10px';
+        newTaskInputRef.current.style.height = `${newTaskInputRef.current.scrollHeight + 1}px`;
       }
     }
     setCurrentContent(e.target.value);
@@ -142,21 +144,22 @@ export default function TasksProfile({ tasks }: { tasks: Tasks[] }) {
         onSubmit={(e) => handleCreateTask(e)}
         className="flex items-end gap-5 mb-2 w-full"
       >
-        <input
-          ref={newTaskInputRef}
-          name="content"
-          type="text"
-          placeholder="Nouvelle tâche"
-          autoComplete="off"
-          className="min-w-[200px] max-w-full bg-transparent ml-2 border-b focus:outline-none border-dark-bg dark:border-light-grey placeholder:text-light-blue placeholder:dark:text-dark-greenLight/50"
-          onChange={(e) => handleInputChange(e)}
-        />
-        <button>
-          <Icon
-            type="add"
-            className="hover:text-red-600 dark:hover:text-dark-greenLight hover:scale-110"
+        <div className="flex w-full gap-5">
+          <button>
+            <Icon
+              type="add"
+              className="hover:text-red-600 dark:hover:text-dark-greenLight hover:scale-110"
+            />
+          </button>
+          <textarea
+            ref={newTaskInputRef}
+            name="content"
+            placeholder="Nouvelle tâche"
+            autoComplete="off"
+            className="resize-none no-scrollbar min-w-[90%] bg-transparent ml-2 border-b focus:outline-none border-dark-bg dark:border-light-grey placeholder:text-light-blue placeholder:dark:text-dark-greenLight/50"
+            onChange={(e) => handleInputChange(e)}
           />
-        </button>
+        </div>
       </form>
 
       {/* list of tasks */}
