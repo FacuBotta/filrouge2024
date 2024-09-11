@@ -2,6 +2,7 @@ import { checkIsAuthenticated } from '@/actions/authServerActions/checkIsAuthent
 import { selectUserTasks } from '@/actions/TasksServerActions/selectUserTasks';
 import TasksProfile from '@/components/ui/dashboard/TasksProfile';
 import IconWrapper from '@/components/ui/IconWrapper';
+import { DefaultUserAvatar } from '@/public/images/DefaultUserAvatar';
 import { Tasks } from '@prisma/client';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -29,13 +30,17 @@ const DashboardPage: React.FC = async () => {
               className="hover:scale-110 hover:dark:text-dark-greenLight transition-all ease-in-out absolute bottom-2 right-[-10px]"
             />
           </Link>
-          <Image
-            src={image as string}
-            alt="user avatar"
-            width={200}
-            height={200}
-            className="rounded-full border-2 border-dark-bg dark:border-dark-grey"
-          />
+          {image ? (
+            <Image
+              src={image}
+              alt="user avatar"
+              width={200}
+              height={200}
+              className="rounded-full border-2 border-dark-bg dark:border-dark-grey"
+            />
+          ) : (
+            <DefaultUserAvatar className="size-full rounded-full " />
+          )}
         </div>
         <h1 className="font-bold text-2xl">{username ? username : email}</h1>
         {/* TODO: add the points to the user profile */}
@@ -43,31 +48,26 @@ const DashboardPage: React.FC = async () => {
           <IconWrapper
             type="star"
             strokeWidth={2}
-            filled={true}
+            className="stroke-black fill-light-yellow "
+          />
+          <IconWrapper
+            type="star"
+            strokeWidth={2}
             className="stroke-black fill-light-yellow"
           />
           <IconWrapper
             type="star"
             strokeWidth={2}
-            filled={true}
             className="stroke-black fill-light-yellow"
           />
           <IconWrapper
             type="star"
             strokeWidth={2}
-            filled={true}
             className="stroke-black fill-light-yellow"
           />
           <IconWrapper
             type="star"
             strokeWidth={2}
-            filled={true}
-            className="stroke-black fill-light-yellow"
-          />
-          <IconWrapper
-            type="star"
-            strokeWidth={2}
-            filled={true}
             className="stroke-black fill-light-yellow"
           />
         </div>

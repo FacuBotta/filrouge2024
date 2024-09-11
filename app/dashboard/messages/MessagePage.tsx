@@ -95,20 +95,22 @@ export default function MessagePage({
           {/* conversation header */}
           <div className="flex items-start justify-between gap-2 w-full px-2 pt-3 border-b ">
             {/* button to go back to the conversations list */}
-            <div className="border rounded-full">
-              <Icon
-                type="goBack"
-                className="lg:hidden"
-                onClick={() => router.push('/dashboard/messages')}
-              />
+            <div className="flex gap-5 items-end">
+              <div className="border rounded-full size-8 flex justify-center items-center mb-2 peer hover:dark:text-dark-greenLight hover:dark:border-dark-greenLight hover:scale-110 transition-all ease-in-out">
+                <Icon
+                  type="goBack"
+                  // className="lg:hidden"
+                  onClick={() => router.push('/dashboard/messages')}
+                />
+              </div>
+              <h2 className="mb-0 text-center">
+                {currentConversation?.title?.toLocaleUpperCase()}
+                <span className="font-extralight text-sm block sm:inline-block">
+                  <span className="hidden sm:inline-block mr-2">{' - '}</span>
+                  Created At: {currentConversation?.createdAt?.toLocaleString()}
+                </span>
+              </h2>
             </div>
-            <h2 className="mb-0 text-center">
-              {currentConversation?.title?.toLocaleUpperCase()}
-              <span className="font-extralight text-sm block sm:inline-block">
-                <span className="hidden sm:inline-block mr-2">{' - '}</span>
-                Created At: {currentConversation?.createdAt?.toLocaleString()}
-              </span>
-            </h2>
             <form action={handleDeleteConversation}>
               <input
                 type="hidden"

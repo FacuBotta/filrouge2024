@@ -7,6 +7,7 @@ import IconWrapper from '@/components/ui/IconWrapper';
 import Link from 'next/link';
 import Image from 'next/image';
 import Button from '@/components/ui/Button';
+import { DefaultUserAvatar } from '@/public/images/DefaultUserAvatar';
 
 const EditProfilePage = async () => {
   const userAuthenticated = await checkIsAuthenticated();
@@ -14,7 +15,6 @@ const EditProfilePage = async () => {
     redirect('/login');
   }
   const { username, image, description } = userAuthenticated;
-  console.log(userAuthenticated);
 
   return (
     <Backdrop>
@@ -27,13 +27,17 @@ const EditProfilePage = async () => {
           />
         </Link>
         <h1 className="text-3xl font-semibold">Edition de votre profil</h1>
-        <Image
-          src={image as string}
-          alt="user avatar"
-          width={220}
-          height={220}
-          className="rounded-full border-2 border-dark-bg my-5"
-        />
+        {image ? (
+          <Image
+            src={image as string}
+            alt="user avatar"
+            width={220}
+            height={220}
+            className="rounded-full border-2 border-dark-bg my-5"
+          />
+        ) : (
+          <DefaultUserAvatar className="size-full rounded-full my-5" />
+        )}
         <div className="items-center justify-center gap-5 w-full max-w-[500px] mx-auto">
           <form className="flex flex-col gap-5 mt-2" action={updateUserProfile}>
             <input

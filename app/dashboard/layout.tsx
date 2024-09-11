@@ -18,6 +18,7 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
   if (userAuthenticated && !userAuthenticated.password) {
     redirect('/set-password');
   }
+  console.log('userAuthenticated from dashboard layout', userAuthenticated);
 
   // set the profile notifications for the user
 
@@ -45,12 +46,12 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
   // get the messages notifications
   notifications.messages = await checkUnseenMessages(userAuthenticated.id);
   return (
-    <main className="h-dvh w-full pb-14  flex flex-col-reverse sm:flex-col gap-2 bg-light-ciel dark:bg-dark-bg">
+    <main className="h-dvh w-full pb-14 pt-2  flex flex-col-reverse sm:flex-col gap-2 bg-light-ciel dark:bg-dark-bg">
       <div className="bg-light-yellow dark:bg-dark-green/40 rounded-xl mx-2 overflow-x-scroll no-scrollbar min-h-11 sm:min-h-[100px] py-2 px-4 flex sm:justify-between items-end border border-dark-bg">
-        <div className="flex  w-full max-w-[1300px] mx-auto justify-between items-end">
+        <div className="flex  w-full max-w-[1500px] mx-auto justify-between items-end">
           <div className="gap-2 text-xl items-end mr-5 hidden sm:flex h-full">
             <div className="flex h-full items-center">
-              {userAuthenticated?.image ? (
+              {userAuthenticated.image ? (
                 <UserAvatar className="size-14" src={userAuthenticated.image} />
               ) : (
                 <DefaultUserAvatar className="size-14 opacity-40" />
