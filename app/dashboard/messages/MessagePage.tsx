@@ -95,12 +95,13 @@ export default function MessagePage({
           {/* conversation header */}
           <div className="flex items-start justify-between gap-2 w-full px-2 pt-3 border-b ">
             {/* button to go back to the conversations list */}
-            {/* TODO: change the icon */}
-            <Icon
-              type="addPhoto"
-              className="lg:hidden"
-              onClick={() => router.push('/dashboard/messages')}
-            />
+            <div className="border rounded-full">
+              <Icon
+                type="goBack"
+                className="lg:hidden"
+                onClick={() => router.push('/dashboard/messages')}
+              />
+            </div>
             <h2 className="mb-0 text-center">
               {currentConversation?.title?.toLocaleUpperCase()}
               <span className="font-extralight text-sm block sm:inline-block">

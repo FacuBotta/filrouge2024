@@ -6,7 +6,8 @@ import IconWrapper from '../IconWrapper';
 export const SignOutButton: React.FC = () => {
   return (
     <button onClick={() => handleSignOut()}>
-      <IconWrapper type="logOut" strokeWidth={2} />
+      {/* <IconWrapper type="logOut" strokeWidth={2} /> */}
+      Déconnexion
     </button>
   );
 };

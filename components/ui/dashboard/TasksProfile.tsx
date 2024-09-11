@@ -6,15 +6,16 @@ import { updateTask } from '@/actions/TasksServerActions/updateTask';
 import { Tasks } from '@prisma/client';
 import { Icon } from 'facu-ui';
 import { useEffect, useRef, useState } from 'react';
+import { Reorder } from 'framer-motion';
 
 export default function TasksProfile({ tasks }: { tasks: Tasks[] }) {
   const [clientTasks, setClientTasks] = useState<any>(tasks);
+
   const [currentTask, setCurrentTask] = useState<any>(null);
   const [currentContent, setCurrentContent] = useState<string>('');
   const tasksFormRef = useRef<HTMLFormElement>(null);
   const newTaskInputRef = useRef<HTMLTextAreaElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement[]>([]);
-
   // This useEffect is used to set the textarea height to the content
   useEffect(() => {
     clientTasks.forEach((task: any, index: number) => {
@@ -106,7 +107,10 @@ export default function TasksProfile({ tasks }: { tasks: Tasks[] }) {
     const formData = new FormData(e.currentTarget);
     const content = formData.get('content') as string;
     if (content.length === 0) return;
-    const response = await createTask({ content: content, completed: false });
+    const response = await createTask(
+      { content: content, completed: false },
+      clientTasks.length
+    );
     if (response?.ok) {
       setClientTasks([response.newTask, ...clientTasks]);
       e.target.reset();
@@ -136,9 +140,55 @@ export default function TasksProfile({ tasks }: { tasks: Tasks[] }) {
     }
     setCurrentContent(e.target.value);
   };
+  // this function is used to update the order of the tasks when the user drags and drops a task
+  const handleDragEnd = async () => {
+    try {
+      for (let task of clientTasks) {
+        await updateTask(task);
+      }
+    } catch (error) {
+      console.error('Error al actualizar el orden de las tareas', error);
+    }
+  };
+  // this function handle the drag visual order of the tasks
+  const handleReorderTasks = async (newOrder: any) => {
+    const updatedTasks = newOrder.map((task: any, index: number) => ({
+      ...task,
+      order: index + 1,
+    }));
+    setClientTasks(updatedTasks);
+  };
 
+  // TODO: implementar el ordenamiento de las tareas
+  /* const handleOrderBy = (orderBy: string) => () => {
+    // Clonar el array para evitar modificar el estado directamente
+    const sortedTasks = [...clientTasks].sort((a: Tasks, b: Tasks) => {
+      if (orderBy === 'order') {
+        return (a.order || 0) - (b.order || 0);
+      } else if (orderBy === 'complete') {
+        return a.completed === b.completed ? 0 : a.completed ? -1 : 1;
+      } else if (orderBy === 'createdAt') {
+        return (
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        );
+      }
+      return 0; // Fallback en caso de no coincidir con ninguno de los criterios
+    });
+
+    // Actualizar el estado con las tareas ordenadas
+    setClientTasks(sortedTasks);
+  }; */
   return (
-    <div className="w-full flex flex-col gap-2 pt-2 items-center flex-wrap sm:!items-start">
+    <div className="w-full flex flex-col items-center flex-wrap sm:!items-start">
+      {/* <select
+        onChange={(e) => handleOrderBy(e.target.value)}
+        className="border-b border-dark-bg dark:border-light-grey mb-1"
+      >
+        <option value="">Trier par</option>
+        <option value="order">Ordre</option>
+        <option value="complete">Complete</option>
+        <option value="createdAt">Date de création</option>
+      </select> */}
       {/* new task form */}
       <form
         onSubmit={(e) => handleCreateTask(e)}
@@ -163,41 +213,52 @@ export default function TasksProfile({ tasks }: { tasks: Tasks[] }) {
       </form>
 
       {/* list of tasks */}
-      <form ref={tasksFormRef} className="w-full">
-        {clientTasks?.map((task: any, index: number) => {
-          return (
-            <div className="flex gap-3 items-center mt-1" key={task.id}>
-              <Icon
-                onClick={() => handleDeleteTask(task.id as string)}
-                type="delete"
-                className="hover:text-red-600 dark:hover:text-dark-greenLight hover:scale-110"
-              />
-              <input
-                autoComplete="off"
-                className="peer"
-                type="checkbox"
-                defaultChecked={task.completed ? true : false}
-                onChange={(e) => handleUpdateTaskStatus(e, task)}
-              />
-
-              <textarea
-                rows={1}
-                ref={(el) => {
-                  if (el) textareaRef.current[index] = el;
-                }}
-                className="no-scrollbar resize-none w-full h-10px bg-transparent ml-2 my-1 border-b border-dark-bg dark:border-light-grey/50 focus:outline-none peer-checked:line-through decoration-2 decoration-light-red placeholder:text-light-blue placeholder:dark:text-dark-greenLight/50"
-                onFocus={(e) => {
-                  setCurrentTask(task);
-                  setCurrentContent(e.target.value);
-                }} // Set task and content on focus on
-                onChange={(e) => handleInputChange(e, index)} // Handle content change
-                onBlur={handleUpdateTaskContent} // Save task content when user leaves the textarea
-                defaultValue={task.content}
-                placeholder="..."
-              />
-            </div>
-          );
-        })}
+      <form ref={tasksFormRef} className="w-full select-none">
+        <Reorder.Group
+          axis="y"
+          values={clientTasks}
+          onReorder={handleReorderTasks}
+        >
+          {clientTasks?.map((task: any, index: number) => {
+            return (
+              <Reorder.Item
+                value={task}
+                onDragEnd={handleDragEnd}
+                className="flex gap-2 items-center mt-1"
+                key={task.id}
+              >
+                <Icon
+                  onClick={() => handleDeleteTask(task.id as string)}
+                  type="delete"
+                  className="hover:text-red-600 dark:hover:text-dark-greenLight hover:scale-110"
+                />
+                <Icon type="draggable" />
+                <input
+                  autoComplete="off"
+                  className="peer"
+                  type="checkbox"
+                  defaultChecked={task.completed ? true : false}
+                  onChange={(e) => handleUpdateTaskStatus(e, task)}
+                />
+                <textarea
+                  rows={1}
+                  ref={(el) => {
+                    if (el) textareaRef.current[index] = el;
+                  }}
+                  className="no-scrollbar resize-none w-full h-10px bg-transparent ml-2 my-1 border-b border-dark-bg dark:border-light-grey/50 focus:outline-none peer-checked:line-through decoration-2 decoration-light-red placeholder:text-light-blue placeholder:dark:text-dark-greenLight/50"
+                  onFocus={(e) => {
+                    setCurrentTask(task);
+                    setCurrentContent(e.target.value);
+                  }} // Set task and content on focus on
+                  onChange={(e) => handleInputChange(e, index)} // Handle content change
+                  onBlur={handleUpdateTaskContent} // Save task content when user leaves the textarea
+                  defaultValue={task.content}
+                  placeholder="..."
+                />
+              </Reorder.Item>
+            );
+          })}
+        </Reorder.Group>
       </form>
     </div>
   );

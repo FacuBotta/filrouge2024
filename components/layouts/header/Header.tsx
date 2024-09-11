@@ -2,6 +2,7 @@ import ThemeSwitcher from './ThemeSwitcher';
 import { checkIsAuthenticated } from '@/actions/authServerActions/checkIsAuthenticated';
 import NavMenuButton from './NavMenuButton';
 import NavItem from './NavItem';
+import SignOutButton from '@/components/ui/dashboard/SignOutButton';
 
 export default async function Header() {
   const userAuthenticated = await checkIsAuthenticated();
@@ -34,6 +35,7 @@ export default async function Header() {
               )}
               <NavItem href="/about">About</NavItem>
               <NavItem href="/contact">Contact</NavItem>
+              {userAuthenticated && <SignOutButton />}
             </ul>
           </div>
         </nav>

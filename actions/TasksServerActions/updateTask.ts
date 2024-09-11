@@ -11,6 +11,7 @@ export const updateTask = async (task: any) => {
       data: {
         content: task.content,
         completed: task.completed,
+        order: task.order,
       },
     });
     return { ok: true };
