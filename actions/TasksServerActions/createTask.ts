@@ -3,7 +3,7 @@
 import { auth } from '@/lib/auth/authConfig';
 import prisma from '@/lib/prisma';
 
-export const createTask = async (task: any, tasksLength: number) => {
+export const createTask = async (task: any) => {
   const session = await auth();
   if (!session) {
     console.error('createTask: no session found');
@@ -15,7 +15,7 @@ export const createTask = async (task: any, tasksLength: number) => {
         userId: session.user?.id as string,
         content: task.content as string,
         completed: task.completed as boolean,
-        order: tasksLength + 1,
+        order: 0,
       },
     });
     return { ok: true, newTask: newTask };

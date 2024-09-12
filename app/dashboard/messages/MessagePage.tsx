@@ -53,7 +53,10 @@ export default function MessagePage({
       >
         <div className="flex w-full items-center justify-between px-5 pb-2 border-b">
           <h2 className="text-2xl">Chats</h2>
-          <Link href={'/dashboard/messages/new'}>
+          <Link
+            aria-label="Créer un nouveau chat"
+            href={'/dashboard/messages/new'}
+          >
             <IconWrapper
               type="add"
               strokeWidth={2}
@@ -73,10 +76,10 @@ export default function MessagePage({
               <h1 className="text-center text-3xl font-semibold mb-4">
                 👋 Bienvenue sur votre système de messagerie !
               </h1>
-              <h3 className="text-center mb-2">
+              <h2 className="text-center mb-2">
                 Sélectionnez ou créez une conversation pour commencer 🚀
-              </h3>
-              <p className="text-center text-lg text-gray-500">
+              </h2>
+              <p className="text-center text-lg font-extralight">
                 🌟 Ici, vous pouvez gérer toutes vos conversations en un seul
                 endroit. Communiquez, partagez vos idées et résolvez des
                 problèmes rapidement. La communication n'a jamais été aussi
@@ -117,7 +120,9 @@ export default function MessagePage({
                 name="conversationId"
                 value={currentConversation?.id}
               />
-              <button>
+              <button
+                aria-label={`${currentConversation?.role === 'CREATOR' ? 'Supprimer' : 'Fermer'} la conversation`}
+              >
                 {currentConversation?.role === 'CREATOR' ? (
                   <IconWrapper
                     type="delete"

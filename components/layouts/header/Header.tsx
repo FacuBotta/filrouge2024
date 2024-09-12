@@ -28,14 +28,21 @@ export default async function Header() {
             </label>
             <ul className="mr-[-1.25rem] sm:mr-0 gap-4 font-bold text-dark-bg dark:text-dark-grey sm:flex sm:flex-row">
               <NavItem href="/">Home</NavItem>
-              {userAuthenticated ? (
+              {userAuthenticated && (
                 <NavItem href="/dashboard">Dashboard</NavItem>
+              )}
+              {userAuthenticated ? (
+                <NavItem href="/dashboard/events">Events</NavItem>
               ) : (
                 <NavItem href="/login">LogIn</NavItem>
               )}
               <NavItem href="/about">About</NavItem>
               <NavItem href="/contact">Contact</NavItem>
-              {userAuthenticated && <SignOutButton />}
+              {userAuthenticated && (
+                <li>
+                  <SignOutButton />
+                </li>
+              )}
             </ul>
           </div>
         </nav>

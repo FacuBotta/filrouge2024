@@ -7,6 +7,24 @@ export const selectUserTasks = async (userId: string) => {
     where: {
       userId: userId,
     },
+    include: {
+      Events: {
+        select: {
+          id: true,
+          title: true,
+          description: true,
+          eventStart: true,
+          eventEnd: true,
+          category: {
+            select: {
+              id: true,
+              title: true,
+              description: true,
+            },
+          },
+        },
+      },
+    },
     orderBy: {
       order: 'asc',
     },

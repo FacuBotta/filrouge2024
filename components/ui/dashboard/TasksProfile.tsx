@@ -10,7 +10,6 @@ import { Reorder } from 'framer-motion';
 
 export default function TasksProfile({ tasks }: { tasks: Tasks[] }) {
   const [clientTasks, setClientTasks] = useState<any>(tasks);
-
   const [currentTask, setCurrentTask] = useState<any>(null);
   const [currentContent, setCurrentContent] = useState<string>('');
   const tasksFormRef = useRef<HTMLFormElement>(null);
@@ -107,13 +106,17 @@ export default function TasksProfile({ tasks }: { tasks: Tasks[] }) {
     const formData = new FormData(e.currentTarget);
     const content = formData.get('content') as string;
     if (content.length === 0) return;
-    const response = await createTask(
-      { content: content, completed: false },
-      clientTasks.length
-    );
+    // reorder the tasks when the user create a new task
+    // like that the new task will be the first task with order 0
+    const reorderedTasks = clientTasks.map((task: any, index: number) => {
+      task.order = index + 1;
+      return task;
+    });
+    const response = await createTask({ content: content, completed: false });
     if (response?.ok) {
-      setClientTasks([response.newTask, ...clientTasks]);
+      setClientTasks([response.newTask, ...reorderedTasks]);
       e.target.reset();
+      // Adjust the width of the create task input
       if (newTaskInputRef.current) {
         newTaskInputRef.current.style.width = '10ch';
       }
@@ -195,7 +198,7 @@ export default function TasksProfile({ tasks }: { tasks: Tasks[] }) {
         className="flex items-end gap-5 mb-2 w-full"
       >
         <div className="flex w-full gap-5">
-          <button>
+          <button aria-label="Ajouter une tâche">
             <Icon
               type="add"
               className="hover:text-red-600 dark:hover:text-dark-greenLight hover:scale-110"
@@ -234,6 +237,7 @@ export default function TasksProfile({ tasks }: { tasks: Tasks[] }) {
                 />
                 <Icon type="draggable" />
                 <input
+                  aria-label="task-checkbox"
                   autoComplete="off"
                   className="peer"
                   type="checkbox"

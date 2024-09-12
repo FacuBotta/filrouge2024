@@ -28,7 +28,8 @@ model User {
   Reported         Reports[]          @relation("UserReported")
   Trash            Trash[]
   Ratings          Ratings[]
-  Events           Events[]
+  EventsCreated           Events[] //this are the events created by the user
+  EventsJoined     UserEvents[]     //this are the events joined by the user
   Tasks            Tasks[]
   MessagesSent     Message[]          @relation("SentMessages")
   UserConversation UserConversation[]
@@ -42,7 +43,9 @@ model Tasks {
   completed  Boolean  @default(false)
   createdAt  DateTime @default(now())
   order      Int @default(0) // order of the task in the list
+  eventId    String?
 
+  Events     Events? @relation(fields: [eventId], references: [id])
   User       User   @relation(fields: [userId], references: [id])
 }
 model Account {
@@ -174,15 +177,26 @@ model Ratings {
   @@index([userId])
   @@index([eventId])
 }
+model UserEvents {
+  userId String
+  eventId String
+  joinedAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event Events @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@id([userId, eventId])
+}
 
 model Events {
   id          String   @id @default(cuid())
   userId      String
   categoryId  String
   title       String
-  description String?
+  description String? @db.Text
   eventStart  DateTime
   eventEnd    DateTime
+  
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -192,6 +206,8 @@ model Events {
   Comments Comments[]
   Trash    Trash[]
   Ratings  Ratings[]
+  Tasks    Tasks[]
+  participants UserEvents[]
 
   @@index([userId])
   @@index([categoryId])
@@ -200,7 +216,7 @@ model Events {
 model Category {
   id          String   @id @default(cuid())
   title       String
-  description String
+  description String @db.Text
   Events      Events[]
 }
 

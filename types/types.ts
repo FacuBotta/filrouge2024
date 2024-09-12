@@ -33,3 +33,19 @@ export type RegisteredUsers = Pick<
   User,
   'id' | 'email' | 'name' | 'username' | 'image'
 >;
+
+export interface UserJoinedEvent {
+  id: string;
+  userId: string;
+  title: string;
+  description: string | null;
+  eventStart: Date;
+  eventEnd: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  category: {
+    id: string;
+    title: string;
+    description: string;
+  };
+}

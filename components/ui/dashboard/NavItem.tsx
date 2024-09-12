@@ -27,7 +27,9 @@ export default function NavItem(props: NavItemProps) {
     <li
       className={`${isActive(props.href) ? itemActiveClass : 'px-2'} flex items-start`}
     >
-      <Link href={props.href}>{props.children}</Link>
+      <Link aria-label={`Link vers ${props.href}`} href={props.href}>
+        {props.children}
+      </Link>
       {props.notifications && (
         <NotificationSpan notifications={props.notifications} />
       )}
