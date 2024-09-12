@@ -59,9 +59,9 @@ footer a:hover {
 .animate a {
   animation: appear linear;
   animation-timeline: view();
+  animation-range: entry 0% cover 20%;
   animation-fill-mode: both;
   animation-duration: 1ms; /* Firefox requires this to apply the animation */
-  animation-range: entry 0% cover 20%;
 }
 
 /* ============ SVG styles ============= */
