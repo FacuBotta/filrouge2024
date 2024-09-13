@@ -129,7 +129,7 @@ const DashboardPage: React.FC = async () => {
               </div>
             ))
           )}
-          <Link href={'/dashboard/events'}>
+          <Link href={'/events'}>
             <Button>Découvrir les événements 🚀</Button>
           </Link>
         </div>

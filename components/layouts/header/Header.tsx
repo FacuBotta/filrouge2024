@@ -32,7 +32,7 @@ export default async function Header() {
                 <NavItem href="/dashboard">Dashboard</NavItem>
               )}
               {userAuthenticated ? (
-                <NavItem href="/dashboard/events">Events</NavItem>
+                <NavItem href="/events">Events</NavItem>
               ) : (
                 <NavItem href="/login">LogIn</NavItem>
               )}

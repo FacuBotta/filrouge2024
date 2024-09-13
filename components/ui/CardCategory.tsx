@@ -22,7 +22,7 @@ export default function CardCategory(props: cardCategoryProps) {
   const categoryLink = props.title.toLowerCase().replaceAll(' ', '-');
   return (
     <Link
-      href={`/dashboard/events/#${categoryLink}`}
+      href={`/events/#${categoryLink}`}
       className={`flex flex-col items-center justify-between aspect-square p-5 border-2 border-black ${props.color} sm:hover:scale-105 transition-all duration-300 ease-in-out`}
     >
       <div className="flex w-full max-h-[70%] items-center justify-center">
