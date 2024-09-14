@@ -32,7 +32,7 @@ const DashboardPage: React.FC = async () => {
     <section className="h-full px-2 w-full max-w-[1300px] mx-auto flex flex-col sm:!flex-row  justify-start gap-5  divide-y sm:divide-y-0 sm:divide-x my-auto">
       {/* profile section - left side */}
       <div className=" w-full sm:w-[40%] h-full flex-col flex items-center justify-center pt-5 gap-2  ">
-        <div className="relative">
+        <div>
           <Link aria-label="Éditer profile" href="/dashboard/edit-profile">
             <IconWrapper
               type="edit"
@@ -84,15 +84,13 @@ const DashboardPage: React.FC = async () => {
 
         <h2 className="font-bold text-2xl">Bio</h2>
         <p className="text-balance text-center mx-auto">{description}</p>
-        <div>
-          <h1 className="font-bold text-2xl">Mes avis</h1>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi
-            velit eaque, veniam error molestias nemo tempora suscipit pariatur.
-            Provident quas at cum debitis quibusdam consequatur nam repellendus
-            natus, voluptate deserunt!
-          </p>
-        </div>
+        <h1 className="font-bold text-2xl">Mes avis</h1>
+        <p className="text-balance text-center mx-auto">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi velit
+          eaque, veniam error molestias nemo tempora suscipit pariatur.
+          Provident quas at cum debitis quibusdam consequatur nam repellendus
+          natus, voluptate deserunt!
+        </p>
       </div>
       {/* right side */}
       <div className=" flex flex-col w-full sm:w-[70%] text-center sm:text-left gap-5 lg:gap-10 pb-10 px-2 sm:px-5">
@@ -104,9 +102,13 @@ const DashboardPage: React.FC = async () => {
         <div className="flex flex-col gap-5">
           <h1 className="font-bold text-2xl">Mes événements crées</h1>
           {userEventsCreated?.length === 0 ? (
-            <p>Vous n'avez pas encore créé d'événement</p>
+            <>
+              <p>Vous n'avez pas encore créé d'événement</p>
+              <Link href={'/events'}>
+                <Button>Creer un événement 📅</Button>
+              </Link>
+            </>
           ) : (
-            // TODO: add a button to create an event
             userEventsCreated.map((event: Events, index: number) => (
               <div
                 key={event.id}
