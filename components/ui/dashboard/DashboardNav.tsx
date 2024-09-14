@@ -1,7 +1,10 @@
+'use client';
+
 import { DefaultUserAvatar } from '@/public/images/DefaultUserAvatar';
 import { UserAvatar } from '@/public/images/UserAvatar';
 import NavItem from './NavItem';
 import IconWrapper from '../IconWrapper';
+import { useState } from 'react';
 
 type Notifications = {
   profile: number;
@@ -15,11 +18,15 @@ export default function DashboardNav({
   userAuthenticated: any;
   notifications?: Notifications;
 }) {
+  const [search, setSearch] = useState<string>('');
+  const [searchOpen, setSearchOpen] = useState<boolean>(false);
+
   return (
-    <div className=" bg-light-yellow dark:bg-dark-green/40 rounded-xl mx-2 overflow-x-scroll no-scrollbar min-h-14 sm:min-h-[100px] py-2 px-4 flex sm:justify-between items-end border border-dark-bg ">
+    <div className=" bg-light-yellow dark:bg-dark-green/40 rounded-xl mx-2 overflow-x-scroll no-scrollbar min-h-14 h-fit sm:min-h-[100px] py-2 px-4 flex justify-center sm:justify-between items-end border border-dark-bg ">
       <div className="flex  w-full max-w-[1500px] mx-auto justify-between items-end">
         {/* welcome block - not visible on mobile */}
-        <div className="gap-2 text-xl items-end mr-5 hidden sm:flex h-full">
+        {/* TODO: revisar esto */}
+        <div className="gap-2 text-xl items-end hidden sm:flex h-full w-[50%]">
           <div className="gap-2 text-xl items-end mr-5 hidden sm:flex h-full">
             <div className="flex h-full items-center">
               {userAuthenticated.image ? (
@@ -44,43 +51,38 @@ export default function DashboardNav({
             </div>
           </div>
         </div>
-        {/* nav items */}
-        <ul className="flex gap-4 text-xl mx-auto sm:m-0 ">
-          <li className="flex">
-            <label
-              htmlFor="search"
-              className="cursor-pointer flex flex-row-reverse  "
+        {/* search bar and nav items */}
+        <div className="flex  lg:items-end lg:w-full">
+          <div className="flex items-end gap-2 w-full">
+            <input
+              type="text"
+              placeholder="Rechercher..."
+              className={`${searchOpen ? 'block' : 'hidden'} lg:block lg:translate-x-1/2 w-[300px] h-10 px-5 text-xl font-bold placeholder:text-dark-grey placeholder:text-sm  border-2 border-dark-bg bg-dark-bg dark:border-light-grey rounded-lg`}
+            />
+            <IconWrapper
+              type="search"
+              strokeWidth={2}
+              onClick={() => setSearchOpen(!searchOpen)}
+              className={`lg:hidden`}
+            />
+          </div>
+          {/* nav items */}
+          <ul className="flex gap-4 text-xl mx-auto sm:m-0 ">
+            <li className="flex w-full bg-fuchsia-200/40"></li>
+            <NavItem href="/dashboard" notifications={notifications?.profile}>
+              <IconWrapper type="user" strokeWidth={2} />
+            </NavItem>
+            <NavItem
+              href="/dashboard/messages"
+              notifications={notifications?.messages}
             >
-              <input
-                type="checkbox"
-                className="hidden peer/smallScreen"
-                id="search"
-              />
-              <input
-                type="text"
-                placeholder="Rechercher..."
-                className="absolute left-1/2 -translate-x-1/2 bottom-[80px] sm:top-[150px] lg:top-[100px]  hidden lg:block  peer-checked/smallScreen:block w-[350px] h-10 px-5 text-xl font-bold placeholder:text-dark-grey placeholder:text-sm  border-2 border-dark-bg bg-dark-bg dark:border-light-grey rounded-lg"
-              />
-              <IconWrapper
-                type="search"
-                strokeWidth={2}
-                className="lg:hidden"
-              />
-            </label>
-          </li>
-          <NavItem href="/dashboard" notifications={notifications?.profile}>
-            <IconWrapper type="user" strokeWidth={2} />
-          </NavItem>
-          <NavItem
-            href="/dashboard/messages"
-            notifications={notifications?.messages}
-          >
-            <IconWrapper type="message" strokeWidth={2} />
-          </NavItem>
-          <NavItem href="/dashboard/calendar">
-            <IconWrapper type="calendar" strokeWidth={2} />
-          </NavItem>
-        </ul>
+              <IconWrapper type="message" strokeWidth={2} />
+            </NavItem>
+            <NavItem href="/dashboard/calendar">
+              <IconWrapper type="calendar" strokeWidth={2} />
+            </NavItem>
+          </ul>
+        </div>
       </div>
     </div>
   );
