@@ -41,7 +41,33 @@ footer a:hover {
   @apply text-light-blue dark:text-dark-yellow;
 }
 
+/* ============= Dashboard layout ============= */
+.dashboard-main {
+  @apply min-h-dvh w-full pt-2 flex flex-col gap-2 bg-light-ciel dark:bg-dark-bg;
+}
+.dashboard-children {
+  @apply pt-[60px] sm:pt-[100px] pb-10;
+}
+
 /* ========== Home page scroll animation ========== */
+
+/* dashboard nav */
+@keyframes disappearInScroll {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+.animate-dashboard-nav {
+  animation: disappearInScroll 0.5s ease-in-out;
+  animation-fill-mode: forwards;
+  animation-timeline: scroll();
+  animation-range: entry 70% cover 95%;
+  animation-direction: alternate;
+  animation-duration: 1ms; /* Firefox requires this to apply the animation */
+}
 
 /* can't use this animation with tailwind besause animation-timeline is not suported by tailwind */
 @keyframes appear {

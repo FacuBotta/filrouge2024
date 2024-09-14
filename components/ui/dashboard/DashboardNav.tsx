@@ -22,7 +22,7 @@ export default function DashboardNav({
   const [searchOpen, setSearchOpen] = useState<boolean>(false);
 
   return (
-    <div className=" bg-light-yellow dark:bg-dark-green/40 rounded-xl mx-2 overflow-x-scroll no-scrollbar min-h-14 h-fit sm:min-h-[100px] py-2 px-4 flex justify-center sm:justify-between items-end border border-dark-bg ">
+    <div className="animate-dashboard-nav fixed z-50 left-1/2 -translate-x-1/2 w-[95%] bg-light-yellow dark:bg-dark-green rounded-xl min-h-14 h-fit  py-2 px-4 flex justify-center sm:justify-between items-end border border-dark-bg ">
       <div className="flex  w-full max-w-[1500px] mx-auto justify-between items-end">
         {/* welcome block - not visible on mobile */}
         {/* TODO: revisar esto */}
@@ -36,7 +36,7 @@ export default function DashboardNav({
               )}
             </div>
             <div>
-              <p className="text-2xl">
+              <p className="text-xl">
                 Salut{' '}
                 {userAuthenticated?.username
                   ? userAuthenticated.username
@@ -45,8 +45,8 @@ export default function DashboardNav({
               </p>
               <p className="font-extralight text-lg">
                 Dernier connexion le{' '}
-                {userAuthenticated?.updatedAt.toLocaleDateString()} a{' '}
-                {userAuthenticated?.updatedAt.toLocaleTimeString()}
+                {userAuthenticated?.updatedAt.toLocaleDateString('fr-FR')} a{' '}
+                {userAuthenticated?.updatedAt.toLocaleTimeString('fr-FR')}
               </p>
             </div>
           </div>

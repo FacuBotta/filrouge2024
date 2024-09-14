@@ -29,8 +29,9 @@ const DashboardPage: React.FC = async () => {
   // console.log('userAuthenticated from dashboard profile page', userTasks);
 
   return (
-    <section className="no-scrollbar max-h-[95%] px-2 w-full max-w-[1300px] mx-auto flex flex-col sm:!flex-row items-start justify-start gap-5 overflow-y-scroll scroll-smooth divide-y sm:divide-y-0 sm:divide-x my-auto">
-      <div className="w-full sm:w-[40%] h-full flex-col flex items-center justify-center pt-5 gap-2">
+    <section className=" relative no-scrollbar px-2 w-full max-w-[1300px] mx-auto flex flex-col sm:!flex-row  justify-start gap-5 overflow-y-scroll scroll-smooth divide-y sm:divide-y-0 sm:divide-x my-auto">
+      {/* profile section - left side */}
+      <div className=" w-full sm:w-[40%] h-full flex-col flex items-center justify-center pt-5 gap-2  ">
         <div className="relative">
           <Link aria-label="Éditer profile" href="/dashboard/edit-profile">
             <IconWrapper
@@ -83,8 +84,18 @@ const DashboardPage: React.FC = async () => {
 
         <h2 className="font-bold text-2xl">Bio</h2>
         <p className="text-balance text-center mx-auto">{description}</p>
+        <div>
+          <h1 className="font-bold text-2xl">Mes avis</h1>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi
+            velit eaque, veniam error molestias nemo tempora suscipit pariatur.
+            Provident quas at cum debitis quibusdam consequatur nam repellendus
+            natus, voluptate deserunt!
+          </p>
+        </div>
       </div>
-      <div className="flex flex-col w-full sm:w-[70%] text-center sm:text-left h-full gap-5 lg:gap-10 pb-10 px-2 sm:px-5 sm:overflow-x-hidden sm:overflow-y-scroll soft-scrollbar">
+      {/* right side */}
+      <div className=" flex flex-col w-full sm:w-[70%] text-center sm:text-left gap-5 lg:gap-10 pb-10 px-2 sm:px-5">
         <div>
           <h1 className="font-bold text-2xl mb-5">Mes notes</h1>
           <TasksProfile tasks={userTasks} />
@@ -103,9 +114,6 @@ const DashboardPage: React.FC = async () => {
               >
                 <h1 className="font-bold text-2xl">{event.title}</h1>
                 <p>{event.description}</p>
-                {/* <p>Date de début : {event.eventStart}</p> */}
-                {/* <p>Date de fin : {event.eventEnd}</p> */}
-                {/* <p>Catégorie : {event.category.title}</p> */}
               </div>
             ))
           )}
@@ -123,36 +131,12 @@ const DashboardPage: React.FC = async () => {
               >
                 <h1 className="font-bold text-2xl">{event.title}</h1>
                 <p>{event.description}</p>
-                {/* <p>Date de début : {event.eventStart}</p> */}
-                {/* <p>Date de fin : {event.eventEnd}</p> */}
-                {/* <p>Catégorie : {event.category.title}</p> */}
               </div>
             ))
           )}
           <Link href={'/events'}>
             <Button>Découvrir les événements 🚀</Button>
           </Link>
-        </div>
-        <div>
-          <h1 className="font-bold text-2xl">Mes avis</h1>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi
-            velit eaque, veniam error molestias nemo tempora suscipit pariatur.
-            Provident quas at cum debitis quibusdam consequatur nam repellendus
-            natus, voluptate deserunt!
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi
-            velit eaque, veniam error molestias nemo tempora suscipit pariatur.
-            Provident quas at cum debitis quibusdam consequatur nam repellendus
-            natus, voluptate deserunt!
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi
-            velit eaque, veniam error molestias nemo tempora suscipit pariatur.
-            Provident quas at cum debitis quibusdam consequatur nam repellendus
-            natus, voluptate deserunt!
-          </p>
         </div>
       </div>
     </section>

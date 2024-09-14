@@ -11,18 +11,18 @@ export default function AllEventsPage({ events }: { events: Category[] }) {
   );
 
   console.log('categories', clientEvents);
-  // Set the scroll to top when the page is loaded, it's a hack to fix the scroll position when its loaded from ./events/#category.title
+  /* // Set the scroll to top when the page is loaded, it's a hack to fix the scroll position when its loaded from ./events/#category.title
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+  }, []); */
 
   return (
-    <section className="animate w-full flex flex-col px-2  snap-start">
+    <section className="animate w-full flex flex-col px-2">
       {clientEvents?.map((category: any) => (
         <div
           id={category.title.toLowerCase().replaceAll(' ', '-')}
           key={category.id}
-          className="flex w-full min-h-[80vh] mx-auto flex-col gap-5 justify-center items-center "
+          className="flex w-full min-h-[80vh] mx-auto mb-10 flex-col gap-5 justify-center items-center scroll-mt-40 "
         >
           <h1 className="font-bold text-3xl dark:text-dark-greenLight">
             {category.title}

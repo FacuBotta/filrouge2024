@@ -47,12 +47,12 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
   // get the messages notifications
   notifications.messages = await checkUnseenMessages(userAuthenticated.id);
   return (
-    <main className="h-dvh w-full pb-14 pt-2  flex flex-col-reverse sm:flex-col gap-2 bg-light-ciel dark:bg-dark-bg sticky">
+    <main className="dashboard-main">
       <DashboardNav
         userAuthenticated={userAuthenticated}
         notifications={notifications}
       />
-      {children}
+      <div className="dashboard-children">{children}</div>
     </main>
   );
 };

@@ -55,7 +55,7 @@ export default async function Home() {
         <h1 className="text-3xl sm:text-6xl font-bold mb-8 dark:text-dark-greenLight">
           Catégories
         </h1>
-        <div className="my-5 grid grid-cols-2 sm:grid-cols-3 gap-10 w-full max-w-[900px]">
+        <div className="my-5 grid grid-cols-2 sm:grid-cols-3 gap-10 w-full max-w-[800px]">
           <CardCategory
             color="bg-light-yellow"
             image={<SportImage />}
