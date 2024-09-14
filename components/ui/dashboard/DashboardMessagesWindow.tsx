@@ -72,7 +72,7 @@ export default function DashboardMessagesWindow({
               <p>{message.content} </p>
               <div className="flex justify-between items-start text-sm pt-1 font-extralight border-t border-gray-900">
                 <span>{message.sender.email}</span>
-                <span>{message.createdAt.toLocaleTimeString()}</span>
+                <span>{message.createdAt.toLocaleTimeString('fr-FR')}</span>
               </div>
             </div>
             {message.sender.image ? (

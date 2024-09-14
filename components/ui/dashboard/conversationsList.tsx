@@ -86,7 +86,7 @@ export const ConversationsList = ({
                     )}
                 </p>
                 <span className="font-extralight text-sm">
-                  {new Date(conversation.updatedAt).toLocaleDateString()}
+                  {new Date(conversation.updatedAt).toLocaleDateString('fr-FR')}
                   {' - '}
                   {conversation?.participants?.length} participants
                 </span>

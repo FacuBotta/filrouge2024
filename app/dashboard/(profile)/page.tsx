@@ -29,7 +29,7 @@ const DashboardPage: React.FC = async () => {
   // console.log('userAuthenticated from dashboard profile page', userTasks);
 
   return (
-    <section className=" relative no-scrollbar px-2 w-full max-w-[1300px] mx-auto flex flex-col sm:!flex-row  justify-start gap-5 overflow-y-scroll scroll-smooth divide-y sm:divide-y-0 sm:divide-x my-auto">
+    <section className="h-full px-2 w-full max-w-[1300px] mx-auto flex flex-col sm:!flex-row  justify-start gap-5  divide-y sm:divide-y-0 sm:divide-x my-auto">
       {/* profile section - left side */}
       <div className=" w-full sm:w-[40%] h-full flex-col flex items-center justify-center pt-5 gap-2  ">
         <div className="relative">

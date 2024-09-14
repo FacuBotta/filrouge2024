@@ -46,7 +46,7 @@ footer a:hover {
   @apply min-h-dvh w-full pt-2 flex flex-col gap-2 bg-light-ciel dark:bg-dark-bg;
 }
 .dashboard-children {
-  @apply pt-[60px] sm:pt-[100px] pb-10;
+  @apply pt-[60px] sm:pt-[100px]  h-full;
 }
 
 /* ========== Home page scroll animation ========== */

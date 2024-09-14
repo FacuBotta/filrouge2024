@@ -77,7 +77,7 @@ export default function MessagePage({
       {/* default content when no conversation is selected */}
 
       {!currentConversation ? (
-        <div className="hidden lg:flex items-center justify-center w-full h-full">
+        <div className="hidden lg:flex items-center justify-center w-full h-[80vh]">
           <div className="flex flex-wrap w-full max-w-[700px] h-full max-h-[500px] justify-center">
             <div className="flex flex-col items-center mb-5">
               <h1 className="text-center text-3xl font-semibold mb-4">
@@ -93,14 +93,14 @@ export default function MessagePage({
                 simple !
               </p>
             </div>
-            <div className="flex w-[400px]">
+            <div className="flex w-[400px] h-full">
               <MessageDefaultPageImage />
             </div>
           </div>
         </div>
       ) : (
         <div
-          className={`${currentConversation ? 'flex' : 'hidden'} lg:flex flex-col items-start justify-between px-2 sm:pb-6 pb-5 w-full h-[80vh]`}
+          className={`${currentConversation ? 'flex' : 'hidden'} lg:flex flex-col items-start justify-between px-2  pb-5 sm:pb-0 w-full h-[80vh] lg:h-[83vh]`}
         >
           {/* conversation header */}
           <div className="flex items-start justify-between gap-2 w-full px-2 pt-3 border-b ">
