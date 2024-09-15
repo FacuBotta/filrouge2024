@@ -25,72 +25,80 @@ const DashboardPage: React.FC = async () => {
   const userEventsJoined: UserJoinedEvent[] = await selectUserEventsJoined(
     id as string
   );
+
   // console.log('userAuthenticated from dashboard profile page', userEvents);
   // console.log('userAuthenticated from dashboard profile page', userTasks);
 
   return (
     <section className="h-full px-2 w-full max-w-[1300px] mx-auto flex flex-col sm:!flex-row  justify-start gap-5  divide-y sm:divide-y-0 sm:divide-x my-auto">
       {/* profile section - left side */}
-      <div className=" w-full sm:w-[40%] h-full flex-col flex items-center justify-center pt-5 gap-2  ">
-        <div>
-          <Link aria-label="Éditer profile" href="/dashboard/edit-profile">
+      <div className="w-full sm:w-[40%] min-h-full overflow-hidden">
+        <div className="animate-profile-card flex flex-col items-center justify-center mt-[50px] pt-5 gap-2 ">
+          {/* class relative to control the position of the edit button */}
+          <div className="relative">
+            <Link aria-label="Éditer profile" href="/dashboard/edit-profile">
+              <IconWrapper
+                type="edit"
+                strokeWidth={2}
+                className="hover:scale-110 hover:dark:text-dark-greenLight transition-all ease-in-out absolute bottom-2 right-[-10px]"
+              />
+            </Link>
+            {image ? (
+              <Image
+                src={image}
+                alt="user avatar"
+                width={200}
+                height={200}
+                className="rounded-full border-2 border-dark-bg dark:border-dark-grey"
+              />
+            ) : (
+              <DefaultUserAvatar className="size-full rounded-full " />
+            )}
+          </div>
+          <h1 className="font-bold text-2xl">{username ? username : email}</h1>
+          {/* TODO: add the points to the user profile */}
+          <div className="flex mb-2">
             <IconWrapper
-              type="edit"
+              type="star"
               strokeWidth={2}
-              className="hover:scale-110 hover:dark:text-dark-greenLight transition-all ease-in-out absolute bottom-2 right-[-10px]"
+              className="stroke-black fill-light-yellow "
             />
-          </Link>
-          {image ? (
-            <Image
-              src={image}
-              alt="user avatar"
-              width={200}
-              height={200}
-              className="rounded-full border-2 border-dark-bg dark:border-dark-grey"
+            <IconWrapper
+              type="star"
+              strokeWidth={2}
+              className="stroke-black fill-light-yellow"
             />
+            <IconWrapper
+              type="star"
+              strokeWidth={2}
+              className="stroke-black fill-light-yellow"
+            />
+            <IconWrapper
+              type="star"
+              strokeWidth={2}
+              className="stroke-black fill-light-yellow"
+            />
+            <IconWrapper
+              type="star"
+              strokeWidth={2}
+              className="stroke-black fill-light-yellow"
+            />
+          </div>
+
+          <h2 className="font-bold text-2xl">Bio</h2>
+          {description && description.length > 0 ? (
+            <p className="text-balance text-center mx-auto">{description}</p>
           ) : (
-            <DefaultUserAvatar className="size-full rounded-full " />
+            <div className="h-[200px] flex items-center justify-center p-2 border-2 border-dark-bg dark:border-white bg-dark-grey/40 rounded-xl">
+              <p className="text-center">
+                Il semble que vous n'ayez pas encore ajouté votre bio! Prenez un
+                moment pour compléter votre profil et accéder à toutes les
+                fonctionnalités de l'application. Nous avons hâte de mieux vous
+                connaître!
+              </p>
+            </div>
           )}
         </div>
-        <h1 className="font-bold text-2xl">{username ? username : email}</h1>
-        {/* TODO: add the points to the user profile */}
-        <div className="flex mb-2">
-          <IconWrapper
-            type="star"
-            strokeWidth={2}
-            className="stroke-black fill-light-yellow "
-          />
-          <IconWrapper
-            type="star"
-            strokeWidth={2}
-            className="stroke-black fill-light-yellow"
-          />
-          <IconWrapper
-            type="star"
-            strokeWidth={2}
-            className="stroke-black fill-light-yellow"
-          />
-          <IconWrapper
-            type="star"
-            strokeWidth={2}
-            className="stroke-black fill-light-yellow"
-          />
-          <IconWrapper
-            type="star"
-            strokeWidth={2}
-            className="stroke-black fill-light-yellow"
-          />
-        </div>
-
-        <h2 className="font-bold text-2xl">Bio</h2>
-        <p className="text-balance text-center mx-auto">{description}</p>
-        <h1 className="font-bold text-2xl">Mes avis</h1>
-        <p className="text-balance text-center mx-auto">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi velit
-          eaque, veniam error molestias nemo tempora suscipit pariatur.
-          Provident quas at cum debitis quibusdam consequatur nam repellendus
-          natus, voluptate deserunt!
-        </p>
       </div>
       {/* right side */}
       <div className=" flex flex-col w-full sm:w-[70%] text-center sm:text-left gap-5 lg:gap-10 pb-10 px-2 sm:px-5">
@@ -139,6 +147,13 @@ const DashboardPage: React.FC = async () => {
           <Link href={'/events'}>
             <Button>Découvrir les événements 🚀</Button>
           </Link>
+          <h1 className="font-bold text-2xl">Mes avis</h1>
+          <p className="text-balance text-center mx-auto">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi
+            velit eaque, veniam error molestias nemo tempora suscipit pariatur.
+            Provident quas at cum debitis quibusdam consequatur nam repellendus
+            natus, voluptate deserunt!
+          </p>
         </div>
       </div>
     </section>

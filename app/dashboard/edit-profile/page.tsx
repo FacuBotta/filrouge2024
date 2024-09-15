@@ -33,7 +33,7 @@ const EditProfilePage = async () => {
             alt="user avatar"
             width={220}
             height={220}
-            className="rounded-full border-2 border-dark-bg my-5"
+            className="rounded-full border-2 border-dark-bg dark:border-white my-5"
           />
         ) : (
           <DefaultUserAvatar className="size-full rounded-full my-5" />
@@ -41,21 +41,21 @@ const EditProfilePage = async () => {
         <div className="items-center justify-center gap-5 w-full max-w-[500px] mx-auto">
           <form className="flex flex-col gap-5 mt-2" action={updateUserProfile}>
             <input
-              className="p-2 border-2 rounded-lg"
+              className="p-2 border-2 rounded-lg border-dark-bg dark:border-white"
               type="text"
               name="username"
               defaultValue={username as string}
               placeholder="Username"
             />
             <input
-              className="p-2 border-2 rounded-lg"
+              className="p-2 border-2 rounded-lg border-dark-bg dark:border-white"
               type="text"
               name="image"
               defaultValue={image as string}
               placeholder="Le URL de ta photo"
             />
             <textarea
-              className="p-2 resize-none border-2 rounded-lg"
+              className="p-2 border-2 rounded-lg border-dark-bg dark:border-white"
               name="description"
               rows={6}
               maxLength={300}

@@ -49,6 +49,22 @@ footer a:hover {
   @apply pt-[60px] sm:pt-[100px]  h-full;
 }
 
+/* ============= Profile view ============= */
+/* TODO: copiar el comportamiento pero hacerlo desde js porque asi no termina de funcionar... */
+.animate-profile-card {
+  animation-name: rotateAnimation;
+  animation-duration: 1ms; /* Firefox requires this to apply the animation */
+  animation-direction: alternate;
+  animation-timeline: scroll(y root);
+}
+@keyframes rotateAnimation {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(calc(100% - 20vh));
+  }
+}
 /* ========== Home page scroll animation ========== */
 
 /* dashboard nav */
