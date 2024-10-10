@@ -56,7 +56,7 @@ export const ConversationsList = ({
         }}
         initial="hidden"
         animate="show"
-        className="no-scrollbar flex flex-col gap-2 overflow-y-scroll h-[75vh] w-full"
+        className="no-scrollbar conversation-list-container flex flex-col gap-2 overflow-y-scroll  w-full pb-16 sm:pb-5"
       >
         {conversations.map((conversation) => (
           <motion.li

@@ -53,10 +53,10 @@ export default function MessagePage({
   };
 
   return (
-    <section className="min-h-[90%] w-full flex items-start justify-start">
+    <section className="main-container-messages min-h-full mb-5 w-full flex items-start justify-start">
       {/* conversations section */}
       <div
-        className={`${currentConversation ? 'hidden' : 'flex'} mx-auto max-w-[500px] lg:flex flex-col gap-2 w-screen lg:w-[40%] h-[95%] p-3 lg:border-r `}
+        className={`${currentConversation ? 'hidden' : 'flex'} mx-auto max-w-[500px] lg:flex flex-col gap-2 w-screen lg:w-[40%] p-3 lg:border-r`}
       >
         <div className="flex w-full items-center justify-between px-5 pb-2 border-b">
           <h2 className="text-2xl">Chats</h2>
@@ -100,7 +100,7 @@ export default function MessagePage({
         </div>
       ) : (
         <div
-          className={`${currentConversation ? 'flex' : 'hidden'} lg:flex flex-col items-start justify-between px-2  pb-5 sm:pb-0 w-full h-[80vh] lg:h-[83vh]`}
+          className={`messages-container ${currentConversation ? 'flex' : 'hidden'} lg:flex flex-col items-start justify-between px-2  pb-5 sm:pb-0 w-full`}
         >
           {/* conversation header */}
           <div className="flex items-start justify-between gap-2 w-full px-2 pt-3 border-b ">

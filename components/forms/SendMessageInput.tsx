@@ -3,7 +3,7 @@ import IconWrapper from '../ui/IconWrapper';
 
 export const SendMessageInput: React.FC = () => {
   return (
-    <div className=" flex w-full mt-2 items-center justify-center">
+    <div className=" flex w-full max-w-[900px] mt-2 items-center justify-center">
       <textarea
         aria-label="message input"
         cols={3}

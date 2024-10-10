@@ -6,7 +6,7 @@ body {
   font-size: 1.2rem;
 }
 
-/* used to disable the scroll on the page when the modal is open */
+/* Used to disable the scroll on the page when the modal is open */
 .no-scroll {
   overflow: hidden;
   position: fixed;
@@ -43,14 +43,34 @@ footer a:hover {
 
 /* ============= Dashboard layout ============= */
 .dashboard-main {
-  @apply min-h-dvh w-full pt-2 flex flex-col gap-2 bg-light-ciel dark:bg-dark-bg;
+  @apply min-h-screen w-full pt-2 flex flex-col gap-2 bg-light-ciel dark:bg-dark-bg;
 }
 .dashboard-children {
-  @apply pt-[60px] sm:pt-[100px]  h-full;
+  min-height: calc(100vh - 44px);
+  @apply pt-[60px] sm:pt-[80px];
+}
+
+/* ============= Messages view ============= */
+/* include the left and right sections of the view */
+/* height applied whitout tailwind becose calc() is necesary */
+.main-container-messages {
+  /* 100vh - main navbar - user navbar  */
+  min-height: calc(100vh - 44px - 60px);
+}
+.main-container-messages .messages-container {
+  height: calc(100vh - 44px - 120px);
+}
+.main-container-messages .conversation-list-container {
+  height: calc(100vh - 44px - 160px);
+}
+@media screen and (min-width: 768px) {
+  .main-container-messages .messages-container {
+    height: calc(100vh - 44px - 100px);
+  }
 }
 
 /* ============= Profile view ============= */
-/* TODO: copiar el comportamiento pero hacerlo desde js porque asi no termina de funcionar... */
+/* TODO: Copy the behavior but do it from JS because this way it doesn't work completely... */
 .animate-profile-card {
   animation-name: rotateAnimation;
   animation-duration: 1ms; /* Firefox requires this to apply the animation */
@@ -67,7 +87,7 @@ footer a:hover {
 }
 /* ========== Home page scroll animation ========== */
 
-/* dashboard nav */
+/* Dashboard nav */
 @keyframes disappearInScroll {
   from {
     opacity: 1;
@@ -85,7 +105,7 @@ footer a:hover {
   animation-duration: 1ms; /* Firefox requires this to apply the animation */
 }
 
-/* can't use this animation with tailwind besause animation-timeline is not suported by tailwind */
+/* Can't use this animation with Tailwind because animation-timeline is not supported by Tailwind */
 @keyframes appear {
   from {
     opacity: 0;
@@ -108,9 +128,9 @@ footer a:hover {
 
 /* ============ SVG styles ============= */
 
-/* used to change the color of the svg images acording to the theme (only solution to evit 'use client') */
+/* Used to change the color of the SVG images according to the theme (only solution to avoid 'use client') */
 
-/* homeImage (first section of the page)*/
+/* homeImage (first section of the page) */
 .path-home-image {
   @apply fill-light-blue dark:fill-dark-green;
 }
