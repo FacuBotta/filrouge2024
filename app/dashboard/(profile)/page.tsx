@@ -30,10 +30,10 @@ const DashboardPage: React.FC = async () => {
   // console.log('userAuthenticated from dashboard profile page', userTasks);
 
   return (
-    <section className="h-full px-2 w-full max-w-[1300px] mx-auto flex flex-col sm:!flex-row  justify-start gap-5  divide-y sm:divide-y-0 sm:divide-x my-auto">
+    <section className=" main-container-profile-page overflow-hidden px-2 w-full max-w-[1300px] mx-auto flex flex-col sm:!flex-row  justify-start gap-5  divide-y sm:divide-y-0 sm:divide-x my-auto">
       {/* profile section - left side */}
-      <div className="w-full sm:w-[40%] min-h-full overflow-hidden">
-        <div className="animate-profile-card flex flex-col items-center justify-center mt-[50px] pt-5 gap-2 ">
+      <div className="w-full sm:w-[30%] min-h-full overflow-hidden">
+        <div className="flex flex-col items-center justify-center mt-[50px] pt-5 gap-2 ">
           {/* class relative to control the position of the edit button */}
           <div className="relative">
             <Link aria-label="Éditer profile" href="/dashboard/edit-profile">
@@ -101,7 +101,7 @@ const DashboardPage: React.FC = async () => {
         </div>
       </div>
       {/* right side */}
-      <div className=" flex flex-col w-full sm:w-[70%] text-center sm:text-left gap-5 lg:gap-10 pb-10 px-2 sm:px-5">
+      <div className="no-scrollbar overflow-y-scroll flex flex-col w-full sm:w-[70%] text-center sm:text-left gap-5 lg:gap-10 pb-10 px-2 sm:px-5">
         <div>
           <h1 className="font-bold text-2xl mb-5">Mes notes</h1>
           <TasksProfile tasks={userTasks} />

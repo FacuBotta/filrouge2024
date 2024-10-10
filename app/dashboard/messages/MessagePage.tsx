@@ -77,16 +77,16 @@ export default function MessagePage({
       {/* default content when no conversation is selected */}
 
       {!currentConversation ? (
-        <div className="hidden lg:flex items-center justify-center w-full h-[80vh]">
-          <div className="flex flex-wrap w-full max-w-[700px] h-full max-h-[500px] justify-center">
-            <div className="flex flex-col items-center mb-5">
-              <h1 className="text-center text-3xl font-semibold mb-4">
+        <div className="hidden lg:flex items-center justify-center w-full my-auto  ">
+          <div className="flex flex-wrap w-full max-w-[900px] justify-center">
+            <div className="flex flex-col items-center mb-5 ">
+              <h1 className="text-center text-3xl lg:text-4xl font-semibold mb-4">
                 👋 Bienvenue sur votre système de messagerie !
               </h1>
-              <h2 className="text-center mb-2">
+              <h2 className="text-center mb-2 lg:text-2xl lg:mb-5">
                 Sélectionnez ou créez une conversation pour commencer 🚀
               </h2>
-              <p className="text-center text-lg font-extralight">
+              <p className="text-center text-lg lg:text-2xl font-extralight">
                 🌟 Ici, vous pouvez gérer toutes vos conversations en un seul
                 endroit. Communiquez, partagez vos idées et résolvez des
                 problèmes rapidement. La communication n'a jamais été aussi

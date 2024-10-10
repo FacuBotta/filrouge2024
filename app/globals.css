@@ -70,10 +70,18 @@ footer a:hover {
 }
 
 /* ============= Profile view ============= */
+.main-container-profile-page {
+  height: 100%;
+}
+@media screen and (min-width: 768px) {
+  .main-container-profile-page {
+    max-height: calc(100vh - 44px - 120px);
+  }
+}
 /* TODO: Copy the behavior but do it from JS because this way it doesn't work completely... */
-.animate-profile-card {
+/* .animate-profile-card {
   animation-name: rotateAnimation;
-  animation-duration: 1ms; /* Firefox requires this to apply the animation */
+  animation-duration: 1ms; 
   animation-direction: alternate;
   animation-timeline: scroll(y root);
 }
@@ -84,7 +92,7 @@ footer a:hover {
   to {
     transform: translateY(calc(100% - 20vh));
   }
-}
+} */
 /* ========== Home page scroll animation ========== */
 
 /* Dashboard nav */
