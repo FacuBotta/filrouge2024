@@ -5,7 +5,7 @@ import IconWrapper from '../ui/IconWrapper';
 export default function Footer() {
   // TODO: update links
   return (
-    <footer className="flex flex-col min-h-[70vh] min-w-full items-center p-4 lg:py-24 bg-dark-grey dark:bg-dark-green">
+    <footer className="flex flex-col min-h-[70vh] min-w-full items-center p-4 lg:py-24 bg-dark-grey dark:bg-dark-green ">
       <div className="w-full flex gap-5 flex-wrap items-start justify-center sm:items-start">
         <div className="w-full max-w-[550px] lg:w-[60%] flex justify-center">
           <FooterImage />

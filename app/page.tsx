@@ -14,7 +14,7 @@ export default async function Home() {
   const isAuthenticated = await checkIsAuthenticated();
   return (
     <main className="flex min-h-screen flex-col select-none">
-      <section className="animate flex items-center justify-center w-full min-h-screen bg-light-ciel dark:bg-dark-bg snap-start ">
+      <section className="animate flex items-center justify-center w-full min-h-screen bg-light-ciel dark:bg-dark-bg snap-start  ">
         <div className="flex h-full w-[90%] m-auto items-center justify-center text-center lg:!text-start">
           <div className="text-dark-bg dark:text-dark-grey lg:mr-10 sm:w-[70%] lg:w-[40%] max-w-[500px] ">
             <h1 className="text-[60px] mt-[-20px] sm:text-[80px] font-bold text-nowrap dark:text-dark-greenLight">
@@ -51,7 +51,7 @@ export default async function Home() {
           <HomeImage className="hidden lg:block w-[500px] h-full" />
         </div>
       </section>
-      <section className="animate flex flex-col p-5 items-center justify-center w-full min-h-screen bg-light-red dark:bg-dark-bg snap-start scroll-mt-20 sm:scroll-mt-0">
+      <section className="animate flex flex-col p-5 items-center justify-center w-full min-h-screen bg-light-red dark:bg-dark-bg snap-start  scroll-mt-20 sm:scroll-mt-0">
         <h1 className="text-3xl sm:text-6xl font-bold mb-8 dark:text-dark-greenLight">
           Catégories
         </h1>
