@@ -26,14 +26,11 @@ const DashboardPage: React.FC = async () => {
     id as string
   );
 
-  // console.log('userAuthenticated from dashboard profile page', userEvents);
-  // console.log('userAuthenticated from dashboard profile page', userTasks);
-
   return (
-    <section className=" main-container-profile-page overflow-hidden px-2 w-full max-w-[1300px] mx-auto flex flex-col sm:!flex-row  justify-start gap-5  divide-y sm:divide-y-0 sm:divide-x my-auto">
+    <section className="main-container-profile-page overflow-hidden px-2 w-full max-w-[1500px] mx-auto flex flex-col sm:!flex-row justify-start gap-5  divide-y sm:divide-y-0 sm:divide-x my-auto">
       {/* profile section - left side */}
-      <div className="w-full sm:w-[30%] min-h-full overflow-hidden">
-        <div className="flex flex-col items-center justify-center mt-[50px] pt-5 gap-2 ">
+      <div className="w-full sm:w-[30%] min-h-full overflow-hidden flex">
+        <div className="flex flex-col items-center justify-center mt-[50px] pt-5 gap-2">
           {/* class relative to control the position of the edit button */}
           <div className="relative">
             <Link aria-label="Éditer profile" href="/dashboard/edit-profile">

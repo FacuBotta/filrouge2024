@@ -18,7 +18,7 @@ const EditProfilePage = async () => {
 
   return (
     <Backdrop>
-      <div className="flex flex-col items-center justify-center p-10 mt-[150px] sm:mt-[180px] mb-5 w-full max-w-[900px] mx-2 bg-light-ciel dark:bg-dark-bg relative rounded-xl border-2 border-dark-bg ">
+      <div className="flex flex-col items-center justify-center p-10 mt-[150px] sm:mt-[180px] mb-5 w-full max-w-[900px] mx-2 bg-light-ciel relative rounded-xl border-2 border-light-yellow dark:bg-dark-bg ">
         <Link href="/dashboard">
           <IconWrapper
             type="plus"

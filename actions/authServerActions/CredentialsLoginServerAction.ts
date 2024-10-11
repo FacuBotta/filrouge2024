@@ -10,23 +10,37 @@ export const handleCredentialsSignIn = async (formData: FormData) => {
   try {
     const user = await selectUserByMail(email);
     if (!user) {
-      return { ok: false, typeError: 'email', message: 'Cet email n\'est pas associé à un compte' };
+      return {
+        ok: false,
+        typeError: 'email',
+        message: "Cet email n'est pas associé à un compte",
+      };
     }
-    const matchPassword = await checkPassword(password, user.password as string);
+    const matchPassword = await checkPassword(
+      password,
+      user.password as string
+    );
     if (!matchPassword) {
-      return { ok: false, typeError: 'password', message: 'Mot de passe incorrect' };
+      return {
+        ok: false,
+        typeError: 'password',
+        message: 'Mot de passe incorrect',
+      };
     }
     const credentials = {
       id: user.id as string,
-      name: user.name as string || null,
+      name: (user.name as string) || null,
       email: user.email as string,
-      image: user.image as string || null
+      image: (user.image as string) || null,
     };
 
     const response = await signIn('credentials', credentials);
     return response;
   } catch (error) {
     console.error('error in handleCredentialsSignIn', error);
-    return { ok: false, message: 'Une erreur est survenue, veuillez réessayer' };
+    return {
+      ok: false,
+      message: 'Une erreur est survenue, veuillez réessayer',
+    };
   }
 };

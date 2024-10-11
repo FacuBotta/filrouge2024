@@ -44,11 +44,11 @@ const SliderHome: React.FC = () => {
 
   return (
     <div
-      className="w-full max-w-[1000px] mx-auto h-[70vh] sm:h-[40vh] lg:h-[50vh]"
+      className="w-full max-w-[1000px] mx-auto h-[70vh] xl:h-[50vh] "
       onMouseEnter={stopAutoSlide}
       onMouseLeave={startAutoSlide}
     >
-      <div className="relative overflow-hidden w-full h-full">
+      <div className="relative overflow-hidden w-full h-full  ">
         <div
           id="slider-category"
           className="flex h-full w-full overflow-x-scroll overflow-y-hidden no-scrollbar snap-x snap-mandatory"
@@ -63,14 +63,18 @@ const SliderHome: React.FC = () => {
               style={{ minWidth: '100%' }}
             >
               <article className="text-wrap text-center sm:text-left w-full sm:max-w-[50%] mt-5 sm:ml-5">
-                <h2 className="text-xl sm:text-3xl font-bold mb-5">
+                <h2 className="hidden sm:block text-xl sm:text-3xl font-bold mb-5">
                   {slide.title}
                 </h2>
                 <p className="sm:px-5">{slide.content}</p>
               </article>
-              <div className=" sm:flex items-end sm:h-full w-full sm:w-[50%]">
+              <div className=" sm:flex items-end sm:h-full w-full sm:w-[40%]  ">
                 {slide.image}
               </div>
+              {/* Show the title over the image only on mobile */}
+              <h2 className="sm:hidden text-2xl font-bold mb-5 text-center mx-auto">
+                {slide.title}
+              </h2>
             </div>
           ))}
         </div>

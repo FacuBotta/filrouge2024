@@ -30,7 +30,7 @@ export default function ThemeSwitcher() {
       <Icon
         className="active:scale-95"
         strokeWidth={2}
-        type={currentTheme === 'dark' ? 'lightTheme' : 'darkTheme'}
+        type={currentTheme === 'dark' ? 'sun' : 'moon'}
         width={25}
       />
     </div>
