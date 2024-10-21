@@ -16,21 +16,7 @@ import { redirect } from 'next/navigation';
 import React from 'react';
 
 export default async function EventsPage() {
-  const userAuthenticated = await checkIsAuthenticated();
-  if (!userAuthenticated) {
-    redirect('/login');
-  }
-  if (userAuthenticated && !userAuthenticated.password) {
-    redirect('/set-password');
-  }
   const allEvents: Category[] = await selectAllEvents();
 
-  return (
-    <main className="dashboard-main">
-      <DashboardNav userAuthenticated={userAuthenticated} />
-      <div className="dashboard-children">
-        <AllEventsPage events={allEvents} />
-      </div>
-    </main>
-  );
+  return <AllEventsPage events={allEvents} />;
 }

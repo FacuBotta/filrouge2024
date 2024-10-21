@@ -1,6 +1,12 @@
 export default function EducationImage() {
   return (
-    <svg viewBox="0 0 216 156" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      viewBox="0 0 216 156"
+      fill="none"
+      width="193"
+      height="163"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <g clipPath="url(#clip0_293_1204)">
         <path
           d="M137.646 116.948V154.554H43.0883C32.3148 154.554 23.5493 146.119 23.5493 135.751C23.5493 125.383 32.3147 116.948 43.0883 116.948H137.646Z"

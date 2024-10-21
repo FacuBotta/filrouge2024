@@ -196,6 +196,7 @@ model Events {
   description String? @db.Text
   eventStart  DateTime
   eventEnd    DateTime
+  isPublic    Boolean  @default(false)
   
 
   createdAt DateTime @default(now())
