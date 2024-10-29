@@ -187,7 +187,8 @@ model UserEvents {
 
   @@id([userId, eventId])
 }
-
+// TODO: agregar el campo isPublic
+// TODO: agregar el campo para la imagen
 model Events {
   id          String   @id @default(cuid())
   userId      String
@@ -198,7 +199,6 @@ model Events {
   eventEnd    DateTime
   isPublic    Boolean  @default(false)
   
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
