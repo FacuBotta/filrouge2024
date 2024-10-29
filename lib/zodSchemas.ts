@@ -32,7 +32,7 @@ export const newEventSchema = z.object({
   title: z
     .string()
     .max(100, { message: 'Le titre doit être de 100 caractères maximum' }),
-  category: z.string(),
+  categoryId: z.string(),
   isPublic: z.boolean(),
   eventStart: z.string().refine(
     (value) => {
@@ -62,6 +62,6 @@ export const newEventSchema = z.object({
     .max(1000, {
       message: 'La description doit être de 1000 caractères maximum',
     }),
-  // participants: z.array(z.string()).optional(),
 });
+// participants: z.array(z.string()).optional(),
 // TODO: ADD EDIT PROFILE SCHEMA

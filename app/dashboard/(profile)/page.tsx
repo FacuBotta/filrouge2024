@@ -107,12 +107,7 @@ const DashboardPage: React.FC = async () => {
         <div className="flex flex-col gap-5">
           <h1 className="font-bold text-2xl">Mes événements crées</h1>
           {userEventsCreated?.length === 0 ? (
-            <>
-              <p>Vous n'avez pas encore créé d'événement</p>
-              <Link href={'/events'}>
-                <Button>Creer un événement 📅</Button>
-              </Link>
-            </>
+            <p>Vous n'avez pas encore créé d'événement</p>
           ) : (
             userEventsCreated.map((event: Events, index: number) => (
               <div
@@ -124,6 +119,12 @@ const DashboardPage: React.FC = async () => {
               </div>
             ))
           )}
+          <Link
+            className="inline-flex items-center justify-center w-fit px-4 py-1 border-2 text-lg rounded-lg bg-light-yellow text-dark-bg font-bold border-dark-bg hover:scale-105 hover:shadow-lg  transition-transform duration-300 ease-in-out "
+            href={'/events/new'}
+          >
+            Creer un événement 📅
+          </Link>
           <h1 className="font-bold text-2xl">Mes événements a venir</h1>
           {userEventsJoined?.length === 0 ? (
             <div>
@@ -141,8 +142,11 @@ const DashboardPage: React.FC = async () => {
               </div>
             ))
           )}
-          <Link href={'/events'}>
-            <Button>Découvrir les événements 🚀</Button>
+          <Link
+            className="inline-flex items-center justify-center w-fit px-4 py-1 border-2 text-lg rounded-lg bg-light-yellow text-dark-bg font-bold border-dark-bg hover:scale-105 hover:shadow-lg  transition-transform duration-300 ease-in-out "
+            href={'/events'}
+          >
+            Découvrir les événements 🚀
           </Link>
           <h1 className="font-bold text-2xl">Mes avis</h1>
           <p className="text-balance text-center mx-auto">

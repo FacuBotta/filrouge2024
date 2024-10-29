@@ -7,11 +7,13 @@ import { Input } from 'facu-ui';
 import Link from 'next/link';
 import React, { useState, useTransition } from 'react';
 import { z } from 'zod';
+import { createEvent } from '@/actions/eventsServerActions/createEvent';
+import { Category } from '@prisma/client';
 
 export const NewEventPage = ({
   availableCategories,
 }: {
-  availableCategories: string[];
+  availableCategories: Category[];
 }) => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState({
@@ -34,19 +36,20 @@ export const NewEventPage = ({
 
     const formData = new FormData(e.currentTarget);
 
-    const inputsData = {
+    const eventData = {
       title: formData.get('title') as string,
-      category: formData.get('category') as string,
+      categoryId: formData.get('category') as string,
       isPublic: formData.get('isPublic') === 'on',
       eventStart: formData.get('eventStart') as string,
       eventEnd: formData.get('eventEnd') as string,
       description: formData.get('description') as string,
       participants: formData.get('participants') as string,
     };
-    console.log(inputsData);
 
     try {
-      newEventSchema.parse(inputsData);
+      newEventSchema.parse(eventData);
+      const response = await createEvent(eventData);
+      console.log(response);
     } catch (err) {
       if (err instanceof z.ZodError) {
         err.errors.forEach((error) => {
@@ -55,7 +58,6 @@ export const NewEventPage = ({
             ...prevError,
             [field]: { message: error.message, value: true },
           }));
-          console.log(field, error);
         });
       } else {
         console.log(err);
@@ -73,6 +75,7 @@ export const NewEventPage = ({
             className="transform rotate-45 absolute right-[10px] top-[10px]"
           />
         </Link>
+        {/* TODO: agregar el campo para la imagen */}
         <h1 className="text-2xl mb-5">Créer un éventement 🚀</h1>
         <form className="flex flex-col w-full gap-5" onSubmit={handleSubmit}>
           <Input
@@ -95,12 +98,9 @@ export const NewEventPage = ({
                 className="p-2 border-2 rounded-lg border-dark-bg dark:border-white"
                 name="category"
               >
-                {availableCategories.map((category: string) => (
-                  <option
-                    key={category}
-                    value={category.toLowerCase().replaceAll(' ', '-')}
-                  >
-                    {category}
+                {availableCategories.map((category: Category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.title}
                   </option>
                 ))}
               </select>
