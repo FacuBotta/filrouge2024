@@ -2,7 +2,7 @@
 
 import React, { useState, useTransition } from 'react';
 import { handleGoogleSignIn } from '@/actions/authServerActions/googleSignInServerAction';
-import { handleEmailSignIn } from '@/actions/authServerActions/emailSignInServerAction';
+import { emailSignInServerAction } from '@/actions/authServerActions/emailSignInServerAction';
 import { handleCredentialsSignIn } from '@/actions/authServerActions/CredentialsLoginServerAction';
 import { useRouter } from 'next/navigation';
 import { Icon, Input } from 'facu-ui';
@@ -94,6 +94,7 @@ export default function LogForm() {
       console.error(error);
     }
   };
+
   // Sign up with email
   const handleSignUpSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -118,7 +119,7 @@ export default function LogForm() {
     try {
       loginSchema.parse({ email });
       startTransition(async () => {
-        const result = await handleEmailSignIn(email as string);
+        const result = await emailSignInServerAction(email as string);
         if (!result?.ok) {
           console.log(result);
           setError({
@@ -130,7 +131,7 @@ export default function LogForm() {
     } catch (error) {
       if (error instanceof z.ZodError) {
         error.errors.forEach((error) => {
-          const field = error.path[0]; // Take the first error field
+          const field = error.path[0];
           if (field === 'email') {
             console.log(error);
             setError((prevError) => ({

@@ -9,16 +9,11 @@ export default async function Header() {
 
   return (
     <>
-      <input
-        type="checkbox"
-        id="menu-toggle"
-        className="hidden peer checked+label:text-red-300"
-      />
-      <header className="sticky z-50 top-0 min-w-full max-h-[44px] sm:max-h-none flex justify-between sm:items-end select-none px-5 border-b-[1px] border-dark-bg dark:border-light-yellow bg-light-ciel/95  dark:bg-dark-bg/95 overflow-hidden transition-[max-height] duration-500 ease-in-out peer-checked:max-h-[500px]">
+      <input type="checkbox" id="menu-toggle" className="hidden peer" />
+      <header className="sticky z-50 top-0 min-w-full sm:max-h-none sm:items-end flex justify-between overflow-hidden max-h-[44px] transition-[max-height] duration-500 ease-in-out peer-checked:max-h-[500px] select-none px-5 border-b-[1px] border-dark-bg dark:border-light-yellow bg-light-ciel/95 dark:bg-dark-bg/95 ">
         <ThemeSwitcher />
         <nav>
           <div className="flex flex-col items-end">
-            {/* TODO: Add active class to label when menu is open to change color */}
             <label
               id="menu-label"
               htmlFor="menu-toggle"
@@ -50,3 +45,6 @@ export default async function Header() {
     </>
   );
 }
+
+//  por que no max-h-fit? porque la transicion no funciona con max-h-fit, css necesita un valor para poder hacer la transicion...
+// podria lograrse con la propiedad calc() de CSS pero no tiene soporte para todos los navegadores.

@@ -1,7 +1,5 @@
-import { user } from '@nextui-org/react';
 import { z } from 'zod';
 
-// Definimos una expresión regular que permite solo dominios específicos.
 const validEmailDomains = [
   'gmail.com',
   'yahoo.com',
@@ -9,11 +7,9 @@ const validEmailDomains = [
   'outlook.com',
 ];
 
-// Convertimos el arreglo de dominios en una expresión regular.
 const domainRegex = validEmailDomains.join('|');
 const emailRegex = new RegExp(`^[a-zA-Z0-9._%+-]+@(${domainRegex})$`);
 
-// Esquema de validación de correo electrónico
 export const loginSchema = z.object({
   email: z
     .string()
@@ -25,7 +21,9 @@ export const loginSchema = z.object({
 });
 
 export const signUpSchema = z.object({
-  email: z.string().email({ message: 'Correo electrónico inválido' }),
+  email: z
+    .string()
+    .email({ message: 'Veuillez utiliser une adresse e-mail valide' }),
 });
 
 export const newEventSchema = z.object({

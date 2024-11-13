@@ -147,12 +147,12 @@ model Reports {
   @@index([reporterId])
   @@index([reportedId])
 }
-
+// TODO agregar la relacion con el report para saber por que esta en trash
 model Trash {
   id         String   @id @default(cuid())
   userId     String
   eventId    String
-  reason     String
+  reason     String // no sera necesario cuando se agregue la relacion con el report
   reportedAt DateTime
 
   user  User   @relation(fields: [userId], references: [id])
