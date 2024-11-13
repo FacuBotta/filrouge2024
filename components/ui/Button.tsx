@@ -20,7 +20,7 @@ export default function Button({
       type={type || 'button'}
       style={{ width: width || 'fit-content' }}
       onClick={onClick}
-      className="inline-flex items-center justify-center px-4 py-1 border-2 text-lg rounded-lg bg-light-yellow text-dark-bg font-bold border-dark-bg hover:scale-105 hover:shadow-lg  transition-transform duration-300 ease-in-out "
+      className="inline-flex items-center justify-center px-4 py-1 border-2 text-lg rounded-lg bg-light-yellow text-dark-bg font-bold border-dark-bg hover:shadow-lg  transition-transform duration-300 ease-in-out "
     >
       {children}
     </button>
