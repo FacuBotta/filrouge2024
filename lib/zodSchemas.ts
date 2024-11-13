@@ -20,6 +20,20 @@ export const loginSchema = z.object({
     }),
 });
 
+const passwordRegex =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,30}$/;
+
+export const passwordSchema = z.object({
+  password: z
+    .string()
+    .min(8, { message: 'Le mot de passe doit être de 8 caractères minimum' })
+    .max(30, { message: 'Le mot de passe doit être de 30 caractères maximum' })
+    .regex(passwordRegex, {
+      message:
+        'Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial',
+    }),
+});
+
 export const signUpSchema = z.object({
   email: z
     .string()

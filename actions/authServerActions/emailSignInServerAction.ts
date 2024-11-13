@@ -12,9 +12,13 @@ export async function emailSignInServerAction(email: string) {
     if (user) {
       return { ok: false, message: 'Cet email est déjà associé à un compte' };
     }
-    await signIn('nodemailer', { email, callbackUrl: '/dashboard' });
+    await signIn('nodemailer', {
+      email,
+      callbackUrl: '/dashboard',
+      redirect: false,
+    });
     return { ok: true };
-  } catch (error: any) {
+  } catch (error: unknown) {
     if (error instanceof z.ZodError) {
       const firstError = error.errors[0];
       const field = firstError.path[0];
@@ -22,7 +26,7 @@ export async function emailSignInServerAction(email: string) {
         return { ok: false, message: firstError.message };
       }
     } else {
-      console.error(error);
+      console.error(error); // dev purpose
     }
     return {
       ok: false,

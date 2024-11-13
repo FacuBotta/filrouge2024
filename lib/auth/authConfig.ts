@@ -4,6 +4,8 @@ import { PrismaClient } from '@prisma/client';
 import Google from 'next-auth/providers/google';
 import Nodemailer from 'next-auth/providers/nodemailer';
 import Credentials from 'next-auth/providers/credentials';
+import { createTransport } from 'nodemailer';
+import { html, text } from '../emailTemplate';
 
 const prisma = new PrismaClient();
 
@@ -63,6 +65,21 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         },
       },
       from: process.env.EMAIL_FROM,
+      sendVerificationRequest: async (params) => {
+        const { identifier, url, provider } = params;
+        const transport = createTransport(provider.server);
+        const result = await transport.sendMail({
+          to: identifier,
+          from: provider.from,
+          subject: `Bienvenue sur EventHub !`,
+          text: text({ url }), // This is the text version of the email
+          html: html({ url }), // This is the HTML version of the email
+        });
+        const failed = result.rejected.concat(result.pending).filter(Boolean);
+        if (failed.length) {
+          throw new Error(`Email(s) (${failed.join(', ')}) could not be sent`);
+        }
+      },
     }),
     Credentials({
       name: 'Credentials',
@@ -80,6 +97,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
 });
+
 /* 
 http://localhost:3000/api/auth/callback/nodemailer?callbackUrl=http%3A%2F%2Flocalhost%3A3000%2Flogin&token=99c1c2c206dc1bc459cc046b341da838afd75bdda03d6074b87cb43822cb71b6&email=facundo.botta.dev%40gmail.com
 */

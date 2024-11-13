@@ -19,10 +19,8 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
   if (userAuthenticated && !userAuthenticated.password) {
     redirect('/set-password');
   }
-  // console.log('userAuthenticated from dashboard layout', userAuthenticated);
 
   // set the profile notifications for the user
-
   type Notifications = {
     profile: number;
     messages: number;

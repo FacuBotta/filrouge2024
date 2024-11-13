@@ -29,6 +29,7 @@
     "lib/auth/authConfig.ts",
     "app/api/auth/[...nextauth]",
     "database/seed.mjs"
+    // "app/dashboard/set-password"
   ],
   "exclude": ["node_modules"]
 }
