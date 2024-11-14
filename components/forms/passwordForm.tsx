@@ -10,8 +10,9 @@ import { useRouter } from 'next/navigation';
 
 type PasswordFormProps = {
   id: string;
+  isUpdated: boolean;
 };
-export default function PasswordForm({ id }: PasswordFormProps) {
+export default function PasswordForm({ id, isUpdated }: PasswordFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState({
@@ -87,7 +88,7 @@ export default function PasswordForm({ id }: PasswordFormProps) {
         <p className="text-red-500">{error.password.message}</p>
       ) : null}
       <Button type="submit" disabled={isPending}>
-        Créer mon mot de passe
+        {isUpdated ? 'Modifier mon mot de passe' : 'Créer un mot de passe'}
       </Button>
     </form>
   );

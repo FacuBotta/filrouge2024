@@ -1,4 +1,3 @@
-import PasswordForm from '@/components/forms/passwordForm';
 import { checkIsAuthenticated } from '@/actions/authServerActions/checkIsAuthenticated';
 import { redirect } from 'next/navigation';
 import Backdrop from '@/components/layouts/Backdrop';
@@ -62,14 +61,11 @@ const EditProfilePage = async () => {
               defaultValue={description as string}
               placeholder="Donne une petite description de toi pour partager avec le reste de la communauté! (max 300 caractères)"
             />
-            <Button type="submit" width="100%">
+            <button type="submit" className="primary-btn !w-full">
               Sauvegarder
-            </Button>
+            </button>
           </form>
-          <Link
-            className="w-full flex justify-center"
-            href={'/dashboard/set-password'}
-          >
+          <Link className="w-full flex justify-center" href={'/set-password'}>
             {/* TODO: send email to verify the user before changing the password */}
             Changer de mot de passe
           </Link>

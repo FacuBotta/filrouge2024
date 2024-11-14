@@ -53,7 +53,7 @@ const DashboardPage: React.FC = async () => {
             )}
           </div>
           <h1 className="font-bold text-2xl">{username ? username : email}</h1>
-          {/* TODO: add the points to the user profile */}
+          {/* TODO: arreglar cuando hago hover... */}
           <div className="flex mb-2">
             <IconWrapper
               type="star"
@@ -88,9 +88,9 @@ const DashboardPage: React.FC = async () => {
           ) : (
             <div className="h-[200px] flex items-center justify-center p-2 border-2 border-dark-bg dark:border-white bg-dark-grey/40 rounded-xl">
               <p className="text-center">
-                Il semble que vous n'ayez pas encore ajouté votre bio! Prenez un
-                moment pour compléter votre profil et accéder à toutes les
-                fonctionnalités de l'application. Nous avons hâte de mieux vous
+                Il semble que tu n'as pas encore ajouté ton bio! Prende un
+                moment pour compléter ton profil et accéder à toutes les
+                fonctionnalités de l'application. Nous avons hâte de mieux te
                 connaître!
               </p>
             </div>
@@ -119,10 +119,7 @@ const DashboardPage: React.FC = async () => {
               </div>
             ))
           )}
-          <Link
-            className="inline-flex items-center justify-center w-fit px-4 py-1 border-2 text-lg rounded-lg bg-light-yellow text-dark-bg font-bold border-dark-bg hover:scale-105 hover:shadow-lg  transition-transform duration-300 ease-in-out "
-            href={'/events/new'}
-          >
+          <Link className="primary-btn" href={'/events/new'}>
             Creer un événement 📅
           </Link>
           <h1 className="font-bold text-2xl">Mes événements a venir</h1>
@@ -142,10 +139,7 @@ const DashboardPage: React.FC = async () => {
               </div>
             ))
           )}
-          <Link
-            className="inline-flex items-center justify-center w-fit px-4 py-1 border-2 text-lg rounded-lg bg-light-yellow text-dark-bg font-bold border-dark-bg hover:scale-105 hover:shadow-lg  transition-transform duration-300 ease-in-out "
-            href={'/events'}
-          >
+          <Link className="primary-btn" href={'/events'}>
             Découvrir les événements 🚀
           </Link>
           <h1 className="font-bold text-2xl">Mes avis</h1>
