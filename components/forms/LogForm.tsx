@@ -1,17 +1,16 @@
 'use client';
 
-import React, { useState, useTransition } from 'react';
-import { handleGoogleSignIn } from '@/actions/authServerActions/googleSignInServerAction';
-import { emailSignInServerAction } from '@/actions/authServerActions/emailSignInServerAction';
 import { handleCredentialsSignIn } from '@/actions/authServerActions/CredentialsLoginServerAction';
-import { useRouter } from 'next/navigation';
+import { emailSignInServerAction } from '@/actions/authServerActions/emailSignInServerAction';
+import { handleGoogleSignIn } from '@/actions/authServerActions/googleSignInServerAction';
 import { Icon, Input } from 'facu-ui';
-import Button from '../ui/Button';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import React, { useState, useTransition } from 'react';
+import Button from '../ui/Button';
 
 import { loginSchema } from '@/lib/zodSchemas';
 import { z } from 'zod';
-import { divider } from '@nextui-org/react';
 
 export default function LogForm() {
   const Router = useRouter();
@@ -132,6 +131,7 @@ export default function LogForm() {
       });
       setEmailSent(true);
     } catch (error) {
+      console.log(error);
       if (error instanceof z.ZodError) {
         error.errors.forEach((error) => {
           const field = error.path[0];
@@ -194,7 +194,7 @@ export default function LogForm() {
             placeholder="Email"
             disabled={isPending}
             autoComplete="email"
-            errorStyles={{ color: 'red', fontSize: '1rem' }}
+            // errorStyles={{ color: 'red', fontSize: '1rem' }}
             error={{ message: error.mail?.message, value: error.mail?.value }}
           />
           {formType === 'Sign-In' ? (
@@ -211,7 +211,7 @@ export default function LogForm() {
               placeholder="Password"
               disabled={isPending}
               autoComplete="current-password"
-              errorStyles={{ color: 'red', fontSize: '1rem' }}
+              // errorStyles={{ color: 'red', fontSize: '1rem' }}
               error={{
                 message: error.password?.message,
                 value: error.password?.value,

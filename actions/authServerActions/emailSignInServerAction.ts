@@ -1,9 +1,9 @@
 'use server';
 
 import { signIn } from '@/lib/auth/authConfig';
-import selectUserByMail from '../userServerActions/selectUserByMail';
 import { loginSchema } from '@/lib/zodSchemas';
 import { z } from 'zod';
+import selectUserByMail from '../userServerActions/selectUserByMail';
 
 export async function emailSignInServerAction(email: string) {
   try {

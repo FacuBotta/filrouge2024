@@ -1,16 +1,13 @@
 'use client';
 
-import Button from '@/components/ui/Button';
 import EventCard from '@/components/ui/dashboard/EventCard';
-import CityTourImage from '@/public/images/categoryImages/CityTourImage';
 import { Category, Events } from '@prisma/client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export default function AllEventsPage({ events }: { events: Category[] }) {
   const [clientEvents, setClientEvents] = useState<any>(
     events.filter((category: any) => category.Events.length > 0)
   );
-  console.log(clientEvents);
   const categoryImages: { [key: string]: any } = {
     'city-tours': require('@/public/images/categoryImages/CityTourImage')
       .default,

@@ -1,7 +1,7 @@
 import { UserJoinedEvent } from '@/types/types';
 import { Category, Events } from '@prisma/client';
-import IconWrapper from '../IconWrapper';
 import Link from 'next/link';
+import IconWrapper from '../IconWrapper';
 
 export default function EventCard({
   category,
