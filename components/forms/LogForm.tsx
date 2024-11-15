@@ -156,7 +156,10 @@ export default function LogForm() {
   return (
     <>
       {emailSent ? (
-        <div className="relative flex flex-col text-center items-center gap-3 w-full max-w-md p-5 mx-2 bg-light-blue border rounded-lg border-light-yellow dark:bg-dark-bg">
+        <div
+          id="success-modal"
+          className="relative flex flex-col text-center items-center gap-3 w-full max-w-md p-5 mx-2 bg-light-blue border rounded-lg border-light-yellow dark:bg-dark-bg"
+        >
           <h3 className="text-4xl font-bold mb-5">Mail envoyé !</h3>
           <p className="text-lg">Vérifie ton e-mail pour activer ton compte.</p>
           <p>Tu peux fermer cette page.</p>
