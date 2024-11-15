@@ -1,13 +1,13 @@
 'use server';
 
 import { signIn } from '@/lib/auth/authConfig';
-import { loginSchema } from '@/lib/zodSchemas';
+import { emailSchema } from '@/lib/zodSchemas';
 import { z } from 'zod';
 import selectUserByMail from '../userServerActions/selectUserByMail';
 
 export async function emailSignInServerAction(email: string) {
   try {
-    loginSchema.parse({ email });
+    emailSchema.parse({ email });
     const user = await selectUserByMail(email);
     if (user) {
       return { ok: false, message: 'Cet email est déjà associé à un compte' };

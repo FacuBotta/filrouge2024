@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import React, { useState, useTransition } from 'react';
 import Button from '../ui/Button';
 
-import { loginSchema } from '@/lib/zodSchemas';
+import { emailSchema, passwordSchema } from '@/lib/zodSchemas';
 import { z } from 'zod';
 
 export default function LogForm() {
@@ -48,7 +48,8 @@ export default function LogForm() {
 
     try {
       // Validar los datos de entrada
-      loginSchema.parse(inputsData);
+      emailSchema.parse(inputsData.email);
+      passwordSchema.parse(inputsData.password);
 
       // Llamar a la función de inicio de sesión
       const response = await handleCredentialsSignIn(formData);
@@ -72,14 +73,12 @@ export default function LogForm() {
         err.errors.forEach((error) => {
           const field = error.path[0]; // Tomar el primer campo de error
           if (field === 'email') {
-            console.log(error);
             setError((prevError) => ({
               ...prevError,
               mail: { message: error.message, value: true },
             }));
           }
         });
-        console.log(err);
       } else {
         console.log(err);
       }
@@ -118,7 +117,7 @@ export default function LogForm() {
     const formData = new FormData(e.currentTarget);
     const email = formData.get('email');
     try {
-      loginSchema.parse({ email });
+      emailSchema.parse({ email });
       startTransition(async () => {
         const result = await emailSignInServerAction(email as string);
         if (!result?.ok) {
@@ -127,11 +126,11 @@ export default function LogForm() {
             mail: { message: result?.message as string, value: true },
           });
           return;
+        } else if (result.ok) {
+          setEmailSent(true);
         }
       });
-      setEmailSent(true);
     } catch (error) {
-      console.log(error);
       if (error instanceof z.ZodError) {
         error.errors.forEach((error) => {
           const field = error.path[0];
@@ -260,6 +259,7 @@ export default function LogForm() {
             </>
           )}
           <p
+            id="toggle-form"
             className="text-[1rem] mt-1 cursor-pointer select-none hover:underline"
             onClick={() =>
               setFormType(formType === 'Sign-In' ? 'Sign-Up' : 'Sign-In')

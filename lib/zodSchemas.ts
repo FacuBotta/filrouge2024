@@ -10,13 +10,19 @@ const validEmailDomains = [
 const domainRegex = validEmailDomains.join('|');
 const emailRegex = new RegExp(`^[a-zA-Z0-9._%+-]+@(${domainRegex})$`);
 
-export const loginSchema = z.object({
+const emailErrorMessages = {
+  domainError:
+    "Veuillez utiliser une adresse e-mail d'un fournisseur connu (Gmail, Yahoo, etc.)",
+  existError: 'Cet email est déjà associé à un compte',
+  formatError: 'Adresse e-mail invalide',
+};
+
+export const emailSchema = z.object({
   email: z
     .string()
-    .email({ message: 'Adresse e-mail invalide' })
+    .email({ message: emailErrorMessages.formatError })
     .regex(emailRegex, {
-      message:
-        "Veuillez utiliser une adresse e-mail d'un fournisseur connu (Gmail, Yahoo, etc.)",
+      message: emailErrorMessages.domainError,
     }),
 });
 
