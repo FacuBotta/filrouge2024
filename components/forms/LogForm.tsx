@@ -1,17 +1,15 @@
 'use client';
 
-import React, { useState, useTransition } from 'react';
-import { handleGoogleSignIn } from '@/actions/authServerActions/googleSignInServerAction';
-import { emailSignInServerAction } from '@/actions/authServerActions/emailSignInServerAction';
 import { handleCredentialsSignIn } from '@/actions/authServerActions/CredentialsLoginServerAction';
-import { useRouter } from 'next/navigation';
-import { Icon, Input } from 'facu-ui';
-import Button from '../ui/Button';
-import Link from 'next/link';
-
+import { emailSignInServerAction } from '@/actions/authServerActions/emailSignInServerAction';
+import { handleGoogleSignIn } from '@/actions/authServerActions/googleSignInServerAction';
 import { loginSchema } from '@/lib/zodSchemas';
+import { Icon, Input } from 'facu-ui';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import React, { useState, useTransition } from 'react';
 import { z } from 'zod';
-import { divider } from '@nextui-org/react';
+import Button from '../ui/Button';
 
 export default function LogForm() {
   const Router = useRouter();
@@ -194,7 +192,6 @@ export default function LogForm() {
             placeholder="Email"
             disabled={isPending}
             autoComplete="email"
-            errorStyles={{ color: 'red', fontSize: '1rem' }}
             error={{ message: error.mail?.message, value: error.mail?.value }}
           />
           {formType === 'Sign-In' ? (
@@ -211,7 +208,6 @@ export default function LogForm() {
               placeholder="Password"
               disabled={isPending}
               autoComplete="current-password"
-              errorStyles={{ color: 'red', fontSize: '1rem' }}
               error={{
                 message: error.password?.message,
                 value: error.password?.value,

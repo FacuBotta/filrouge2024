@@ -1,8 +1,8 @@
 'use server';
 
-import { newEventSchema } from '@/lib/zodSchemas';
-import prisma from '@/lib/prisma';
 import { auth } from '@/lib/auth/authConfig';
+import prisma from '@/lib/prisma';
+import { newEventSchema } from '@/lib/zodSchemas';
 import { Events } from '@prisma/client';
 export const createEvent = async (event: any) => {
   const session = await auth();

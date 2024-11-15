@@ -1,7 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
-
 async function main() {
   const numberOfUsers = 10;
   for (let i = 0; i < numberOfUsers; i++) {
@@ -14,7 +13,7 @@ async function main() {
       },
     });
   }
-  console.log('Seeded users');
+  console.log(`Seeded users `);
 }
 
 async function seedCategories() {

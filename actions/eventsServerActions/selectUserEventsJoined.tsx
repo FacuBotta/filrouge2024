@@ -1,6 +1,5 @@
 import prisma from '@/lib/prisma';
 import { UserJoinedEvent } from '@/types/types';
-import { Events } from '@prisma/client';
 
 export const selectUserEventsJoined = async (
   userId: string
