@@ -3,13 +3,14 @@
 import { handleCredentialsSignIn } from '@/actions/authServerActions/CredentialsLoginServerAction';
 import { emailSignInServerAction } from '@/actions/authServerActions/emailSignInServerAction';
 import { handleGoogleSignIn } from '@/actions/authServerActions/googleSignInServerAction';
-import { loginSchema } from '@/lib/zodSchemas';
 import { Icon, Input } from 'facu-ui';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState, useTransition } from 'react';
-import { z } from 'zod';
 import Button from '../ui/Button';
+
+import { emailSchema, passwordSchema } from '@/lib/zodSchemas';
+import { z } from 'zod';
 
 export default function LogForm() {
   const Router = useRouter();
@@ -47,7 +48,8 @@ export default function LogForm() {
 
     try {
       // Validar los datos de entrada
-      loginSchema.parse(inputsData);
+      emailSchema.parse(inputsData.email);
+      passwordSchema.parse(inputsData.password);
 
       // Llamar a la función de inicio de sesión
       const response = await handleCredentialsSignIn(formData);
@@ -71,14 +73,12 @@ export default function LogForm() {
         err.errors.forEach((error) => {
           const field = error.path[0]; // Tomar el primer campo de error
           if (field === 'email') {
-            console.log(error);
             setError((prevError) => ({
               ...prevError,
               mail: { message: error.message, value: true },
             }));
           }
         });
-        console.log(err);
       } else {
         console.log(err);
       }
@@ -117,7 +117,7 @@ export default function LogForm() {
     const formData = new FormData(e.currentTarget);
     const email = formData.get('email');
     try {
-      loginSchema.parse({ email });
+      emailSchema.parse({ email });
       startTransition(async () => {
         const result = await emailSignInServerAction(email as string);
         if (!result?.ok) {
@@ -126,9 +126,10 @@ export default function LogForm() {
             mail: { message: result?.message as string, value: true },
           });
           return;
+        } else if (result.ok) {
+          setEmailSent(true);
         }
       });
-      setEmailSent(true);
     } catch (error) {
       if (error instanceof z.ZodError) {
         error.errors.forEach((error) => {
@@ -155,7 +156,10 @@ export default function LogForm() {
   return (
     <>
       {emailSent ? (
-        <div className="relative flex flex-col text-center items-center gap-3 w-full max-w-md p-5 mx-2 bg-light-blue border rounded-lg border-light-yellow dark:bg-dark-bg">
+        <div
+          id="success-modal"
+          className="relative flex flex-col text-center items-center gap-3 w-full max-w-md p-5 mx-2 bg-light-blue border rounded-lg border-light-yellow dark:bg-dark-bg"
+        >
           <h3 className="text-4xl font-bold mb-5">Mail envoyé !</h3>
           <p className="text-lg">Vérifie ton e-mail pour activer ton compte.</p>
           <p>Tu peux fermer cette page.</p>
@@ -192,6 +196,7 @@ export default function LogForm() {
             placeholder="Email"
             disabled={isPending}
             autoComplete="email"
+            // errorStyles={{ color: 'red', fontSize: '1rem' }}
             error={{ message: error.mail?.message, value: error.mail?.value }}
           />
           {formType === 'Sign-In' ? (
@@ -208,6 +213,7 @@ export default function LogForm() {
               placeholder="Password"
               disabled={isPending}
               autoComplete="current-password"
+              // errorStyles={{ color: 'red', fontSize: '1rem' }}
               error={{
                 message: error.password?.message,
                 value: error.password?.value,
@@ -256,6 +262,7 @@ export default function LogForm() {
             </>
           )}
           <p
+            id="toggle-form"
             className="text-[1rem] mt-1 cursor-pointer select-none hover:underline"
             onClick={() =>
               setFormType(formType === 'Sign-In' ? 'Sign-Up' : 'Sign-In')

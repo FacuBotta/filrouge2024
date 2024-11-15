@@ -2,10 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ========== GLOBAL ========== */
 body {
   font-size: 1.2rem;
 }
-
 /* Used to disable the scroll on the page when the modal is open */
 .no-scroll {
   overflow: hidden;
@@ -39,6 +39,10 @@ body {
 }
 footer a:hover {
   @apply text-light-blue dark:text-dark-yellow;
+}
+/* ========== global ui ========== */
+.primary-btn {
+  @apply inline-flex items-center justify-center w-fit px-4 py-1 border-2 text-lg rounded-lg bg-light-yellow text-dark-bg font-bold border-dark-bg hover:shadow-lg  transition-transform duration-300 ease-in-out;
 }
 
 /* ============= Dashboard layout ============= */

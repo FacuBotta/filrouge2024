@@ -235,8 +235,7 @@ export default function TasksProfile({ tasks }: { tasks: Tasks[] }) {
                   type="delete"
                   className="hover:text-red-600 dark:hover:text-dark-greenLight hover:scale-110"
                 />
-                {/* TODO: agragar el icono de drag */}
-                <Icon type="draggable" />
+                <Icon type="draggable" className="!cursor-grab" />
                 <input
                   aria-label="task-checkbox"
                   autoComplete="off"

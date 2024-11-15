@@ -32,17 +32,11 @@ export default async function Home() {
             </p>
             <div className="flex gap-8 mt-4 justify-center lg:!justify-start">
               {isAuthenticated ? (
-                <Link
-                  className="inline-flex items-center justify-center px-4 py-1 border-2 border-transparent text-lg rounded-lg bg-light-yellow text-dark-bg font-bold hover:border-dark-bg dark:hover:border-dark-grey"
-                  href="/dashboard"
-                >
+                <Link className="primary-btn" href="/dashboard">
                   Voir le tableau de bord
                 </Link>
               ) : (
-                <Link
-                  className="inline-flex items-center justify-center px-4 py-1 border-2 border-transparent text-lg rounded-lg bg-light-yellow text-dark-bg font-bold hover:border-dark-bg dark:hover:border-dark-grey"
-                  href="/login"
-                >
+                <Link className="primary-btn" href="/login">
                   Commencer maintenant !
                 </Link>
               )}
@@ -87,10 +81,7 @@ export default async function Home() {
             title="Autres"
           />
         </div>
-        <Link
-          className="inline-flex items-center justify-center px-4 py-1 border-2 border-transparent text-lg rounded-lg bg-light-yellow text-dark-bg font-bold hover:border-dark-bg dark:hover:border-dark-grey"
-          href="/Category"
-        >
+        <Link className="primary-btn" href="/Category">
           Voir plus
         </Link>
       </section>
