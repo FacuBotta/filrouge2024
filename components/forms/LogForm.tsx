@@ -1,6 +1,6 @@
 'use client';
 
-import { handleCredentialsSignIn } from '@/actions/authServerActions/CredentialsLoginServerAction';
+import { CredentialsLoginServerAction } from '@/actions/authServerActions/CredentialsLoginServerAction';
 import { emailSignInServerAction } from '@/actions/authServerActions/emailSignInServerAction';
 import { handleGoogleSignIn } from '@/actions/authServerActions/googleSignInServerAction';
 import { Icon, Input } from 'facu-ui';
@@ -26,14 +26,8 @@ export default function LogForm() {
 
   // Login with credentials
   // TODO: sometimes give a render error. to many renders...
-  interface InputsData {
-    email: string;
-    password: string;
-  }
   const handleLogInSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    // Reiniciar todos los errores al inicio
     setError({
       mail: { message: '', value: false },
       password: { message: '', value: false },
@@ -41,20 +35,9 @@ export default function LogForm() {
     });
 
     const formData = new FormData(e.currentTarget);
-    const inputsData: InputsData = {
-      email: formData.get('email') as string,
-      password: formData.get('password') as string,
-    };
 
     try {
-      // Validar los datos de entrada
-      emailSchema.parse(inputsData.email);
-      passwordSchema.parse(inputsData.password);
-
-      // Llamar a la función de inicio de sesión
-      const response = await handleCredentialsSignIn(formData);
-
-      // Manejar la respuesta
+      const response = await CredentialsLoginServerAction(formData);
       if (!response?.ok) {
         setError((prevError) => ({
           ...prevError,
@@ -68,19 +51,15 @@ export default function LogForm() {
               : prevError.password,
         }));
       }
-    } catch (err) {
-      if (err instanceof z.ZodError) {
-        err.errors.forEach((error) => {
-          const field = error.path[0]; // Tomar el primer campo de error
-          if (field === 'email') {
-            setError((prevError) => ({
-              ...prevError,
-              mail: { message: error.message, value: true },
-            }));
-          }
-        });
-      } else {
-        console.log(err);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError((prevError) => ({
+          ...prevError,
+          mail: {
+            message: 'Une erreur est survenue, veuillez réessayer',
+            value: true,
+          },
+        }));
       }
     }
   };

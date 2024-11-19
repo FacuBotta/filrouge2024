@@ -1,10 +1,10 @@
 'use client';
 
-import { Input } from 'facu-ui';
+import { PasswordInput } from 'facu-ui';
 import Button from '../ui/Button';
 import { updatePassword } from '@/actions/userServerActions/updatePassword';
 import React, { useState, useTransition } from 'react';
-import { passwordSchema } from '@/lib/zodSchemas';
+import { passwordRegex, passwordSchema } from '@/lib/zodSchemas';
 import { z } from 'zod';
 import { useRouter } from 'next/navigation';
 
@@ -26,8 +26,16 @@ export default function PasswordForm({ id, isUpdated }: PasswordFormProps) {
     });
 
     const formData = new FormData(e.currentTarget);
-    const password = formData.get('password') as string;
-    const confirmPassword = formData.get('confirmPassword') as string;
+
+    const password: string = formData
+      .get('password')
+      ?.toString()
+      .trim() as string;
+
+    const confirmPassword: string = formData
+      .get('confirmPassword')
+      ?.toString()
+      .trim() as string;
 
     if (password !== confirmPassword) {
       setError({
@@ -70,16 +78,21 @@ export default function PasswordForm({ id, isUpdated }: PasswordFormProps) {
       onSubmit={handlePasswordSubmit}
     >
       <input type="hidden" name="id" value={id} />
-      <Input
+      <PasswordInput
+        regexp={{
+          message:
+            '8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial, \\\' \\" _ - ne sont pas autorisés',
+          pattern: passwordRegex,
+        }}
+        label="Nouveau mot de passe"
         className="bg-light-grey dark:bg-dark-bg border-[1px] rounded-lg p-2 border-light-blue dark:border-dark-grey focus:border-light-yellow  focus:dark:border-light-yellow"
-        type="password"
         name="password"
-        placeholder="Mot de passe"
+        placeholder="Nouveau mot de passe"
         disabled={isPending}
       />
-      <Input
+      <PasswordInput
+        label="Confirmer le mot de passe"
         className="bg-light-grey dark:bg-dark-bg border-[1px] rounded-lg p-2 border-light-blue dark:border-dark-grey focus:border-light-yellow  focus:dark:border-light-yellow"
-        type="password"
         name="confirmPassword"
         placeholder="Confirmer le mot de passe"
         disabled={isPending}
@@ -88,7 +101,7 @@ export default function PasswordForm({ id, isUpdated }: PasswordFormProps) {
         <p className="text-red-500">{error.password.message}</p>
       ) : null}
       <Button type="submit" disabled={isPending}>
-        {isUpdated ? 'Modifier mon mot de passe' : 'Créer un mot de passe'}
+        {isUpdated ? 'Modifier mot de passe' : 'Créer un mot de passe'}
       </Button>
     </form>
   );

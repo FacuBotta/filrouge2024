@@ -26,8 +26,8 @@ export const emailSchema = z.object({
     }),
 });
 
-const passwordRegex =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,30}$/;
+export const passwordRegex =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#@$!%*?&])[A-Za-z\d#@$!%*?&]{8,30}$/;
 
 export const passwordSchema = z.object({
   password: z
@@ -36,7 +36,7 @@ export const passwordSchema = z.object({
     .max(30, { message: 'Le mot de passe doit être de 30 caractères maximum' })
     .regex(passwordRegex, {
       message:
-        'Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial',
+        '8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial, \' " _ - ne sont pas autorisés',
     }),
 });
 

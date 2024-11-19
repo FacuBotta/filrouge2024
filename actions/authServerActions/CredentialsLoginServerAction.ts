@@ -3,8 +3,10 @@
 import { checkPassword } from '../userServerActions/checkPassword';
 import selectUserByMail from '../userServerActions/selectUserByMail';
 import { signIn } from '../../lib/auth/authConfig';
+import { emailSchema } from '@/lib/zodSchemas';
+import { z } from 'zod';
 
-export const handleCredentialsSignIn = async (formData: FormData) => {
+export const CredentialsLoginServerAction = async (formData: FormData) => {
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
   try {
@@ -36,7 +38,7 @@ export const handleCredentialsSignIn = async (formData: FormData) => {
 
     const response = await signIn('credentials', credentials);
     return response;
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('error in handleCredentialsSignIn', error);
     return {
       ok: false,
