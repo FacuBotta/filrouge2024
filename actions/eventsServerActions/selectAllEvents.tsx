@@ -1,34 +1,16 @@
 'use server';
 
 import prisma from '@/lib/prisma';
-import { Category } from '@prisma/client';
+import { Events } from '@prisma/client';
 
-export const selectAllEvents = async (): Promise<Category[]> => {
+export const selectAllEvents = async (): Promise<Events[]> => {
   try {
-    const categories = await prisma.category.findMany({
-      include: {
-        Events: {
-          include: {
-            participants: {
-              include: {
-                user: {
-                  select: {
-                    id: true,
-                    username: true,
-                    email: true,
-                    image: true,
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
+    const events = await prisma.events.findMany({
       orderBy: {
         title: 'asc',
       },
     });
-    return categories;
+    return events;
   } catch (error) {
     console.error(error);
     return [];

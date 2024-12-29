@@ -85,7 +85,7 @@ export const NewEventPage = ({
             placeholder="Titre du événement (max 100 caractères)"
             required={true}
             label="Titre"
-            errorStyles={{ color: 'red', fontSize: '1rem' }}
+            errorstyles={{ color: 'red', fontSize: '1rem' }}
             error={{
               message: error.title?.message,
               value: error.title?.value,
@@ -112,7 +112,7 @@ export const NewEventPage = ({
                 type="datetime-local"
                 name="eventStart"
                 placeholder="Date de début"
-                errorStyles={{ color: 'red', fontSize: '1rem' }}
+                errorstyles={{ color: 'red', fontSize: '1rem' }}
                 error={{
                   message: error.eventStart?.message,
                   value: error.eventStart?.value,
@@ -126,7 +126,7 @@ export const NewEventPage = ({
                 type="datetime-local"
                 name="eventEnd"
                 placeholder="Date de fin"
-                errorStyles={{ color: 'red', fontSize: '1rem' }}
+                errorstyles={{ color: 'red', fontSize: '1rem' }}
                 error={{
                   message: error.eventEnd?.message,
                   value: error.eventEnd?.value,
