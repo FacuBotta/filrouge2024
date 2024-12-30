@@ -1,24 +1,64 @@
 'use server';
 
 import prisma from '@/lib/prisma';
-import { Category, Events } from '@prisma/client';
+import { EventWithUserAndCount } from '@/types/types';
+import { Category } from '@prisma/client';
+import { categoryTitleSchema } from '@/lib/zodSchemas';
 
 export const selectEventsByCategory = async (
   category: string
-): Promise<{ events: Events[]; category: Category | null }> => {
+): Promise<{
+  events: EventWithUserAndCount[] | [];
+  category: Category | null;
+}> => {
   try {
+    const validatedCategoryTitle = categoryTitleSchema.parse(
+      category.replace(/-/g, ' ')
+    );
+
     const categoryData = await prisma.category.findFirst({
       where: {
-        title: category.replace(/-/g, ' '),
+        title: validatedCategoryTitle,
       },
     });
     if (!categoryData) {
       return { events: [], category: null };
     }
 
-    const events = await prisma.events.findMany({
+    const events: EventWithUserAndCount[] | [] = await prisma.events.findMany({
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        eventStart: true,
+        eventEnd: true,
+        categoryId: true,
+        isPublic: true,
+        createdAt: true,
+        updatedAt: true,
+        user: {
+          select: {
+            id: true,
+            image: true,
+            username: true,
+            _count: {
+              select: {
+                Ratings: true,
+              },
+            },
+          },
+        },
+        _count: {
+          select: {
+            participants: true,
+          },
+        },
+      },
       where: {
         categoryId: categoryData.id,
+      },
+      orderBy: {
+        title: 'asc',
       },
     });
 

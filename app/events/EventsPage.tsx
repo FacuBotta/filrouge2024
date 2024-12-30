@@ -1,15 +1,13 @@
-'use client';
-
 import EventCard from '@/components/ui/dashboard/EventCard';
-import { Category, Events } from '@prisma/client';
+import { EventWithUserAndCount } from '@/types/types';
+import { Category } from '@prisma/client';
 import Link from 'next/link';
-import { useState } from 'react';
 
-export default function EventsPage({
+export default async function EventsPage({
   events,
   category,
 }: {
-  events: Events[];
+  events: EventWithUserAndCount[];
   category: Category;
 }) {
   if (!events || events.length === 0) {

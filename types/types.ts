@@ -49,3 +49,26 @@ export interface UserJoinedEvent {
     description: string;
   };
 }
+
+export interface EventWithUserAndCount {
+  id: string;
+  title: string;
+  description: string | null;
+  eventStart: Date;
+  eventEnd: Date;
+  categoryId: string;
+  isPublic: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  user: {
+    id: string;
+    image: string | null;
+    username: string | null;
+    _count?: {
+      Ratings: number;
+    };
+  };
+  _count: {
+    participants: number;
+  };
+}

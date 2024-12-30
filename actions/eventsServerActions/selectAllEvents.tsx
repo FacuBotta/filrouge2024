@@ -1,11 +1,45 @@
 'use server';
 
 import prisma from '@/lib/prisma';
-import { Events } from '@prisma/client';
+import { EventWithUserAndCount } from '@/types/types';
 
-export const selectAllEvents = async (): Promise<Events[]> => {
+export const selectAllEvents = async (): Promise<
+  EventWithUserAndCount[] | []
+> => {
   try {
-    const events = await prisma.events.findMany({
+    const events: EventWithUserAndCount[] | [] = await prisma.events.findMany({
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        eventStart: true,
+        eventEnd: true,
+        categoryId: true,
+        isPublic: true,
+        createdAt: true,
+        updatedAt: true,
+        user: {
+          select: {
+            id: true,
+            image: true,
+            username: true,
+            _count: {
+              select: {
+                Ratings: true,
+              },
+            },
+          },
+        },
+        _count: {
+          select: {
+            participants: true,
+          },
+        },
+      },
+      // TODO : mettre ca en place quand on aura des événements publics
+      /* where: {
+        isPublic: true,
+      }, */
       orderBy: {
         title: 'asc',
       },

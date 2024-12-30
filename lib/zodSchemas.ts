@@ -81,5 +81,21 @@ export const newEventSchema = z.object({
       message: 'La description doit être de 1000 caractères maximum',
     }),
 });
+
+const validCategoryTitles = [
+  'sport',
+  'education',
+  'language',
+  'city tours',
+  'air libre',
+  'autres',
+];
+
+export const categoryTitleSchema = z
+  .string()
+  .regex(new RegExp(`^(${validCategoryTitles.join('|')})$`), {
+    message: 'Titre invalide',
+  });
+
 // participants: z.array(z.string()).optional(),
 // TODO: ADD EDIT PROFILE SCHEMA

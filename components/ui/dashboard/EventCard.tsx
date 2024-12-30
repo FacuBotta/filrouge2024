@@ -1,17 +1,19 @@
-import { UserJoinedEvent } from '@/types/types';
+import { EventWithUserAndCount, UserJoinedEvent } from '@/types/types';
 import { Category, Events } from '@prisma/client';
 import Link from 'next/link';
 import IconWrapper from '../IconWrapper';
+import { UserAvatar } from '@/public/images/UserAvatar';
 
-export default function EventCard({
+export default async function EventCard({
   category,
   event,
 }: {
   category: Category;
-  event: Events | UserJoinedEvent;
-}): JSX.Element {
+  event: EventWithUserAndCount;
+}): Promise<JSX.Element> {
+  console.log(event);
   return (
-    <div className="animate group relative w-[300px] flex border border-dark-bg dark:border-light-grey rounded-lg p-5 gap-2 flex-col overflow-hidden shadow-xl bg-light-blue dark:bg-slate-500/20">
+    <div className="animate group relative w-[300px] flex border border-dark-bg dark:border-light-grey rounded-lg p-5 pb-10 gap-2 flex-col overflow-hidden shadow-xl bg-light-blue dark:bg-slate-500/20">
       <div className="group-hover:animate-scaleHover transition-transform duration-700">
         <div className="flex justify-between ">
           <h1 className="font-bold text-xl text-wrap">{event.title}</h1>
@@ -39,7 +41,9 @@ export default function EventCard({
           </div>
         </div>
         <div className="">
-          <p className="mb-2">Catégorie : {category.title}</p>
+          <p className="text-sm mb-2">
+            {event._count.participants} participants
+          </p>
           <p className="text-sm">
             Début le : {event.eventStart.toLocaleDateString()} a{' '}
             {event.eventStart.toLocaleTimeString()}
@@ -49,7 +53,16 @@ export default function EventCard({
             {event.eventEnd.toLocaleTimeString()}
           </p>
         </div>
-        <p className="">{event.description}</p>
+        <div className="flex items-center gap-2 my-2">
+          <UserAvatar src={event.user.image} />
+          <div>
+            <p className="text-sm">Cree par {event.user.username}</p>
+            <p className="text-sm">
+              {event.user._count?.Ratings} avis sur ce sujet
+            </p>
+          </div>
+        </div>
+        <p className="text-sm">{event.description}</p>
       </div>
       <div className=" flex items-end justify-center pb-5 absolute bottom-0 left-0 w-full h-[80%]  bg-gradient-to-t from-light-blue dark:from-dark-bg to-transparent ">
         <IconWrapper
