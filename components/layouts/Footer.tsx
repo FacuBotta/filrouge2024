@@ -1,7 +1,6 @@
 import FooterImage from '@/public/images/FooterImage';
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 import IconWrapper from '../ui/IconWrapper';
-
 export default function Footer() {
   // TODO: update links
   return (

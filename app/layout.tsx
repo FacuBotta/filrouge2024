@@ -1,10 +1,11 @@
-import './globals.css';
-import type { Metadata } from 'next';
-import { Providers } from './providers';
-import React from 'react';
-import Header from '../components/layouts/header/Header';
 import Footer from '@/components/layouts/Footer';
 import { Fredoka } from '@/public/fonts/localFonts';
+import type { Metadata } from 'next';
+import { ViewTransitions } from 'next-view-transitions';
+import React from 'react';
+import Header from '../components/layouts/header/Header';
+import './globals.css';
+import { Providers } from './providers';
 
 export const metadata: Metadata = {
   title: 'EventHub',
@@ -20,19 +21,21 @@ export default function RootLayout({
   auth: React.ReactNode;
 }>) {
   return (
-    <html
-      className="overflow-y-scroll scroll-smooth snap-y snap-proximity"
-      lang="en"
-      suppressHydrationWarning
-    >
-      <body className={`${Fredoka.variable} font-fredoka`}>
-        <Providers>
-          <Header />
-          {children}
-          {auth}
-          <Footer />
-        </Providers>
-      </body>
-    </html>
+    <ViewTransitions>
+      <html
+        className="overflow-y-scroll scroll-smooth snap-y snap-proximity"
+        lang="en"
+        suppressHydrationWarning
+      >
+        <body className={`${Fredoka.variable} font-fredoka`}>
+          <Providers>
+            <Header />
+            {children}
+            {auth}
+            <Footer />
+          </Providers>
+        </body>
+      </html>
+    </ViewTransitions>
   );
 }

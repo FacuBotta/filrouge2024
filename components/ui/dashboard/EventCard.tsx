@@ -1,9 +1,8 @@
-import { EventWithUserAndCount, UserJoinedEvent } from '@/types/types';
-import { Category, Events } from '@prisma/client';
-import Link from 'next/link';
-import IconWrapper from '../IconWrapper';
 import { UserAvatar } from '@/public/images/UserAvatar';
-
+import { EventWithUserAndCount } from '@/types/types';
+import { Category } from '@prisma/client';
+import { Link } from 'next-view-transitions';
+import IconWrapper from '../IconWrapper';
 export default async function EventCard({
   category,
   event,
@@ -11,7 +10,6 @@ export default async function EventCard({
   category: Category;
   event: EventWithUserAndCount;
 }): Promise<JSX.Element> {
-  console.log(event);
   return (
     <div className="animate group relative w-[300px] flex border border-dark-bg dark:border-light-grey rounded-lg p-5 pb-10 gap-2 flex-col overflow-hidden shadow-xl bg-light-blue dark:bg-slate-500/20">
       <div className="group-hover:animate-scaleHover transition-transform duration-700">
@@ -65,12 +63,14 @@ export default async function EventCard({
         <p className="text-sm">{event.description}</p>
       </div>
       <div className=" flex items-end justify-center pb-5 absolute bottom-0 left-0 w-full h-[80%]  bg-gradient-to-t from-light-blue dark:from-dark-bg to-transparent ">
-        <IconWrapper
-          width={30}
-          type="infoCircle"
-          strokeWidth={2}
-          className="hover:dark:text-dark-greenLight hover:scale-110 transition-all ease-in-out"
-        />
+        <a href={`/events/event/${event.id}`}>
+          <IconWrapper
+            width={30}
+            type="infoCircle"
+            strokeWidth={2}
+            className="hover:dark:text-dark-greenLight hover:scale-110 transition-all ease-in-out"
+          />
+        </a>
       </div>
     </div>
   );

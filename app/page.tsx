@@ -1,15 +1,14 @@
-import HomeImage from '../public/images/HomeImage';
-import Link from 'next/link';
 import { checkIsAuthenticated } from '@/actions/authServerActions/checkIsAuthenticated';
 import CardCategory from '@/components/ui/CardCategory';
-import SportImage from '@/public/images/categoryImages/SportImage';
-import EducationImage from '@/public/images/categoryImages/EducationImage';
+import SliderHome from '@/components/ui/SliderHome';
 import CityTourImage from '@/public/images/categoryImages/CityTourImage';
-import OutDoorImage from '@/public/images/categoryImages/OutDoorImage';
+import EducationImage from '@/public/images/categoryImages/EducationImage';
 import LanguageImage from '@/public/images/categoryImages/LanguageImage';
 import OthersImage from '@/public/images/categoryImages/OthersImage';
-import SliderHome from '@/components/ui/SliderHome';
-
+import OutDoorImage from '@/public/images/categoryImages/OutDoorImage';
+import SportImage from '@/public/images/categoryImages/SportImage';
+import { Link } from 'next-view-transitions';
+import HomeImage from '../public/images/HomeImage';
 export default async function Home() {
   const isAuthenticated = await checkIsAuthenticated();
   return (

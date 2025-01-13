@@ -1,13 +1,12 @@
 'use client';
 
-import { DefaultUserAvatar } from '@/public/images/DefaultUserAvatar';
+import { updateMessagesStatus } from '@/actions/messagesServerActions/updateMessagesStatus';
 import { UserAvatar } from '@/public/images/UserAvatar';
 import { Conversation } from '@/types/types';
 import { motion } from 'framer-motion';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { NotificationSpan } from '../NotificationSpan';
 import { useCallback, useState } from 'react';
-import { updateMessagesStatus } from '@/actions/messagesServerActions/updateMessagesStatus';
+import { NotificationSpan } from '../NotificationSpan';
 
 export const ConversationsList = ({
   session,
@@ -35,7 +34,6 @@ export const ConversationsList = ({
       '/dashboard/messages/?' +
         pushConversationIdToSearchParams('id', conversationId)
     );
-    // update the messages status to SEEN for the conversation opened
     await updateMessagesStatus({
       user_id: session?.user?.id,
       conversation_id: conversationId,
@@ -69,7 +67,7 @@ export const ConversationsList = ({
               currentConversationId === conversation.id
                 ? 'border-light-yellow'
                 : 'border-dark-bg/50'
-            } p-2 mx-2 max-h-16 bg-slate-600/50 rounded-lg shadow-xl`}
+            } p-2 mx-2 h-fit bg-slate-600/50 rounded-lg shadow-xl`}
           >
             <div
               onClick={() => handleClick(conversation.id)}
@@ -77,7 +75,7 @@ export const ConversationsList = ({
             >
               <div>
                 <p className="text-xl">
-                  {conversation.title}
+                  {conversation.title ? conversation.title : 'no title'}
                   {!conversationsOpen.includes(conversation.id) &&
                     (conversation.unreadMessages as number) > 0 && (
                       <NotificationSpan
@@ -87,27 +85,24 @@ export const ConversationsList = ({
                 </p>
                 <span className="font-extralight text-sm">
                   {new Date(conversation.updatedAt).toLocaleDateString('fr-FR')}
-                  {' - '}
-                  {conversation?.participants?.length} participants
                 </span>
               </div>
-              <div className="flex justify-end items-center w-[40%] overflow-hidden max-h-12">
-                {conversation?.participants?.map(
-                  (participant, key) =>
-                    key < 3 &&
-                    (participant.image ? (
-                      <UserAvatar
-                        key={participant.id}
-                        src={participant.image}
-                        className="h-full"
-                      />
-                    ) : (
-                      <DefaultUserAvatar
-                        key={participant.id}
-                        className="h-full opacity-50"
-                      />
-                    ))
-                )}
+              <div className="flex flex-col gap-1 justify-end items-start w-[40%] overflow-hidden">
+                <div className="flex gap-1">
+                  {conversation?.participants?.map(
+                    (participant, key) =>
+                      key < 5 && (
+                        <UserAvatar
+                          key={participant.id}
+                          src={participant.image}
+                          className="size-10"
+                        />
+                      )
+                  )}
+                </div>
+                <p className="font-extralight text-sm">
+                  {conversation?.participants?.length} participants
+                </p>
               </div>
             </div>
           </motion.li>

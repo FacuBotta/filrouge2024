@@ -1,8 +1,7 @@
 'use client';
 
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 import { usePathname } from 'next/navigation';
-
 interface CategoryNavProps {
   categories: {
     id: string;
@@ -14,7 +13,7 @@ export default function CategoryNav({ categories }: CategoryNavProps) {
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 h-full border-r p-4 sticky top-40">
+    <aside className="w-64 flex-shrink-0 h-full border-r p-4 sticky top-40">
       <nav>
         <ul className="space-y-2">
           <li>

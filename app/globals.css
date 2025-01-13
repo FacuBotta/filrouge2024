@@ -51,7 +51,7 @@ footer a:hover {
 }
 .dashboard-children {
   min-height: calc(100vh - 44px);
-  @apply pt-[60px] sm:pt-[80px];
+  @apply pt-[60px] sm:pt-[80px] min-w-[1800px] mx-auto;
 }
 
 /* ============= Messages view ============= */

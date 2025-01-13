@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE `Events` ADD COLUMN `GoogleMaps` VARCHAR(191) NULL,
+    ADD COLUMN `city` VARCHAR(191) NULL,
+    ADD COLUMN `image` VARCHAR(191) NULL,
+    ADD COLUMN `place` VARCHAR(191) NULL;

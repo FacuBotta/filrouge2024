@@ -16,7 +16,7 @@ export default async function DefaultEventsPage() {
     redirect('/');
   }
   return (
-    <div>
+    <div className='w-full min-h-screen' >
       {categories.map((category) => (
         <EventsPage key={category.id} events={events} category={category} />
       ))}

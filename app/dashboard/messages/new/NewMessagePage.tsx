@@ -1,15 +1,14 @@
 'use client';
 import { handleNewConversationSubmit } from '@/actions/messagesServerActions/handleNewConversationSubmit';
 import Backdrop from '@/components/layouts/Backdrop';
+import Button from '@/components/ui/Button';
 import IconWrapper from '@/components/ui/IconWrapper';
 import { DefaultUserAvatar } from '@/public/images/DefaultUserAvatar';
 import { UserAvatar } from '@/public/images/UserAvatar';
-import Link from 'next/link';
 import { RegisteredUsers } from '@/types/types';
+import { Link } from 'next-view-transitions';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import Button from '@/components/ui/Button';
-import { redirect, useRouter } from 'next/navigation';
-
 export const NewMessagePage = ({ users }: { users: RegisteredUsers[] }) => {
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const router = useRouter();

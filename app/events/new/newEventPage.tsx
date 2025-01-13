@@ -1,15 +1,14 @@
 'use client';
 
+import { createEvent } from '@/actions/eventsServerActions/createEvent';
 import Backdrop from '@/components/layouts/Backdrop';
 import IconWrapper from '@/components/ui/IconWrapper';
 import { newEventSchema } from '@/lib/zodSchemas';
+import { Category } from '@prisma/client';
 import { Input } from 'facu-ui';
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 import React, { useState, useTransition } from 'react';
 import { z } from 'zod';
-import { createEvent } from '@/actions/eventsServerActions/createEvent';
-import { Category } from '@prisma/client';
-
 export const NewEventPage = ({
   availableCategories,
 }: {
@@ -49,6 +48,7 @@ export const NewEventPage = ({
     try {
       newEventSchema.parse(eventData);
       const response = await createEvent(eventData);
+      // TODO : cerrar el modal luego de crear el evento
       console.log(response);
     } catch (err) {
       if (err instanceof z.ZodError) {

@@ -2,24 +2,21 @@ import { checkIsAuthenticated } from '@/actions/authServerActions/checkIsAuthent
 import { selectUserEvents } from '@/actions/eventsServerActions/selectUserEvents';
 import { selectUserEventsJoined } from '@/actions/eventsServerActions/selectUserEventsJoined';
 import { selectUserTasks } from '@/actions/TasksServerActions/selectUserTasks';
-import Button from '@/components/ui/Button';
-import EventCard from '@/components/ui/dashboard/EventCard';
 import TasksProfile from '@/components/ui/dashboard/TasksProfile';
 import IconWrapper from '@/components/ui/IconWrapper';
-import { DefaultUserAvatar } from '@/public/images/DefaultUserAvatar';
+import RantingUser from '@/components/ui/RantingUser';
+import { UserAvatar } from '@/public/images/UserAvatar';
 import { UserJoinedEvent } from '@/types/types';
 import { Events, Tasks } from '@prisma/client';
-import Image from 'next/image';
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 import { redirect } from 'next/navigation';
-
 const DashboardPage: React.FC = async () => {
   const userAuthenticated = await checkIsAuthenticated();
   if (!userAuthenticated) {
     redirect('/login');
   }
   const { id, description, username, email, image } = userAuthenticated;
-
+  console.log(userAuthenticated);
   const userTasks: Tasks[] = await selectUserTasks(id as string);
   const userEventsCreated: Events[] = await selectUserEvents(id as string);
   const userEventsJoined: UserJoinedEvent[] = await selectUserEventsJoined(
@@ -40,47 +37,11 @@ const DashboardPage: React.FC = async () => {
                 className="hover:scale-110 hover:dark:text-dark-greenLight transition-all ease-in-out absolute bottom-2 right-[-10px]"
               />
             </Link>
-            {image ? (
-              <Image
-                src={image}
-                alt="user avatar"
-                width={200}
-                height={200}
-                className="rounded-full border-2 border-dark-bg dark:border-dark-grey"
-              />
-            ) : (
-              <DefaultUserAvatar className="size-full rounded-full " />
-            )}
+            <UserAvatar src={image} className="size-[200px]" />
           </div>
           <h1 className="font-bold text-2xl">{username ? username : email}</h1>
           {/* TODO: arreglar cuando hago hover... */}
-          <div className="flex mb-2">
-            <IconWrapper
-              type="star"
-              strokeWidth={2}
-              className="stroke-black fill-light-yellow "
-            />
-            <IconWrapper
-              type="star"
-              strokeWidth={2}
-              className="stroke-black fill-light-yellow"
-            />
-            <IconWrapper
-              type="star"
-              strokeWidth={2}
-              className="stroke-black fill-light-yellow"
-            />
-            <IconWrapper
-              type="star"
-              strokeWidth={2}
-              className="stroke-black fill-light-yellow"
-            />
-            <IconWrapper
-              type="star"
-              strokeWidth={2}
-              className="stroke-black fill-light-yellow"
-            />
-          </div>
+          <RantingUser ranting={4} />
 
           <h2 className="font-bold text-2xl">Bio</h2>
           {description && description.length > 0 ? (

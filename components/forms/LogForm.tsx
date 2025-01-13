@@ -4,12 +4,11 @@ import { CredentialsLoginServerAction } from '@/actions/authServerActions/Creden
 import { emailSignInServerAction } from '@/actions/authServerActions/emailSignInServerAction';
 import { handleGoogleSignIn } from '@/actions/authServerActions/googleSignInServerAction';
 import { Icon, Input } from 'facu-ui';
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 import { useRouter } from 'next/navigation';
 import React, { useState, useTransition } from 'react';
 import Button from '../ui/Button';
-
-import { emailSchema, passwordSchema } from '@/lib/zodSchemas';
+import { emailSchema } from '@/lib/zodSchemas';
 import { z } from 'zod';
 
 export default function LogForm() {

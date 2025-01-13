@@ -1,10 +1,8 @@
 'use client';
 
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 import { usePathname } from 'next/navigation';
-import { ReactElement } from 'react';
 import { NotificationSpan } from '../NotificationSpan';
-
 interface NavItemProps {
   href: string;
   notifications?: number;

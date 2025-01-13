@@ -1,20 +1,17 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { Conversation } from '@/types/types';
-import { ConversationsList } from '@/components/ui/dashboard/conversationsList';
-import IconWrapper from '@/components/ui/IconWrapper';
-import Link from 'next/link';
-import { handleMessageSendSubmit } from '@/actions/messagesServerActions/handleMessageSendSubmit';
-import DashboardMessagesWindow from '@/components/ui/dashboard/DashboardMessagesWindow';
-import { SendMessageInput } from '@/components/forms/SendMessageInput';
 import { handleDeleteConversation } from '@/actions/messagesServerActions/handleDeleteConversation';
-import { updateMessagesStatus } from '@/actions/messagesServerActions/updateMessagesStatus';
-import { Icon } from 'facu-ui';
-import { useRouter, useSearchParams } from 'next/navigation';
-import MessagesImage from '@/public/images/homeSliderImages/MessagesImage';
+import { handleMessageSendSubmit } from '@/actions/messagesServerActions/handleMessageSendSubmit';
+import { SendMessageInput } from '@/components/forms/SendMessageInput';
+import { ConversationsList } from '@/components/ui/dashboard/conversationsList';
+import DashboardMessagesWindow from '@/components/ui/dashboard/DashboardMessagesWindow';
+import IconWrapper from '@/components/ui/IconWrapper';
 import MessageDefaultPageImage from '@/public/images/MessageDefaultPageImage';
-
+import { Conversation } from '@/types/types';
+import { Icon } from 'facu-ui';
+import { Link } from 'next-view-transitions';
+import { useRouter, useSearchParams } from 'next/navigation';
+import React, { useEffect } from 'react';
 export default function MessagePage({
   session,
   conversations,

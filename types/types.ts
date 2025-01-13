@@ -56,10 +56,13 @@ export interface EventWithUserAndCount {
   description: string | null;
   eventStart: Date;
   eventEnd: Date;
-  categoryId: string;
   isPublic: boolean;
   createdAt: Date;
   updatedAt: Date;
+  category: {
+    id: string;
+    title: string;
+  };
   user: {
     id: string;
     image: string | null;

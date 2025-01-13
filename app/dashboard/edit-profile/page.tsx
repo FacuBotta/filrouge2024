@@ -1,13 +1,10 @@
 import { checkIsAuthenticated } from '@/actions/authServerActions/checkIsAuthenticated';
-import { redirect } from 'next/navigation';
-import Backdrop from '@/components/layouts/Backdrop';
 import { updateUserProfile } from '@/actions/userServerActions/updateUserProfile';
+import Backdrop from '@/components/layouts/Backdrop';
 import IconWrapper from '@/components/ui/IconWrapper';
-import Link from 'next/link';
-import Image from 'next/image';
-import Button from '@/components/ui/Button';
-import { DefaultUserAvatar } from '@/public/images/DefaultUserAvatar';
-
+import { UserAvatar } from '@/public/images/UserAvatar';
+import { Link } from 'next-view-transitions';
+import { redirect } from 'next/navigation';
 const EditProfilePage = async () => {
   const userAuthenticated = await checkIsAuthenticated();
   if (!userAuthenticated) {
@@ -26,17 +23,7 @@ const EditProfilePage = async () => {
           />
         </Link>
         <h1 className="text-3xl font-semibold">Edition de votre profil</h1>
-        {image ? (
-          <Image
-            src={image as string}
-            alt="user avatar"
-            width={220}
-            height={220}
-            className="rounded-full border-2 border-dark-bg dark:border-white my-5"
-          />
-        ) : (
-          <DefaultUserAvatar className="size-full rounded-full my-5" />
-        )}
+        <UserAvatar src={image} className="size-32 my-5" />
         <div className="items-center justify-center gap-5 w-full max-w-[500px] mx-auto">
           <form className="flex flex-col gap-5 mt-2" action={updateUserProfile}>
             <input

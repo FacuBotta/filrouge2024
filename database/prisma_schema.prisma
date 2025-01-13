@@ -147,12 +147,10 @@ model Reports {
   @@index([reporterId])
   @@index([reportedId])
 }
-// TODO agregar la relacion con el report para saber por que esta en trash
 model Trash {
   id         String   @id @default(cuid())
   userId     String
   eventId    String
-  reason     String // no sera necesario cuando se agregue la relacion con el report
   reportedAt DateTime
 
   user  User   @relation(fields: [userId], references: [id])
@@ -165,17 +163,14 @@ model Trash {
 model Ratings {
   id      String @id @default(cuid())
   userId  String
-  eventId String
   score   Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   user  User   @relation(fields: [userId], references: [id])
-  event Events @relation(fields: [eventId], references: [id])
 
   @@index([userId])
-  @@index([eventId])
 }
 model UserEvents {
   userId String
@@ -187,8 +182,6 @@ model UserEvents {
 
   @@id([userId, eventId])
 }
-// TODO: agregar el campo isPublic
-// TODO: agregar el campo para la imagen
 model Events {
   id          String   @id @default(cuid())
   userId      String
@@ -199,6 +192,12 @@ model Events {
   eventEnd    DateTime
   isPublic    Boolean  @default(false)
 
+  image       String?
+  
+  GoogleMaps      String?
+  city         String?
+  place        String?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -206,7 +205,6 @@ model Events {
   category Category   @relation(fields: [categoryId], references: [id])
   Comments Comments[]
   Trash    Trash[]
-  Ratings  Ratings[]
   Tasks    Tasks[]
   participants UserEvents[]
 

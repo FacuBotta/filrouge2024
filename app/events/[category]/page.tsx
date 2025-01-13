@@ -1,15 +1,17 @@
+import { selectEventsByCategory } from '@/actions/eventsServerActions/selectEventsByCategory';
+import { EventWithUserAndCount } from '@/types/types';
+import { Category } from '@prisma/client';
 import { redirect } from 'next/navigation';
 import EventsPage from '../EventsPage';
-import { selectEventsByCategory } from '@/actions/eventsServerActions/selectEventsByCategory';
-import { Category } from '@prisma/client';
-import { EventWithUserAndCount } from '@/types/types';
 
 export default async function CategoryPage({
   params,
 }: {
   params: { category: string };
 }) {
-  if (!params?.category || typeof params.category !== 'string') {
+  const urlCategory = await params.category;
+
+  if (!urlCategory || typeof urlCategory !== 'string') {
     redirect('/events');
   }
 
@@ -17,7 +19,7 @@ export default async function CategoryPage({
     events,
     category,
   }: { events: EventWithUserAndCount[] | []; category: Category | null } =
-    await selectEventsByCategory(params.category);
+    await selectEventsByCategory(urlCategory);
 
   if (!category) {
     redirect('/events');

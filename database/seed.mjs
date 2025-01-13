@@ -1,20 +1,47 @@
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
-async function main() {
-  const numberOfUsers = 10;
-  for (let i = 0; i < numberOfUsers; i++) {
-    await prisma.user.create({
-      data: {
-        email: `user${i}@example.com`,
-        name: `User ${i}`,
-        username: `user${i}`,
-        password: 'lalala',
-      },
-    });
+
+/* async function seedUsers() {
+  const numberOfUsers = 20;
+
+  try {
+    const response = await fetch(
+      `https://randomuser.me/api/?results=${numberOfUsers}`
+    );
+    const data = await response.json();
+
+    if (!data.results || !Array.isArray(data.results)) {
+      throw new Error("API don't have results...");
+    }
+
+    for (const user of data.results) {
+      try {
+        await prisma.user.create({
+          data: {
+            email: user.email,
+            username: `${user.name.first} ${user.name.last}`,
+            password: '123456',
+            image: user.picture.medium,
+            description:
+              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.',
+            ranting: Math.floor(Math.random() * 5),
+          },
+        });
+      } catch (error) {
+        console.error(`Error in user ${user.email}:`, error);
+      }
+    }
+    console.log('Users seeded successfully');
+  } catch (error) {
+    console.error('Seed users failed:', error);
+  } finally {
+    await prisma.$disconnect();
+    console.log('Conexión con Prisma cerrada.');
   }
-  console.log(`Seeded users `);
-}
+} */
+
+// seedUsers();
 
 async function seedCategories() {
   await prisma.category.create({
@@ -102,21 +129,13 @@ async function seedEvents() {
           eventStart: startDate,
           eventEnd: endDate,
           categoryId: categories[i].id,
+          city: 'Montpellier',
         },
       });
     }
   }
   console.log('Seeded events');
 }
-
-/* main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  }); */
 
 seedCategories()
   .catch((e) => {
