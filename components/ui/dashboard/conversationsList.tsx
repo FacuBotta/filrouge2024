@@ -31,8 +31,7 @@ export const ConversationsList = ({
 
   const handleClick = async (conversationId: string) => {
     router.push(
-      '/dashboard/messages/?' +
-        pushConversationIdToSearchParams('id', conversationId)
+      '/messages/?' + pushConversationIdToSearchParams('id', conversationId)
     );
     await updateMessagesStatus({
       user_id: session?.user?.id,

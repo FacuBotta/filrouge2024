@@ -1,10 +1,10 @@
 'use client';
 
+import SignOutButton from '@/components/ui/dashboard/SignOutButton';
 import { DefaultUserAvatar } from '@/public/images/DefaultUserAvatar';
 import { UserAvatar } from '@/public/images/UserAvatar';
-import NavItem from './NavItem';
-import IconWrapper from '../IconWrapper';
 import { useState } from 'react';
+import IconWrapper from '../IconWrapper';
 
 type Notifications = {
   profile: number;
@@ -66,22 +66,7 @@ export default function DashboardNav({
               className={`lg:hidden`}
             />
           </div>
-          {/* nav items */}
-          <ul className="flex gap-4 text-xl mx-auto sm:m-0 ">
-            <li className="flex w-full bg-fuchsia-200/40"></li>
-            <NavItem href="/dashboard" notifications={notifications?.profile}>
-              <IconWrapper type="user" strokeWidth={2} />
-            </NavItem>
-            <NavItem
-              href="/dashboard/messages"
-              notifications={notifications?.messages}
-            >
-              <IconWrapper type="message" strokeWidth={2} />
-            </NavItem>
-            <NavItem href="/dashboard/calendar">
-              <IconWrapper type="calendar" strokeWidth={2} />
-            </NavItem>
-          </ul>
+          {userAuthenticated && <SignOutButton />}
         </div>
       </div>
     </div>

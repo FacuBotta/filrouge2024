@@ -50,7 +50,7 @@ export default function MessagePage({
   };
 
   return (
-    <section className="main-container-messages min-h-full mb-5 w-full flex items-start justify-start">
+    <section className="main-container-messages max-w-max mx-auto min-h-full mb-5 mt-20 w-full flex items-start justify-start">
       {/* conversations section */}
       <div
         className={`${currentConversation ? 'hidden' : 'flex'} mx-auto max-w-[500px] lg:flex flex-col gap-2 w-screen lg:w-[40%] p-3 lg:border-r`}
@@ -107,7 +107,7 @@ export default function MessagePage({
                 <Icon
                   type="goBack"
                   // className="lg:hidden"
-                  onClick={() => router.push('/dashboard/messages')}
+                  onClick={() => router.push('/messages')}
                 />
               </div>
               <h2 className="mb-0 text-center">

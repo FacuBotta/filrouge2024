@@ -31,7 +31,7 @@ export default async function Home() {
             </p>
             <div className="flex gap-8 mt-4 justify-center lg:!justify-start">
               {isAuthenticated ? (
-                <Link className="primary-btn" href="/dashboard">
+                <Link className="primary-btn" href="/profile">
                   Voir le tableau de bord
                 </Link>
               ) : (

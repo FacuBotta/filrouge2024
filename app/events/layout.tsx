@@ -1,6 +1,5 @@
 import { checkIsAuthenticated } from '@/actions/authServerActions/checkIsAuthenticated';
 import CategoryNav from '@/components/ui/CategoryNav';
-import DashboardNav from '@/components/ui/dashboard/DashboardNav';
 import prisma from '@/lib/prisma';
 import { redirect } from 'next/navigation';
 
@@ -29,12 +28,9 @@ export default async function EventsLayout({
     },
   });
   return (
-    <main className="dashboard-main">
-      <DashboardNav userAuthenticated={userAuthenticated} />
-      <div className="dashboard-children flex mt-12 mb-7 gap-10 ">
-        <CategoryNav categories={categories} />
-        {children}
-      </div>
-    </main>
+    <div className="flex mt-20 min-h-screen gap-10 max-w-max w-full mx-auto">
+      <CategoryNav categories={categories} />
+      <div className="w-full min-h-full border-l p-5 ">{children}</div>
+    </div>
   );
 }

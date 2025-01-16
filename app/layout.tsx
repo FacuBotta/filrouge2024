@@ -1,4 +1,6 @@
+import { checkIsAuthenticated } from '@/actions/authServerActions/checkIsAuthenticated';
 import Footer from '@/components/layouts/Footer';
+import DashboardNav from '@/components/ui/dashboard/DashboardNav';
 import { Fredoka } from '@/public/fonts/localFonts';
 import type { Metadata } from 'next';
 import { ViewTransitions } from 'next-view-transitions';
@@ -13,13 +15,15 @@ export const metadata: Metadata = {
     "EventHub is your solution for event management and appointment booking. Simplify your organization's activities with our modern and intuitive interface. With EventHub, you can easily sync your events with Google Calendar, manage your tasks, and communicate effectively with your colleagues. Whether you're planning a small gathering or a large event, EventHub offers the necessary tools to succeed.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
   auth,
 }: Readonly<{
   children: React.ReactNode;
   auth: React.ReactNode;
 }>) {
+  const userAuthenticated = await checkIsAuthenticated();
+
   return (
     <ViewTransitions>
       <html
@@ -27,10 +31,15 @@ export default function RootLayout({
         lang="en"
         suppressHydrationWarning
       >
-        <body className={`${Fredoka.variable} font-fredoka`}>
+        <body className={`${Fredoka.variable} font-fredoka `}>
           <Providers>
             <Header />
-            {children}
+            <main className="dashboard-main">
+              {userAuthenticated && (
+                <DashboardNav userAuthenticated={userAuthenticated} />
+              )}
+              {children}
+            </main>
             {auth}
             <Footer />
           </Providers>

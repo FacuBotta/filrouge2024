@@ -15,8 +15,10 @@ const DashboardPage: React.FC = async () => {
   if (!userAuthenticated) {
     redirect('/login');
   }
+  if (userAuthenticated && !userAuthenticated.password) {
+    redirect('/set-password');
+  }
   const { id, description, username, email, image } = userAuthenticated;
-  console.log(userAuthenticated);
   const userTasks: Tasks[] = await selectUserTasks(id as string);
   const userEventsCreated: Events[] = await selectUserEvents(id as string);
   const userEventsJoined: UserJoinedEvent[] = await selectUserEventsJoined(
@@ -24,13 +26,13 @@ const DashboardPage: React.FC = async () => {
   );
 
   return (
-    <section className="main-container-profile-page overflow-hidden px-2 w-full max-w-[1500px] mx-auto flex flex-col sm:!flex-row justify-start gap-5  divide-y sm:divide-y-0 sm:divide-x my-auto">
+    <section className="min-h-screen mt-32 relative overflow-hidden px-2 w-full max-w-[1500px] mx-auto flex flex-col sm:!flex-row justify-start gap-5 divide-y sm:divide-y-0 sm:divide-x my-auto">
       {/* profile section - left side */}
-      <div className="w-full sm:w-[30%] min-h-full overflow-hidden flex">
-        <div className="flex flex-col items-center justify-center mt-[50px] pt-5 gap-2">
+      <div className="w-full sticky  max-w-[400px] h-fit p-5 flex items-start ">
+        <div className="flex flex-col items-center justify-center pt-5 gap-2">
           {/* class relative to control the position of the edit button */}
           <div className="relative">
-            <Link aria-label="Éditer profile" href="/dashboard/edit-profile">
+            <Link aria-label="Éditer profile" href="/profile/edition">
               <IconWrapper
                 type="edit"
                 strokeWidth={2}

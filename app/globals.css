@@ -49,10 +49,6 @@ footer a:hover {
 .dashboard-main {
   @apply min-h-screen w-full pt-2 flex flex-col gap-2 bg-light-ciel dark:bg-dark-bg;
 }
-.dashboard-children {
-  min-height: calc(100vh - 44px);
-  @apply pt-[60px] sm:pt-[80px] min-w-[1800px] mx-auto;
-}
 
 /* ============= Messages view ============= */
 /* include the left and right sections of the view */
@@ -70,17 +66,6 @@ footer a:hover {
 @media screen and (min-width: 768px) {
   .main-container-messages .messages-container {
     height: calc(100vh - 44px - 100px);
-  }
-}
-/* ============= Events page ============= */
-
-/* ============= Profile view ============= */
-.main-container-profile-page {
-  height: 100%;
-}
-@media screen and (min-width: 768px) {
-  .main-container-profile-page {
-    height: calc(100vh - 44px - 120px);
   }
 }
 /* ========== Home page scroll animation ========== */

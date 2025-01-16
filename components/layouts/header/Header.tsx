@@ -1,8 +1,7 @@
-import ThemeSwitcher from './ThemeSwitcher';
 import { checkIsAuthenticated } from '@/actions/authServerActions/checkIsAuthenticated';
-import NavMenuButton from './NavMenuButton';
 import NavItem from './NavItem';
-import SignOutButton from '@/components/ui/dashboard/SignOutButton';
+import NavMenuButton from './NavMenuButton';
+import ThemeSwitcher from './ThemeSwitcher';
 
 export default async function Header() {
   const userAuthenticated = await checkIsAuthenticated();
@@ -23,21 +22,24 @@ export default async function Header() {
             </label>
             <ul className="mr-[-1.25rem] sm:mr-0 gap-4 font-bold text-dark-bg dark:text-dark-grey sm:flex sm:flex-row">
               <NavItem href="/">Home</NavItem>
+              {userAuthenticated && <NavItem href="/profile">Profile</NavItem>}
               {userAuthenticated && (
-                <NavItem href="/dashboard">Dashboard</NavItem>
+                <NavItem href="/communaute">Communauté</NavItem>
               )}
               {userAuthenticated ? (
                 <NavItem href="/events">Events</NavItem>
               ) : (
                 <NavItem href="/login">LogIn</NavItem>
               )}
-              <NavItem href="/about">About</NavItem>
-              <NavItem href="/contact">Contact</NavItem>
+              {!userAuthenticated && <NavItem href="/about">About</NavItem>}
               {userAuthenticated && (
-                <li>
-                  <SignOutButton />
-                </li>
+                <NavItem href="/messages">Messages</NavItem>
               )}
+              {userAuthenticated && (
+                <NavItem href="/calendrier">Calendrier</NavItem>
+              )}
+
+              {!userAuthenticated && <NavItem href="/contact">Contact</NavItem>}
             </ul>
           </div>
         </nav>

@@ -12,6 +12,9 @@ const config: Config = {
       fredoka: ['var(--font-fredoka)'],
     },
     extend: {
+      maxWidth: {
+        max: '1600px',
+      },
       keyframes: {
         swing: {
           '0%, 100%': { transform: 'rotate(0deg)' },

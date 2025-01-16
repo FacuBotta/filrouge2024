@@ -1,7 +1,7 @@
-import prisma from '@/lib/prisma';
-import EventsPage from './EventsPage';
-import { redirect } from 'next/navigation';
 import { selectAllEvents } from '@/actions/eventsServerActions/selectAllEvents';
+import prisma from '@/lib/prisma';
+import { redirect } from 'next/navigation';
+import EventsPage from './EventsPage';
 
 export default async function DefaultEventsPage() {
   const events = await selectAllEvents();
@@ -16,7 +16,7 @@ export default async function DefaultEventsPage() {
     redirect('/');
   }
   return (
-    <div className='w-full min-h-screen' >
+    <div className="w-full h-full">
       {categories.map((category) => (
         <EventsPage key={category.id} events={events} category={category} />
       ))}
