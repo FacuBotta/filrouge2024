@@ -15,11 +15,14 @@ export default async function DefaultEventsPage() {
   if (!categories || !events) {
     redirect('/');
   }
+  const defaultCategory = {
+    id: 'tous les événements',
+    title: 'Tous les événements',
+    description: 'Tous les événements',
+  };
   return (
     <div className="w-full h-full">
-      {categories.map((category) => (
-        <EventsPage key={category.id} events={events} category={category} />
-      ))}
+      <EventsPage events={events} category={defaultCategory} />
     </div>
   );
 }

@@ -11,7 +11,7 @@ export default async function EventCard({
   event: EventWithUserAndCount;
 }): Promise<JSX.Element> {
   return (
-    <div className="animate group relative w-[300px] flex border border-dark-bg dark:border-light-grey rounded-lg p-5 pb-10 gap-2 flex-col overflow-hidden shadow-xl bg-light-blue dark:bg-slate-500/20">
+    <div className="group relative w-[300px] flex border border-dark-bg dark:border-light-grey rounded-lg p-5 pb-10 gap-2 flex-col overflow-hidden shadow-xl bg-light-blue dark:bg-slate-500/20">
       <div className="group-hover:animate-scaleHover transition-transform duration-700">
         <div className="flex justify-between ">
           <h1 className="font-bold text-xl text-wrap">{event.title}</h1>

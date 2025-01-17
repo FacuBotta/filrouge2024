@@ -22,7 +22,7 @@ export default function DashboardNav({
   const [searchOpen, setSearchOpen] = useState<boolean>(false);
 
   return (
-    <div className="animate-dashboard-nav fixed z-50 left-1/2 -translate-x-1/2 w-[95%] bg-light-yellow dark:bg-dark-green rounded-xl min-h-14 h-fit  py-2 px-4 flex justify-center sm:justify-between items-end border border-dark-bg ">
+    <div className="animate-dashboard-nav fixed z-50 left-1/2 -translate-x-1/2 w-[95%] max-w-max bg-light-yellow dark:bg-dark-green rounded-xl min-h-14 h-fit  py-2 px-4 flex justify-center sm:justify-between items-end border border-dark-bg ">
       <div className="flex  w-full max-w-[1500px] mx-auto justify-between items-end">
         {/* welcome block - not visible on mobile */}
         {/* TODO: revisar esto */}

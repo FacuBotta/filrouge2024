@@ -6,7 +6,7 @@ import IconWrapper from '@/components/ui/IconWrapper';
 import { newEventSchema } from '@/lib/zodSchemas';
 import { Category } from '@prisma/client';
 import { Input } from 'facu-ui';
-import { Link } from 'next-view-transitions';
+import { useRouter } from 'next/navigation';
 import React, { useState, useTransition } from 'react';
 import { z } from 'zod';
 export const NewEventPage = ({
@@ -22,6 +22,7 @@ export const NewEventPage = ({
     eventEnd: { message: '', value: false },
     description: { message: '', value: false },
   });
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -68,13 +69,13 @@ export const NewEventPage = ({
   return (
     <Backdrop>
       <div className="flex flex-col items-center justify-center p-5 mb-5 w-full max-w-[900px] mx-2 bg-light-ciel relative rounded-xl border-2 border-light-yellow dark:bg-dark-bg">
-        <Link href="/events">
+        <button onClick={() => router.back()}>
           <IconWrapper
             type="plus"
             strokeWidth={2}
             className="transform rotate-45 absolute right-[10px] top-[10px]"
           />
-        </Link>
+        </button>
         {/* TODO: agregar el campo para la imagen */}
         <h1 className="text-2xl mb-5">Créer un éventement 🚀</h1>
         <form className="flex flex-col w-full gap-5" onSubmit={handleSubmit}>

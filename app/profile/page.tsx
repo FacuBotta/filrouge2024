@@ -26,11 +26,10 @@ const DashboardPage: React.FC = async () => {
   );
 
   return (
-    <section className="min-h-screen mt-32 relative overflow-hidden px-2 w-full max-w-[1500px] mx-auto flex flex-col sm:!flex-row justify-start gap-5 divide-y sm:divide-y-0 sm:divide-x my-auto">
+    <section className="min-h-screen mt-32 relative px-2 w-full max-w-max mx-auto flex flex-col sm:!flex-row justify-start gap-5 divide-y sm:divide-y-0 sm:divide-x ">
       {/* profile section - left side */}
-      <div className="w-full sticky  max-w-[400px] h-fit p-5 flex items-start ">
+      <div className="w-full sticky top-24 max-w-[400px] h-fit p-5 flex">
         <div className="flex flex-col items-center justify-center pt-5 gap-2">
-          {/* class relative to control the position of the edit button */}
           <div className="relative">
             <Link aria-label="Éditer profile" href="/profile/edition">
               <IconWrapper
@@ -61,7 +60,7 @@ const DashboardPage: React.FC = async () => {
         </div>
       </div>
       {/* right side */}
-      <div className="no-scrollbar overflow-y-scroll flex flex-col w-full sm:w-[70%] text-center sm:text-left gap-5 lg:gap-10 pb-10 px-2 sm:px-5">
+      <div className="flex flex-col w-full text-center sm:text-left gap-5 lg:gap-10 pb-10 px-2 sm:px-5">
         <div>
           <h1 className="font-bold text-2xl mb-5">Mes notes</h1>
           <TasksProfile tasks={userTasks} />

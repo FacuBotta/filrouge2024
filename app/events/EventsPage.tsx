@@ -16,9 +16,6 @@ export default async function EventsPage({
         <p className="text-center max-w-[700px] mb-5 mx-auto font-light">
           {category.description}
         </p>
-        <Link className="primary-btn mx-auto mb-5" href={'/events/new'}>
-          Creer un événement 📅
-        </Link>
         <p>Aucune événement dans cette catégorie</p>
         <Link className="primary-btn mx-auto mb-5" href={'/events/new'}>
           Fait le premier en le creer ! 📅
@@ -28,7 +25,7 @@ export default async function EventsPage({
   }
 
   return (
-    <section className="w-fit  mx-auto flex flex-col px-2">
+    <section className="animate w-fit  mx-auto flex flex-col px-2">
       <h2 className="text-2xl font-bold my-5 mx-auto">{category.title}</h2>
       <p className="text-center max-w-[700px] mb-5 mx-auto font-light">
         {category.description}
@@ -36,7 +33,7 @@ export default async function EventsPage({
       <Link className="primary-btn mx-auto mb-5" href={'/events/new'}>
         Creer un événement 📅
       </Link>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         {events.map((event) => (
           <EventCard key={event.id} event={event} category={category} />
         ))}

@@ -14,7 +14,7 @@ export async function emailSignInServerAction(email: string) {
     }
     await signIn('nodemailer', {
       email,
-      callbackUrl: '/dashboard',
+      callbackUrl: '/profile',
       redirect: false,
     });
     return { ok: true };
