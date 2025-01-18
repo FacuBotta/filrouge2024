@@ -21,7 +21,7 @@ export const NewMessagePage = ({ users }: { users: RegisteredUsers[] }) => {
 
     const response = await handleNewConversationSubmit(formData);
     if (response?.ok) {
-      router.push(`/dashboard/messages`);
+      router.push(`/messages`);
     } else {
       console.error(response);
     }
@@ -37,7 +37,7 @@ export const NewMessagePage = ({ users }: { users: RegisteredUsers[] }) => {
   return (
     <Backdrop>
       <div className="w-full max-w-[400px] h-fit max-h-[600px] flex flex-col gap-2 p-4 mx-2 bg-light-blue dark:bg-dark-bg rounded-xl">
-        <Link href="/dashboard/messages">
+        <Link href="/messages">
           <IconWrapper
             type="plus"
             strokeWidth={2}

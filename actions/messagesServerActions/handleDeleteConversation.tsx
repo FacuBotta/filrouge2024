@@ -54,5 +54,5 @@ export async function handleDeleteConversation(formData: FormData) {
     }),
   ]);
 
-  revalidatePath('/dashboard/messages');
+  revalidatePath('/messages');
 }

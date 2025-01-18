@@ -4,6 +4,7 @@ import selectUserByMail from '../userServerActions/selectUserByMail';
 
 export const checkIsAuthenticated = async () => {
   const session = await auth();
+  console.log('checkIsAuthenticated called...');
   if (session) {
     const userEmail = session.user?.email;
     const user = await selectUserByMail(userEmail as string);

@@ -4,6 +4,7 @@ import { auth } from '@/lib/auth/authConfig';
 import prisma from '@/lib/prisma';
 import { newEventSchema } from '@/lib/zodSchemas';
 import { Events } from '@prisma/client';
+
 export const createEvent = async (event: any) => {
   const session = await auth();
   if (!session) {
@@ -15,11 +16,15 @@ export const createEvent = async (event: any) => {
     const newEvent: NewEvent = {
       title: event.title,
       categoryId: event.categoryId, // Cambiado a `categoryId`
-      // isPublic: event.isPublic, // TODO: agregar campo en la base de datos
+      isPublic: event.isPublic,
       eventStart: new Date(event.eventStart),
       eventEnd: new Date(event.eventEnd),
       description: event.description,
       userId: session?.user?.id as string,
+      GoogleMaps: event.GoogleMaps,
+      city: event.city,
+      image: event.image,
+      place: event.place,
       // No incluimos `participants`, `createdAt`, `updatedAt` ni otros campos opcionales
     };
     console.log(newEvent);

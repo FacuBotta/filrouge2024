@@ -1,22 +1,35 @@
 'use server';
 
 import prisma from '@/lib/prisma';
+import { UserEventInformation } from '@/types/types';
 
 export const selectUserEvents = async (userId: string) => {
   try {
-    const events = await prisma.events.findMany({
+    const events: UserEventInformation[] | [] = await prisma.events.findMany({
       where: {
         userId: userId,
       },
-      include: {
+      select: {
+        id: true,
+        title: true,
+        image: true,
+        description: true,
+        eventStart: true,
+        eventEnd: true,
+        isPublic: true,
+        createdAt: true,
+        updatedAt: true,
         category: {
           select: {
             id: true,
             title: true,
-            description: true,
           },
         },
-        participants: true,
+        _count: {
+          select: {
+            participants: true,
+          },
+        },
       },
 
       orderBy: {

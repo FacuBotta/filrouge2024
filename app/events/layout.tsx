@@ -28,9 +28,9 @@ export default async function EventsLayout({
     },
   });
   return (
-    <div className="flex mt-20 min-h-screen gap-10 max-w-max w-full mx-auto">
+    <div className="flex mt-20 min-h-screen gap-10 max-w-max w-full mx-auto ">
       <CategoryNav categories={categories} />
-      <div className="w-full min-h-full border-l p-5 ">{children}</div>
+      <div className="w-full min-h-full md:border-l p-5 ">{children}</div>
     </div>
   );
 }

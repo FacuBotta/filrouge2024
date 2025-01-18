@@ -37,7 +37,7 @@ export async function handleNewConversationSubmit(formData: FormData) {
         ...participantsFormate,
       ],
     });
-    revalidatePath('/dashboard/messages');
+    revalidatePath('/messages');
     return { ok: true, conversation: newConversation };
   } catch (error) {
     console.error('Error creating new conversation:', error);

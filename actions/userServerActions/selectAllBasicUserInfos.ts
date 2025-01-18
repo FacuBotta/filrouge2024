@@ -1,10 +1,8 @@
-// select all basic user informations
-
 import prisma from '@/lib/prisma';
-import { User } from '@prisma/client';
+import { BasicUserDataCard } from '@/types/types';
 
 export const selectAllBasicUserInfos = async (): Promise<
-  Pick<User, 'id' | 'email' | 'description' | 'username' | 'image'>[]
+  BasicUserDataCard[] | []
 > => {
   try {
     const users = await prisma.user.findMany({
@@ -14,10 +12,22 @@ export const selectAllBasicUserInfos = async (): Promise<
         username: true,
         image: true,
         description: true,
+        _count: {
+          select: {
+            Ratings: true,
+            EventsCreated: true,
+          },
+        },
       },
     });
-    console.log(users);
-    return users;
+    // Check to not return users with null values
+    return users.filter(
+      (user): user is BasicUserDataCard =>
+        user.username !== null &&
+        user.email !== null &&
+        user.image !== null &&
+        user.description !== null
+    );
   } catch (error) {
     console.error(error);
     return [];

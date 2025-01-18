@@ -36,6 +36,12 @@ export const selectEventsByCategory = async (
         isPublic: true,
         createdAt: true,
         updatedAt: true,
+        category: {
+          select: {
+            id: true,
+            title: true,
+          },
+        },
         user: {
           select: {
             id: true,

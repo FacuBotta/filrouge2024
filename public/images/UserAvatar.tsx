@@ -12,8 +12,8 @@ export const UserAvatar = ({
   return (
     <div className={className ? className : 'size-12'}>
       <Image
-        width={250}
-        height={250}
+        width={350}
+        height={350}
         src={src ? src : '/images/DefaultUserAvatar1.png'}
         className="size-full rounded-full border"
         alt="user avatar"

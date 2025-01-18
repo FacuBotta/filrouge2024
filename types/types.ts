@@ -1,5 +1,8 @@
 import { User } from '@prisma/client';
 
+/* ========================================================================== */
+/* ============================ CONVERSATION TYPES =========================== */
+/* ========================================================================== */
 // Conversation types for messages
 export interface Participant {
   id: string;
@@ -29,6 +32,34 @@ export interface Message {
   updatedAt: Date;
   sender: Participant;
 }
+
+/* ========================================================================== */
+/* ============================ USER TYPES ================================== */
+/* ========================================================================== */
+
+export interface BasicUserDataCard {
+  id: string;
+  username: string;
+  image: string;
+  description: string;
+  email: string;
+  _count: {
+    Ratings: number;
+    EventsCreated: number;
+  };
+}
+export interface ProfileInformation {
+  id: string;
+  email: string | null;
+  username: string | null;
+  image: string | null;
+  description: string | null;
+  _count: {
+    EventsCreated: number;
+    Ratings: number;
+  };
+}
+
 export type RegisteredUsers = Pick<
   User,
   'id' | 'email' | 'name' | 'username' | 'image'
@@ -70,6 +101,27 @@ export interface EventWithUserAndCount {
     _count?: {
       Ratings: number;
     };
+  };
+  _count: {
+    participants: number;
+  };
+}
+/* ========================================================================== */
+/* ============================ EVENT TYPES ================================= */
+/* ========================================================================== */
+export interface UserEventInformation {
+  id: string;
+  title: string;
+  image: string | null;
+  description: string | null;
+  eventStart: Date;
+  eventEnd: Date;
+  isPublic: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  category: {
+    id: string;
+    title: string;
   };
   _count: {
     participants: number;

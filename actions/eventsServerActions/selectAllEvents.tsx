@@ -14,10 +14,15 @@ export const selectAllEvents = async (): Promise<
         description: true,
         eventStart: true,
         eventEnd: true,
-        categoryId: true,
         isPublic: true,
         createdAt: true,
         updatedAt: true,
+        category: {
+          select: {
+            id: true,
+            title: true,
+          },
+        },
         user: {
           select: {
             id: true,

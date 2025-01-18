@@ -57,10 +57,7 @@ export default function MessagePage({
       >
         <div className="flex w-full items-center justify-between px-5 pb-2 border-b">
           <h2 className="text-2xl">Chats</h2>
-          <Link
-            aria-label="Créer un nouveau chat"
-            href={'/dashboard/messages/new'}
-          >
+          <Link aria-label="Créer un nouveau chat" href={'/messages/new'}>
             <IconWrapper
               type="add"
               strokeWidth={2}

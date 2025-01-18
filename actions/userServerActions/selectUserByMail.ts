@@ -11,6 +11,7 @@ export default async function selectUserByMail(email: string) {
     });
     return user;
   } catch (error) {
-    throw new Error('Error selecting user by email');
+    console.log(error);
+    return null;
   }
 }

@@ -49,6 +49,10 @@ footer a:hover {
 .dashboard-main {
   @apply min-h-screen w-full pt-2 flex flex-col gap-2 bg-light-ciel dark:bg-dark-bg;
 }
+/* ========== Cards ========== */
+.user-card {
+  @apply flex  max-w-[300px] flex-col items-center justify-center gap-2 p-4 border rounded-lg dark:hover:bg-dark-grey/10 hover:bg-light-blue/50 transition-transform duration-500 ease-in-out;
+}
 
 /* ============= Messages view ============= */
 /* include the left and right sections of the view */

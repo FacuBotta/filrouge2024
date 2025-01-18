@@ -15,8 +15,7 @@ export default function NavItem(props: NavItemProps) {
     // TODO: arreglar esto para que funcione el link marcado como activo
     return (
       pathname === href ||
-      (href.match('messages') &&
-        pathname.startsWith('/dashboard/messages' + '/'))
+      (href.match('messages') && pathname.startsWith('/messages' + '/'))
     );
   };
   const itemActiveClass = 'px-2 text-light-red dark:text-light-yellow';

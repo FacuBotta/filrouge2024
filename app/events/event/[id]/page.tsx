@@ -7,7 +7,7 @@ import { EventWithUserAndCount } from '@/types/types';
 export default async function EventPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
   const event: EventWithUserAndCount | null = await selectEventById(id);

@@ -9,35 +9,26 @@ export default async function EventsPage({
   events: EventWithUserAndCount[];
   category: Category;
 }) {
-  if (!events || events.length === 0) {
-    return (
-      <section className="w-full h-full flex flex-col px-2 items-center gap-5">
-        <h2 className="text-2xl font-bold my-5 mx-auto">{category.title}</h2>
-        <p className="text-center max-w-[700px] mb-5 mx-auto font-light">
-          {category.description}
-        </p>
-        <p>Aucune événement dans cette catégorie</p>
-        <Link className="primary-btn mx-auto mb-5" href={'/events/new'}>
-          Fait le premier en le creer ! 📅
-        </Link>
-      </section>
-    );
-  }
-
   return (
-    <section className="animate w-fit  mx-auto flex flex-col px-2">
-      <h2 className="text-2xl font-bold my-5 mx-auto">{category.title}</h2>
-      <p className="text-center max-w-[700px] mb-5 mx-auto font-light">
+    <section className="animate max-w-[1000px]  mx-auto flex flex-col px-2">
+      <h1 className="text-3xl font-bold my-5 ml-0">{category.title}</h1>
+      <p className="text-left max-w-[700px] ml-0 font-light">
         {category.description}
       </p>
-      <Link className="primary-btn mx-auto mb-5" href={'/events/new'}>
-        Creer un événement 📅
-      </Link>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-        {events.map((event) => (
-          <EventCard key={event.id} event={event} category={category} />
-        ))}
-      </div>
+      {events.length === 0 || !events ? (
+        <div className="w-full h-full flex flex-col px-2 mt-20 items-start gap-5">
+          <p>Aucune événement dans cette catégorie</p>
+          <Link className="primary-btn " href={'/events/new'}>
+            Fait le premier en le creer ! 📅
+          </Link>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-10">
+          {events.map((event) => (
+            <EventCard key={event.id} event={event} category={category} />
+          ))}
+        </div>
+      )}
     </section>
   );
 }
