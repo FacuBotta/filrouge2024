@@ -27,10 +27,13 @@ export const selectEventById = async (
           select: {
             id: true,
             image: true,
+            email: true,
             username: true,
+            description: true,
             _count: {
               select: {
                 Ratings: true,
+                EventsCreated: true,
               },
             },
           },
@@ -42,7 +45,7 @@ export const selectEventById = async (
         },
       },
       where: {
-        id: id,
+        id,
       },
     });
 

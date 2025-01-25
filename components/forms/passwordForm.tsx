@@ -1,12 +1,12 @@
 'use client';
 
-import { PasswordInput } from 'facu-ui';
-import Button from '../ui/Button';
 import { updatePassword } from '@/actions/userServerActions/updatePassword';
-import React, { useState, useTransition } from 'react';
 import { passwordRegex, passwordSchema } from '@/lib/zodSchemas';
-import { z } from 'zod';
+import { PasswordInput } from 'facu-ui';
 import { useRouter } from 'next/navigation';
+import React, { useState, useTransition } from 'react';
+import { z } from 'zod';
+import Button from '../ui/Button';
 
 type PasswordFormProps = {
   id: string;
@@ -55,7 +55,7 @@ export default function PasswordForm({ id, isUpdated }: PasswordFormProps) {
             password: { message: result?.message as string, value: true },
           });
         } else if (result.ok) {
-          router.push('/dashboard');
+          router.push('/profile');
         }
       });
     } catch (error) {

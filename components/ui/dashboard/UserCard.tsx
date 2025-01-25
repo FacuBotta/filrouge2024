@@ -1,9 +1,9 @@
 import { UserAvatar } from '@/public/images/UserAvatar';
-import { BasicUserDataCard } from '@/types/types';
+import { BasicProfileInformation } from '@/types/types';
 import { Link } from 'next-view-transitions';
 import RantingUser from '../RantingUser';
 
-export default function UserCard({ user }: { user: BasicUserDataCard }) {
+export default function UserCard({ user }: { user: BasicProfileInformation }) {
   return (
     <Link className="user-card" href={`/communaute/profile/${user.id}`}>
       <UserAvatar className="size-32" src={user.image} />

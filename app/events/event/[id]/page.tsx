@@ -1,8 +1,9 @@
 import { selectEventById } from '@/actions/eventsServerActions/selectEventById';
+import UserCard from '@/components/ui/dashboard/UserCard';
 import IconWrapper from '@/components/ui/IconWrapper';
-import RantingUser from '@/components/ui/RantingUser';
-import { UserAvatar } from '@/public/images/UserAvatar';
-import { EventWithUserAndCount } from '@/types/types';
+import type { EventWithUserAndCount } from '@/types/types';
+import { Link } from 'next-view-transitions';
+import Image from 'next/image';
 
 export default async function EventPage({
   params,
@@ -11,7 +12,6 @@ export default async function EventPage({
 }) {
   const { id } = await params;
   const event: EventWithUserAndCount | null = await selectEventById(id);
-  console.log(event);
 
   const formatDate = (dateString: Date | string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -25,49 +25,98 @@ export default async function EventPage({
   };
 
   if (!event) {
-    return <div>Event not found</div>;
+    return (
+      <div className="flex h-[50vh] items-center justify-center">
+        <p className="text-xl">Event not found</p>
+      </div>
+    );
   }
 
   return (
-    <main className="w-full max-w-[800px] mx-auto h-fit border-2 rounded-lg overflow-hidden bg-green-100/10">
-      <header className="text-center">
-        <img
-          className="w-full h-[300px] object-cover"
-          src="/images/default_event_image.webp"
-          alt="image de l'event"
-        />
-      </header>
-      <section className="flex flex-col gap-5 p-5">
-        <div className="flex flex-col gap-2 text-left border-b pb-5">
-          <h1 className="text-2xl font-bold">
-            {event?.title}
-            {'  '}
-            <span className="font-thin text-lg">
-              {' '}
-              - {event?.category?.title}
-            </span>
-          </h1>
-          <p>{event?.description}</p>
-        </div>
-        <div className="flex  justify-between ">
-          <div className="flex flex-col items-start gap-2">
-            <div className="flex items-center gap-2">
-              <IconWrapper type="calendar" />
-              <div>
-                <p>{formatDate(event?.eventStart)}</p>
-                <p>{formatDate(event?.eventEnd)}</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <IconWrapper type="user" />
-              <p>{event?._count.participants} participants</p>
+    <main className="min-h-screen w-full pb-10">
+      <section className="mx-auto w-full max-w-[1200px] overflow-hidden rounded-lg border-2  bg-light-grey/10 backdrop-blur-sm">
+        <header>
+          <Image
+            width={1200}
+            height={500}
+            className="h-[500px] w-full object-cover shadow-lg"
+            src="/images/default_event_image.webp"
+            alt={`Image for ${event.title}`}
+            priority
+          />
+        </header>
+
+        <div className="flex flex-col gap-4 border-b border-gray-800 p-8">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div className="flex-1">
+              <h1 className="text-3xl font-bold text-white">
+                {event.title}
+                <span className="ml-2 text-lg font-normal text-gray-400">
+                  - {event.category?.title}
+                </span>
+              </h1>
+              <p className="mt-4 text-gray-300">{event.description}</p>
+              <Link className="primary-btn mt-10" href={`/events/${id}/join`}>
+                Rejoindre l&apos;événement 🚀
+              </Link>
             </div>
           </div>
-          <div className="flex flex-col flex-1 items-center gap-2">
-            <p>Cree par :</p>
-            <UserAvatar className="size-16" src={event?.user.image} />
-            <p>{event?.user.username}</p>
-            <RantingUser ranting={Math.floor(Math.random() * 5)} />
+        </div>
+      </section>
+
+      <section className="mx-auto mt-8 grid max-w-[1200px] gap-8 px-4 md:grid-cols-2">
+        <div className="space-y-6">
+          <h2 className="text-3xl font-semibold text-white">Dates</h2>
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <IconWrapper type="calendar" />
+              <div className="space-y-1">
+                <p className="text-gray-300">
+                  Début: {formatDate(event.eventStart)}
+                </p>
+                <p className="text-gray-300">
+                  Fin: {formatDate(event.eventEnd)}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <IconWrapper type="user" />
+              <p className="text-gray-300">
+                {event._count.participants} participant
+                {event._count.participants !== 1 ? 's' : ''}
+              </p>
+            </div>
+            <div>
+              <h2 className="mb-5 text-3xl font-semibold text-white">
+                Organisateur
+              </h2>
+              <UserCard user={event.user} />
+            </div>
+          </div>
+        </div>
+
+        <div className="">
+          <h2 className="mb-5 text-3xl font-semibold text-white">Ubication</h2>
+          <div className="flex items-center gap-3 mb-10">
+            <IconWrapper type="mapPin" />
+            <p className="text-gray-300">place de la conférence</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <iframe
+              width="100%"
+              height="300"
+              src="https://maps.app.goo.gl/fKz9f5tbDjFZ2qrd9"
+            ></iframe>
+            <br />
+            {/* <a
+              href="https://maps.app.goo.gl/fKz9f5tbDjFZ2qrd9"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-yellow-500 hover:underline"
+            >
+              Voir sur la carte
+            </a> */}
           </div>
         </div>
       </section>

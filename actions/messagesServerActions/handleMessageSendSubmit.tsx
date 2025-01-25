@@ -25,7 +25,7 @@ export async function handleMessageSendSubmit(formData: FormData) {
       where: {
         userId_conversationId: {
           userId: sender.id as string,
-          conversationId: conversationId,
+          conversationId,
         },
       },
     });
@@ -36,7 +36,7 @@ export async function handleMessageSendSubmit(formData: FormData) {
     // send the message
     const newMessage = await prisma.message.create({
       data: {
-        conversationId: conversationId,
+        conversationId,
         senderId: sender.id as string,
         content: message,
       },
@@ -45,7 +45,7 @@ export async function handleMessageSendSubmit(formData: FormData) {
     // get the participants of the conversation
     // to set the messageStatus for each participant
     const participants = await prisma.userConversation.findMany({
-      where: { conversationId: conversationId },
+      where: { conversationId },
     });
     for (const participant of participants) {
       await prisma.messageStatus.create({
@@ -57,7 +57,7 @@ export async function handleMessageSendSubmit(formData: FormData) {
       });
     }
 
-    revalidatePath('/Dashboard');
+    revalidatePath('/Messages');
     return { ok: true, message: '' };
   } catch (error) {
     console.error('Error sending message:', error);

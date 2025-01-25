@@ -34,7 +34,7 @@ export default function DashboardMessagesWindow({
   return (
     <div
       ref={messagesWindowRef}
-      className="no-scrollbar flex flex-col gap-2 w-full h-full mx-auto  px-2 pb-10 pt-5 rounded-b-xl overflow-y-scroll scroll-smooth"
+      className="no-scrollbar flex flex-col gap-2 w-full h-full mx-auto  px-2 pb-10 border-2 pt-5 rounded-xl my-3 overflow-y-scroll scroll-smooth bg-dark-grey/10"
     >
       {messages?.reduce((acc, message, index, arr) => {
         if (index > 0) {

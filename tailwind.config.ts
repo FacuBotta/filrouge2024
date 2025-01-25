@@ -12,6 +12,9 @@ const config: Config = {
       fredoka: ['var(--font-fredoka)'],
     },
     extend: {
+      screens: {
+        '4xl': '2000px',
+      },
       maxWidth: {
         max: '1600px',
       },

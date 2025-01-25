@@ -8,7 +8,7 @@ export async function getMessagesConversation(formData: FormData) {
 
   const messages = await prisma.message.findMany({
     where: {
-      conversationId: conversationId,
+      conversationId,
     },
     include: {
       sender: {
@@ -23,6 +23,6 @@ export async function getMessagesConversation(formData: FormData) {
       createdAt: 'asc', // Ordena los mensajes por fecha de creación ascendente
     },
   });
-  revalidatePath('/Dashboard');
+  revalidatePath('/Messages');
   return messages;
 }

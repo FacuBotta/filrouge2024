@@ -1,3 +1,4 @@
+import PageHeader from '@/components/layouts/PageHeader';
 import EventCard from '@/components/ui/dashboard/EventCard';
 import { EventWithUserAndCount } from '@/types/types';
 import { Category } from '@prisma/client';
@@ -11,8 +12,8 @@ export default async function EventsPage({
 }) {
   return (
     <section className="animate max-w-[1000px]  mx-auto flex flex-col px-2">
-      <h1 className="text-3xl font-bold my-5 ml-0">{category.title}</h1>
-      <p className="text-left max-w-[700px] ml-0 font-light">
+      <PageHeader title={category.title} searchType="events" />
+      <p className="text-left max-w-[700px] ml-0 sm:mt-5 4xl:mt-0 sm:pl-10 font-light">
         {category.description}
       </p>
       {events.length === 0 || !events ? (

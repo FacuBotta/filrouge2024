@@ -5,8 +5,8 @@ import { deleteUserTask } from '@/actions/TasksServerActions/deleteUserTask';
 import { updateTask } from '@/actions/TasksServerActions/updateTask';
 import { Tasks } from '@prisma/client';
 import { Icon } from 'facu-ui';
-import { useEffect, useRef, useState } from 'react';
 import { Reorder } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
 
 export default function TasksProfile({ tasks }: { tasks: Tasks[] }) {
   const [clientTasks, setClientTasks] = useState<any>(tasks);
@@ -112,7 +112,7 @@ export default function TasksProfile({ tasks }: { tasks: Tasks[] }) {
       task.order = index + 1;
       return task;
     });
-    const response = await createTask({ content: content, completed: false });
+    const response = await createTask({ content, completed: false });
     if (response?.ok) {
       setClientTasks([response.newTask, ...reorderedTasks]);
       e.target.reset();
@@ -146,7 +146,7 @@ export default function TasksProfile({ tasks }: { tasks: Tasks[] }) {
   // this function is used to update the order of the tasks when the user drags and drops a task
   const handleDragEnd = async () => {
     try {
-      for (let task of clientTasks) {
+      for (const task of clientTasks) {
         await updateTask(task);
       }
     } catch (error) {
@@ -198,12 +198,22 @@ export default function TasksProfile({ tasks }: { tasks: Tasks[] }) {
         className="flex items-end gap-5 mb-2 w-full"
       >
         <div className="flex w-full gap-5">
-          <button aria-label="Ajouter une tâche">
+          <div className="flex gap-2 items-center">
+            {/* TODO: poner icono de parametros o filtrado */}
             <Icon
-              type="add"
               className="hover:text-red-600 dark:hover:text-dark-greenLight hover:scale-110"
+              type="menu"
+              width={35}
             />
-          </button>
+            <button aria-label="Ajouter une tâche">
+              <Icon
+                type="add"
+                className="hover:text-red-600 dark:hover:text-dark-greenLight hover:scale-110"
+                width={35}
+              />
+            </button>
+          </div>
+
           <textarea
             ref={newTaskInputRef}
             name="content"
@@ -241,7 +251,7 @@ export default function TasksProfile({ tasks }: { tasks: Tasks[] }) {
                   autoComplete="off"
                   className="peer"
                   type="checkbox"
-                  defaultChecked={task.completed ? true : false}
+                  defaultChecked={!!task.completed}
                   onChange={(e) => handleUpdateTaskStatus(e, task)}
                 />
                 <textarea

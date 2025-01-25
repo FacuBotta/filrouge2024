@@ -3,7 +3,7 @@ import selectUserById from '@/actions/userServerActions/selectUserById';
 import IconWrapper from '@/components/ui/IconWrapper';
 import RantingUser from '@/components/ui/RantingUser';
 import { UserAvatar } from '@/public/images/UserAvatar';
-import { ProfileInformation, UserEventInformation } from '@/types/types';
+import { BasicProfileInformation, EventByUser } from '@/types/types';
 import { Link } from 'next-view-transitions';
 
 export default async function EventPage({
@@ -12,12 +12,12 @@ export default async function EventPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const user: ProfileInformation | null = await selectUserById(id);
+  const user: BasicProfileInformation | null = await selectUserById(id);
 
   // TODO : actualisar esto cuando agregue la funcion para cambiar is public...
-  let publicUserEvents: UserEventInformation[] = [];
+  let publicUserEvents: EventByUser[] = [];
   if (user && user._count.EventsCreated > 0) {
-    const dbEvents: UserEventInformation[] | [] = await selectUserEvents(id);
+    const dbEvents: EventByUser[] | [] = await selectUserEvents(id);
     publicUserEvents = [...dbEvents];
   }
   console.log({ user, publicUserEvents });
@@ -37,7 +37,7 @@ export default async function EventPage({
 
   return (
     <main className="w-[95%] max-w-[1000px] mx-auto min-h-screen my-10 ">
-      <header className="flex justify-around items-center flex-wrap gap-5 p-10 border-2 divide-y-2 sm:divide-none rounded-lg overflow-hidden bg-green-100/10">
+      <header className="flex justify-around items-center flex-wrap gap-5 p-10 border-2 divide-y-2 sm:divide-none rounded-lg overflow-hidden bg-light-grey/10">
         <div className="flex flex-col items-center justify-center">
           <UserAvatar src={user.image} className="size-48" />
           <h1 className="text-3xl font-bold my-5">{user.username}</h1>
@@ -57,7 +57,7 @@ export default async function EventPage({
         ) : (
           <h3 className="text-3xl font-bold">Mes événements</h3>
         )}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {publicUserEvents.map((event) => (
             <Link
               key={event.id}

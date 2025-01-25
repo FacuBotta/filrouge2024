@@ -1,11 +1,11 @@
 'use server';
 
 import prisma from '@/lib/prisma';
-import { ProfileInformation } from '@/types/types';
+import { BasicProfileInformation } from '@/types/types';
 
 export default async function selectUserById(
   id: string
-): Promise<ProfileInformation | null> {
+): Promise<BasicProfileInformation | null> {
   try {
     const user = await prisma.user.findUnique({
       where: {
@@ -25,7 +25,7 @@ export default async function selectUserById(
         },
       },
     });
-    return user as ProfileInformation;
+    return user as BasicProfileInformation;
   } catch (error) {
     return null;
   }

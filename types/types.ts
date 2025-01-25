@@ -3,7 +3,6 @@ import { User } from '@prisma/client';
 /* ========================================================================== */
 /* ============================ CONVERSATION TYPES =========================== */
 /* ========================================================================== */
-// Conversation types for messages
 export interface Participant {
   id: string;
   name: string | null;
@@ -12,6 +11,13 @@ export interface Participant {
   image: string | null;
   joinedAt?: Date;
   updatedAt: Date;
+}
+export interface Message {
+  id: string;
+  content: string;
+  createdAt: Date;
+  updatedAt: Date;
+  sender: Participant;
 }
 
 export interface Conversation {
@@ -25,30 +31,11 @@ export interface Conversation {
   role?: string;
 }
 
-export interface Message {
-  id: string;
-  content: string;
-  createdAt: Date;
-  updatedAt: Date;
-  sender: Participant;
-}
-
 /* ========================================================================== */
 /* ============================ USER TYPES ================================== */
 /* ========================================================================== */
 
-export interface BasicUserDataCard {
-  id: string;
-  username: string;
-  image: string;
-  description: string;
-  email: string;
-  _count: {
-    Ratings: number;
-    EventsCreated: number;
-  };
-}
-export interface ProfileInformation {
+export interface BasicProfileInformation {
   id: string;
   email: string | null;
   username: string | null;
@@ -57,6 +44,24 @@ export interface ProfileInformation {
   _count: {
     EventsCreated: number;
     Ratings: number;
+  };
+}
+export interface EventWithUserAndCount {
+  id: string;
+  title: string;
+  description: string | null;
+  eventStart: Date;
+  eventEnd: Date;
+  isPublic: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  category: {
+    id: string;
+    title: string;
+  };
+  user: BasicProfileInformation;
+  _count: {
+    participants: number;
   };
 }
 
@@ -80,36 +85,10 @@ export interface UserJoinedEvent {
     description: string;
   };
 }
-
-export interface EventWithUserAndCount {
-  id: string;
-  title: string;
-  description: string | null;
-  eventStart: Date;
-  eventEnd: Date;
-  isPublic: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-  category: {
-    id: string;
-    title: string;
-  };
-  user: {
-    id: string;
-    image: string | null;
-    username: string | null;
-    _count?: {
-      Ratings: number;
-    };
-  };
-  _count: {
-    participants: number;
-  };
-}
 /* ========================================================================== */
 /* ============================ EVENT TYPES ================================= */
 /* ========================================================================== */
-export interface UserEventInformation {
+export interface EventByUser {
   id: string;
   title: string;
   image: string | null;

@@ -1,6 +1,4 @@
-import { checkIsAuthenticated } from '@/actions/authServerActions/checkIsAuthenticated';
 import Footer from '@/components/layouts/Footer';
-import DashboardNav from '@/components/ui/dashboard/DashboardNav';
 import { Fredoka } from '@/public/fonts/localFonts';
 import type { Metadata } from 'next';
 import { ViewTransitions } from 'next-view-transitions';
@@ -22,7 +20,7 @@ export default async function RootLayout({
   children: React.ReactNode;
   auth: React.ReactNode;
 }>) {
-  const userAuthenticated = await checkIsAuthenticated();
+  // const userAuthenticated = await checkIsAuthenticated();
 
   return (
     <ViewTransitions>
@@ -35,9 +33,9 @@ export default async function RootLayout({
           <Providers>
             <Header />
             <main className="dashboard-main">
-              {userAuthenticated && (
+              {/* {userAuthenticated && (
                 <DashboardNav userAuthenticated={userAuthenticated} />
-              )}
+              )} */}
               {children}
             </main>
             {auth}
