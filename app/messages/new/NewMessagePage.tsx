@@ -8,7 +8,7 @@ import { UserAvatar } from '@/public/images/UserAvatar';
 import { RegisteredUsers } from '@/types/types';
 import { Link } from 'next-view-transitions';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import React, { useState } from 'react';
 export const NewMessagePage = ({ users }: { users: RegisteredUsers[] }) => {
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const router = useRouter();

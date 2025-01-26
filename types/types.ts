@@ -88,6 +88,24 @@ export interface UserJoinedEvent {
 /* ========================================================================== */
 /* ============================ EVENT TYPES ================================= */
 /* ========================================================================== */
+export interface EventAddress {
+  url: string | undefined;
+  lat: number | undefined;
+  lng: number | undefined;
+  formattedAddress: string | undefined;
+  vicinity: string | undefined;
+}
+export interface NewEventForm {
+  categoryId: string;
+  title: string;
+  description: string;
+  eventStart: Date;
+  eventEnd: Date | null;
+  isPublic: boolean;
+  participants: string[];
+  address: EventAddress;
+  image: File | null;
+}
 export interface EventByUser {
   id: string;
   title: string;

@@ -46,12 +46,27 @@ export const signUpSchema = z.object({
     .email({ message: 'Veuillez utiliser une adresse e-mail valide' }),
 });
 
+export const eventAddressSchema = z.object({
+  url: z.string().url().optional(), // La URL puede ser opcional
+  lat: z.number().optional(), // La latitud puede ser opcional
+  lng: z.number().optional(), // La longitud puede ser opcional
+  formattedAddress: z.string().optional(), // Dirección formateada opcional
+  vicinity: z.string().optional(), // Vecindad opcional
+});
+
 export const newEventSchema = z.object({
+  categoryId: z.string(),
   title: z
     .string()
     .max(100, { message: 'Le titre doit être de 100 caractères maximum' }),
-  categoryId: z.string(),
-  isPublic: z.boolean(),
+  description: z
+    .string()
+    .min(30, {
+      message: "Il faut un peu de l'inspiration pour cette description!",
+    })
+    .max(1000, {
+      message: 'La description doit être de 1000 caractères maximum',
+    }),
   eventStart: z.string().refine(
     (value) => {
       const date = new Date(value);
@@ -62,25 +77,28 @@ export const newEventSchema = z.object({
       message: 'La date doit être valide et ne peut pas être dans le passé',
     }
   ),
-  eventEnd: z.string().refine(
-    (value) => {
-      const date = new Date(value);
-      const now = new Date();
-      return !isNaN(date.getTime()) && date >= now;
-    },
-    {
-      message: 'La date doit être valide et ne peut pas être dans le passé',
-    }
-  ),
-  description: z
+  eventEnd: z
     .string()
-    .min(30, {
-      message: "Il faut un peu de l'inspiration pour cette description!",
-    })
-    .max(1000, {
-      message: 'La description doit être de 1000 caractères maximum',
-    }),
+    .nullable()
+    .refine(
+      (value) => {
+        if (!value) return true; // Permitir valores nulos
+        const date = new Date(value);
+        const now = new Date();
+        return !isNaN(date.getTime()) && date >= now;
+      },
+      {
+        message: 'La date doit être valide et ne peut pas être dans le passé',
+      }
+    ),
+  isPublic: z.boolean(),
+  participants: z.string(), // Lista de participantes como strings
+  address: eventAddressSchema, // Validación de dirección
+  image: z.instanceof(File).nullable(), // Validar que sea un archivo o nulo
 });
+
+// Generar el tipo TypeScript a partir del esquema
+export type NewEventForm = z.infer<typeof newEventSchema>;
 
 const validCategoryTitles = [
   'sport',

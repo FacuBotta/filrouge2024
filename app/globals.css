@@ -44,6 +44,9 @@ footer a:hover {
 .primary-btn {
   @apply inline-flex items-center justify-center w-fit px-4 py-1 border-2 text-lg rounded-lg bg-light-yellow text-dark-bg font-bold border-dark-bg hover:shadow-lg  transition-transform duration-300 ease-in-out;
 }
+.input-light {
+  @apply bg-transparent ml-2 border-b focus:outline-none border-dark-bg dark:border-light-grey placeholder:text-light-blue placeholder:dark:text-dark-greenLight/50;
+}
 
 /* ============= Dashboard layout ============= */
 .dashboard-main {

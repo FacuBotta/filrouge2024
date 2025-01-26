@@ -2,6 +2,7 @@ import { checkIsAuthenticated } from '@/actions/authServerActions/checkIsAuthent
 import CategoryNav from '@/components/ui/CategoryNav';
 import prisma from '@/lib/prisma';
 import { redirect } from 'next/navigation';
+import React from 'react';
 
 export default async function EventsLayout({
   children,
@@ -29,8 +30,10 @@ export default async function EventsLayout({
   });
   return (
     <div className="flex mt-10 min-h-screen gap-10 max-w-max w-full mx-auto sm:pl-10 ">
-      <CategoryNav categories={categories} />
-      <div className="w-full min-h-full md:border-l p-5 ">{children}</div>
+      <div className="hidden sm:block">
+        <CategoryNav categories={categories} />
+      </div>
+      <div className="w-full min-h-full md:border-l p-2 ">{children}</div>
     </div>
   );
 }

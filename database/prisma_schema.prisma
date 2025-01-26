@@ -189,14 +189,11 @@ model Events {
   title       String
   description String? @db.Text
   eventStart  DateTime
-  eventEnd    DateTime
+  eventEnd    DateTime?
   isPublic    Boolean  @default(false)
 
   image       String?
-  
-  GoogleMaps      String?
-  city         String?
-  place        String?
+  address        Json?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

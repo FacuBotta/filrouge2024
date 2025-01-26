@@ -1,4 +1,5 @@
 import { selectEventById } from '@/actions/eventsServerActions/selectEventById';
+import MapInfoCard from '@/components/ui/cards/MapInfoCard';
 import UserCard from '@/components/ui/dashboard/UserCard';
 import IconWrapper from '@/components/ui/IconWrapper';
 import type { EventWithUserAndCount } from '@/types/types';
@@ -102,21 +103,8 @@ export default async function EventPage({
             <IconWrapper type="mapPin" />
             <p className="text-gray-300">place de la conférence</p>
           </div>
-          <div className="flex items-center gap-3">
-            <iframe
-              width="100%"
-              height="300"
-              src="https://maps.app.goo.gl/fKz9f5tbDjFZ2qrd9"
-            ></iframe>
-            <br />
-            {/* <a
-              href="https://maps.app.goo.gl/fKz9f5tbDjFZ2qrd9"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-yellow-500 hover:underline"
-            >
-              Voir sur la carte
-            </a> */}
+          <div className="flex items-center h-[250px] w-[320px] sm:w-[380px] sm:h-[470px] border-2 rounded-lg">
+            <MapInfoCard />
           </div>
         </div>
       </section>
