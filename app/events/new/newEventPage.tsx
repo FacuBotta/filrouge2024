@@ -8,7 +8,7 @@ import { BasicProfileInformation, EventAddress } from '@/types/types';
 import { Category } from '@prisma/client';
 import { Input } from 'facu-ui';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { z } from 'zod';
 export const NewEventPage = ({
   availableCategories,
@@ -25,20 +25,45 @@ export const NewEventPage = ({
     eventEnd: { message: '', value: false },
     description: { message: '', value: false },
     address: { message: '', value: false },
+    image: { message: '', value: false },
   });
   const router = useRouter();
+  const imageInputRef = useRef<HTMLInputElement>(null);
   const [finalAddress, setFinalAddress] = useState<EventAddress | null>(null);
-
+  const [imagePreview, setImagePreview] = useState<String | null>(null);
   const [isUserListOpen, setIsUserListOpen] = useState(false);
   const [selectedParticipants, setSelectedParticipants] = useState<
     BasicProfileInformation[]
   >([]);
 
+  const handleImagePreview = (e: any) => {
+    e.preventDefault();
+    if (imageInputRef.current) {
+      const file = imageInputRef.current.files?.[0];
+      if (!file) return;
+      if (file.size > 2000000) {
+        setError({
+          ...error,
+          image: { message: 'La taille du fichier dépasse 2Mo !', value: true },
+        });
+        imageInputRef.current.value = '';
+        return;
+      }
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setImagePreview(e.target?.result as string);
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+  };
   const setSelectedUsers = (selectedUsers: BasicProfileInformation[]) => {
     setSelectedParticipants(selectedUsers);
-    setIsUserListOpen(!isUserListOpen);
+    setIsUserListOpen(false);
   };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    console.log('submited called');
     e.preventDefault();
     setError({
       title: { message: '', value: false },
@@ -47,6 +72,7 @@ export const NewEventPage = ({
       eventEnd: { message: '', value: false },
       description: { message: '', value: false },
       address: { message: '', value: false },
+      image: { message: '', value: false },
     });
     if (!finalAddress) {
       setError({
@@ -63,8 +89,8 @@ export const NewEventPage = ({
       categoryId: formData.get('category') as string,
       isPublic: formData.get('isPublic') === 'on',
       image: formData.get('image') as File,
-      eventStart: formData.get('eventStart') as string,
-      eventEnd: formData.get('eventEnd') as string,
+      eventStart: new Date(formData.get('eventStart') as string),
+      eventEnd: new Date(formData.get('eventEnd') as string),
       description: formData.get('description') as string,
       participants: selectedParticipants.map((user) => user.id).join(','),
       address: finalAddress,
@@ -105,16 +131,25 @@ export const NewEventPage = ({
         </button>
       </header>
       <main className="flex flex-col items-center justify-center mb-5 w-full bg-light-ciel relative rounded-xl border-2 border-light-yellow dark:bg-light-grey/10">
-        <form className="flex flex-col w-full gap-5" onSubmit={handleSubmit}>
-          <header className="h-[200px] w-full border-b relative hover:bg-light-grey/10">
+        <form className="flex flex-col w-full gap-5 " onSubmit={handleSubmit}>
+          <header
+            className="h-[300px] w-full border-b relative hover:bg-light-grey/10 bg-cover bg-center"
+            style={{ backgroundImage: `url(${imagePreview})` }}
+          >
             <input
+              ref={imageInputRef}
+              onChange={(e) => handleImagePreview(e)}
               type="file"
               name="image"
               required={true}
-              className="h-full w-full opacity-0 cursor-pointer"
+              className="relative h-full w-full opacity-0 cursor-pointer"
             ></input>
-            <span className="absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] text-2xl text-light-grey/50 cursor-pointer">
-              Sélectionner une image
+            <span
+              className={`absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] text-2xl text-light-grey/50 cursor-pointer ${error.image.value ? 'text-red-500' : ''}`}
+            >
+              {error.image.value
+                ? error.image.message
+                : 'Sélectionner une image'}
             </span>
           </header>
           <section className="flex gap-5 w-full justify-between items-start mt-2 flex-wrap px-5">
@@ -130,14 +165,14 @@ export const NewEventPage = ({
                 className="bg-dark-bg p-3 mt-2 border-b min-w-[200px] border-dark-bg dark:border-white"
                 name="category"
               >
-                <option>Categorie</option>
+                <option>Catégorie</option>
                 {availableCategories.map((category: Category) => (
                   <option key={category.id} value={category.id}>
                     {category.title}
                   </option>
                 ))}
               </select>
-              <div className="flex gap-2 mt-5 justify-betwee flex-wrap">
+              <div className="flex gap-2 mt-5 justify-between flex-wrap">
                 <button
                   className="primary-btn h-10"
                   onClick={() => setIsUserListOpen(true)}

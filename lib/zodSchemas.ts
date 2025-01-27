@@ -67,9 +67,9 @@ export const newEventSchema = z.object({
     .max(1000, {
       message: 'La description doit être de 1000 caractères maximum',
     }),
-  eventStart: z.string().refine(
+  eventStart: z.date().refine(
     (value) => {
-      const date = new Date(value);
+      const date = value;
       const now = new Date();
       return !isNaN(date.getTime()) && date >= now;
     },
@@ -78,12 +78,12 @@ export const newEventSchema = z.object({
     }
   ),
   eventEnd: z
-    .string()
+    .date()
     .nullable()
     .refine(
       (value) => {
-        if (!value) return true; // Permitir valores nulos
-        const date = new Date(value);
+        if (!value) return true;
+        const date = value;
         const now = new Date();
         return !isNaN(date.getTime()) && date >= now;
       },

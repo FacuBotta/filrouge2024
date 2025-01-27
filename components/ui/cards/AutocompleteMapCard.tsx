@@ -22,7 +22,6 @@ const MapWithAutocomplete = ({
   const [place, setPlace] = useState({ lat: 53.54992, lng: 10.00678 });
   const [zoom, setZoom] = useState(10);
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
   const onLoad = (autocomplete: google.maps.places.Autocomplete) => {
     autocompleteRef.current = autocomplete;
   };
@@ -59,7 +58,6 @@ const MapWithAutocomplete = ({
         <div>
           <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
             <input
-              ref={inputRef}
               placeholder="Chercher un lieu"
               className="p-2 border-2 rounded-lg bg-none my-3 w-full"
             />

@@ -2,7 +2,7 @@ import { selectEventById } from '@/actions/eventsServerActions/selectEventById';
 import MapInfoCard from '@/components/ui/cards/MapInfoCard';
 import UserCard from '@/components/ui/dashboard/UserCard';
 import IconWrapper from '@/components/ui/IconWrapper';
-import type { EventWithUserAndCount } from '@/types/types';
+import type { EventAddress, EventWithUserAndCount } from '@/types/types';
 import { Link } from 'next-view-transitions';
 import Image from 'next/image';
 
@@ -75,9 +75,11 @@ export default async function EventPage({
                 <p className="text-gray-300">
                   Début: {formatDate(event.eventStart)}
                 </p>
-                <p className="text-gray-300">
-                  Fin: {formatDate(event.eventEnd)}
-                </p>
+                {event.eventEnd && (
+                  <p className="text-gray-300">
+                    Fin: {formatDate(event.eventEnd)}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -103,9 +105,11 @@ export default async function EventPage({
             <IconWrapper type="mapPin" />
             <p className="text-gray-300">place de la conférence</p>
           </div>
-          <div className="flex items-center h-[250px] w-[320px] sm:w-[380px] sm:h-[470px] border-2 rounded-lg">
-            <MapInfoCard />
-          </div>
+          {event.address && (
+            <div className="flex items-center h-[250px] w-[320px] sm:w-[380px] sm:h-[470px] border-2 rounded-lg">
+              <MapInfoCard address={event.address as EventAddress} zoom={15} />
+            </div>
+          )}
         </div>
       </section>
     </main>

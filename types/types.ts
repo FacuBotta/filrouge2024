@@ -1,4 +1,5 @@
 import { User } from '@prisma/client';
+import { JsonValue } from 'next-auth/adapters';
 
 /* ========================================================================== */
 /* ============================ CONVERSATION TYPES =========================== */
@@ -46,24 +47,6 @@ export interface BasicProfileInformation {
     Ratings: number;
   };
 }
-export interface EventWithUserAndCount {
-  id: string;
-  title: string;
-  description: string | null;
-  eventStart: Date;
-  eventEnd: Date;
-  isPublic: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-  category: {
-    id: string;
-    title: string;
-  };
-  user: BasicProfileInformation;
-  _count: {
-    participants: number;
-  };
-}
 
 export type RegisteredUsers = Pick<
   User,
@@ -76,7 +59,7 @@ export interface UserJoinedEvent {
   title: string;
   description: string | null;
   eventStart: Date;
-  eventEnd: Date;
+  eventEnd: Date | null;
   createdAt: Date;
   updatedAt: Date;
   category: {
@@ -89,11 +72,30 @@ export interface UserJoinedEvent {
 /* ============================ EVENT TYPES ================================= */
 /* ========================================================================== */
 export interface EventAddress {
-  url: string | undefined;
-  lat: number | undefined;
-  lng: number | undefined;
-  formattedAddress: string | undefined;
-  vicinity: string | undefined;
+  url?: string;
+  lat?: number;
+  lng?: number;
+  formattedAddress?: string;
+  vicinity?: string;
+}
+export interface EventWithUserAndCount {
+  id: string;
+  title: string;
+  description: string | null;
+  eventStart: Date;
+  eventEnd: Date | null;
+  isPublic: boolean | null;
+  address: EventAddress | JsonValue | null;
+  createdAt: Date;
+  updatedAt: Date;
+  category: {
+    id: string;
+    title: string;
+  };
+  user: BasicProfileInformation;
+  _count: {
+    participants: number | null;
+  };
 }
 export interface NewEventForm {
   categoryId: string;

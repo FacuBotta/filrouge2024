@@ -1,36 +1,37 @@
 'use server';
 
 import { auth } from '@/lib/auth/authConfig';
-import prisma from '@/lib/prisma';
-import { newEventSchema } from '@/lib/zodSchemas';
-import { Events } from '@prisma/client';
+import { NewEventForm, newEventSchema } from '@/lib/zodSchemas';
 
-export const createEvent = async (event: any) => {
+export const createEvent = async (event: NewEventForm) => {
   const session = await auth();
   if (!session) {
     throw new Error('Vous devez être connecté pour créer un événement');
   }
-  type NewEvent = Omit<Events, 'id' | 'createdAt' | 'updatedAt'>;
   try {
     newEventSchema.parse(event);
-    const newEvent: NewEvent = {
+
+    const imageFile = event.image as File;
+    // generate a name and path for the image
+    const imageName = `${event.title}_${session.user?.id}.jpg`;
+    const imagePath = `/images/events/${imageName}`;
+
+    // parse event data
+    const newEvent = {
       title: event.title,
-      categoryId: event.categoryId, // Cambiado a `categoryId`
+      categoryId: event.categoryId,
       isPublic: event.isPublic,
-      eventStart: new Date(event.eventStart),
-      eventEnd: new Date(event.eventEnd),
+      eventStart: event.eventStart,
+      eventEnd: event.eventEnd || null,
       description: event.description,
       userId: session?.user?.id as string,
-      GoogleMaps: event.GoogleMaps,
-      city: event.city,
-      image: event.image,
-      place: event.place,
-      // No incluimos `participants`, `createdAt`, `updatedAt` ni otros campos opcionales
+      address: event.address,
+      image: imagePath,
     };
     console.log(newEvent);
-    await prisma.events.create({
+    /* await prisma.events.create({
       data: newEvent,
-    });
+    }); */
     return { ok: true, message: 'Événement créé avec succès' };
   } catch (error) {
     console.log(error);
