@@ -75,9 +75,11 @@ export default async function EventPage({
                 <p className="text-gray-300">
                   Début: {formatDate(event.eventStart)}
                 </p>
-                <p className="text-gray-300">
-                  Fin: {formatDate(event.eventEnd)}
-                </p>
+                {event.eventEnd && (
+                  <p className="text-gray-300">
+                    Fin: {formatDate(event.eventEnd)}
+                  </p>
+                )}
               </div>
             </div>
 

@@ -15,6 +15,7 @@ export const selectEventById = async (
         eventStart: true,
         eventEnd: true,
         isPublic: true,
+        address: true,
         createdAt: true,
         updatedAt: true,
         category: {
@@ -26,14 +27,14 @@ export const selectEventById = async (
         user: {
           select: {
             id: true,
-            image: true,
             email: true,
             username: true,
+            image: true,
             description: true,
             _count: {
               select: {
-                Ratings: true,
                 EventsCreated: true,
+                Ratings: true,
               },
             },
           },
