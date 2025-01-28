@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 'use client';
 import { EventAddress } from '@/types/types';
 import type { Libraries } from '@react-google-maps/api';

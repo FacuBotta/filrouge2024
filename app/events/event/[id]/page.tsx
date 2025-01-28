@@ -104,7 +104,15 @@ export default async function EventPage({
             <p className="text-gray-300">place de la conférence</p>
           </div>
           <div className="flex items-center h-[250px] w-[320px] sm:w-[380px] sm:h-[470px] border-2 rounded-lg">
-            <MapInfoCard />
+            {event.address ? (
+              <MapInfoCard position={position} />
+            ) : (
+              <div className="w-full h-full bg-dark-grey/10 flex items-center justify-center">
+                <p className="text-gray-300 text-balance text-center">
+                  Cet événement n'a pas de localisation especifiqué
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </section>

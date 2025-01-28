@@ -1,14 +1,23 @@
 'use client';
 
-import { APIProvider, Map } from '@vis.gl/react-google-maps';
+import { GoogleMap, LoadScript } from '@react-google-maps/api';
 
-const MapComponent = () => {
-  const position = { lat: 53.54992, lng: 10.00678 };
+type positionProps = {
+  lat: number;
+  lng: number;
+};
+
+const MapComponent = (position: positionProps) => {
+  // const position = { lat: 53.54992, lng: 10.00678 };
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '';
   return (
-    <APIProvider apiKey={apiKey}>
-      <Map defaultCenter={position} defaultZoom={10} mapId="DEMO_MAP_ID"></Map>
-    </APIProvider>
+    <LoadScript googleMapsApiKey={apiKey} libraries={['places']}>
+      <GoogleMap
+        center={position}
+        zoom={10}
+        mapContainerStyle={{ width: '100%', height: '100%' }}
+      ></GoogleMap>
+    </LoadScript>
   );
 };
 
