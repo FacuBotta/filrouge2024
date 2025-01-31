@@ -9,6 +9,9 @@ export default async function CategoryPage({
   params: Promise<{ categoryTitle: string }>;
 }) {
   const { categoryTitle } = await params;
+  if (categoryTitle === 'null') {
+    return;
+  }
 
   const {
     events,

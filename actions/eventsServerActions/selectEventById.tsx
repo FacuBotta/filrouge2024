@@ -15,7 +15,12 @@ export const selectEventById = async (
         eventStart: true,
         eventEnd: true,
         isPublic: true,
-        address: true,
+        image: true,
+        locationUrl: true,
+        lat: true,
+        lng: true,
+        vicinity: true,
+        formattedAddress: true,
         createdAt: true,
         updatedAt: true,
         category: {

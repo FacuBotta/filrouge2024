@@ -1,5 +1,5 @@
 'use client';
-import { handleNewConversationSubmit } from '@/actions/messagesServerActions/handleNewConversationSubmit';
+import { createConversation } from '@/actions/messagesServerActions/createConversation';
 import Backdrop from '@/components/layouts/Backdrop';
 import Button from '@/components/ui/Button';
 import IconWrapper from '@/components/ui/IconWrapper';
@@ -19,7 +19,7 @@ export const NewMessagePage = ({ users }: { users: RegisteredUsers[] }) => {
     const selectedUsersIds = selectedUsers.join(',');
     formData.set('participantsId', selectedUsersIds);
 
-    const response = await handleNewConversationSubmit(formData);
+    const response = await createConversation(formData);
     if (response?.ok) {
       router.push(`/messages`);
     } else {

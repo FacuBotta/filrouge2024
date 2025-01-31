@@ -40,6 +40,8 @@ const config: Config = {
       },
       colors: {
         light: {
+          cards: '#90CCF4',
+          borderCards: '#232323',
           ciel: '#90CCF4',
           blue: '#5DA2D5',
           grey: '#ECECEC',
@@ -47,6 +49,8 @@ const config: Config = {
           red: '#F78888',
         },
         dark: {
+          cards: '#5C5C5C',
+          borderCards: '#ECECEC',
           grey: '#EDEAE5',
           yellow: '#FCE181',
           yellowLight: '#FEF9C7',

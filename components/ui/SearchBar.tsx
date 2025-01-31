@@ -36,7 +36,7 @@ export default function SearchBar({ title }: SearchBarProps) {
         <input
           type="search"
           placeholder={placeHolder}
-          className="w-full h-10 p-5 text-xl placeholder:select-none placeholder:text-dark-greenLight/50 border-2 border-dark-bg bg-dark-bg dark:border-light-grey rounded-lg focus:outline-bg-light-yellow"
+          className="w-full h-10 p-5 text-xl placeholder:select-none dark:placeholder:text-dark-greenLight/50 border-2 border-dark-bg dark:bg-dark-bg dark:border-light-grey rounded-lg"
         />
         <Icon onClick={() => setIsOpen(!isOpen)} type="search" width={40} />
       </div>
@@ -53,10 +53,7 @@ export default function SearchBar({ title }: SearchBarProps) {
               >
                 Trier par
               </label>
-              <select
-                id="sort"
-                className="w-full p-2 border rounded-lg bg-dark-bg text-light-grey"
-              >
+              <select id="sort" className="newEventInput">
                 <option value="date">Plus récent</option>
                 <option value="popularité">Plus populaire</option>
                 <option value="proximité">Plus ancien</option>
@@ -65,14 +62,11 @@ export default function SearchBar({ title }: SearchBarProps) {
             <div>
               <label
                 htmlFor="category"
-                className="block text-sm text-light-grey mb-2"
+                className="text-sm text-light-grey mb-2 sm:hidden"
               >
                 Catégorie
               </label>
-              <select
-                id="category"
-                className="w-full p-2 border rounded-lg bg-dark-bg text-light-grey"
-              >
+              <select id="category" className="newEventInput sm:hidden">
                 <option value="toutes">Toutes les catégories</option>
                 <option value="culture">Culture</option>
                 <option value="sport">Sport</option>

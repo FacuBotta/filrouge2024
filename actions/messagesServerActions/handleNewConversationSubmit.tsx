@@ -4,10 +4,10 @@ import { auth } from '@/lib/auth/authConfig';
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 
-export async function handleNewConversationSubmit(formData: FormData) {
+export async function createConversation(formData: FormData) {
   const { user: sender } = (await auth()) || {};
   if (!sender) {
-    console.error('handleNewConversationSubmit: no sender found');
+    console.error('createConversation: no sender found');
     return;
   }
 

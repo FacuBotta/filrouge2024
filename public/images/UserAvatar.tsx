@@ -15,7 +15,7 @@ export const UserAvatar = ({
         width={350}
         height={350}
         src={src || '/images/DefaultUserAvatar1.png'}
-        className="size-full rounded-full border"
+        className="size-full rounded-full border border-card"
         alt="user avatar"
       />
     </div>

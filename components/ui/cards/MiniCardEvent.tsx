@@ -1,15 +1,15 @@
 import { EventByUser } from '@/types/types';
 
 export default function MiniCardEvent({ event }: { event: EventByUser }) {
-  console.log({ event });
-  function calculateDaysDifference(fechaDada: Date) {
+  function calculateDaysDifference(dateStart: Date) {
     const fechaActual: Date = new Date();
 
-    const diferenciaTiempo = fechaDada - fechaActual;
+    const diferenciaTiempo = dateStart.getTime() - fechaActual.getTime();
     const diferenciaDias = Math.round(diferenciaTiempo / (1000 * 60 * 60 * 24));
     return diferenciaDias;
   }
-  const daysFromToday = calculateDaysDifference(event.eventEnd);
+
+  const daysFromToday = calculateDaysDifference(event.eventStart);
 
   return (
     <div className="flex flex-col justify-between w-full h-full p-5 border border-dark-bg dark:border-light-grey rounded-lg">
@@ -28,11 +28,3 @@ export default function MiniCardEvent({ event }: { event: EventByUser }) {
     </div>
   );
 }
-/* <div
-                key={event.id}
-                className="w-full flex border border-dark-bg dark:border-light-grey rounded-lg p-5 gap-5 flex-col"
-              >
-                <h1 className="font-bold text-2xl">{event.title}</h1>
-                <p>{event.description}</p>
-              </div>
-               */

@@ -37,7 +37,7 @@ export default async function EventPage({
 
   return (
     <main className="w-[95%] max-w-[1000px] mx-auto min-h-screen my-10 ">
-      <header className="flex justify-around items-center flex-wrap gap-5 p-10 border-2 divide-y-2 sm:divide-none rounded-lg overflow-hidden bg-light-grey/10">
+      <header className="flex justify-around items-center flex-wrap gap-5 p-10 border-2 divide-y-2 sm:divide-none rounded-lg overflow-hidden border-card bg-card">
         <div className="flex flex-col items-center justify-center">
           <UserAvatar src={user.image} className="size-48" />
           <h1 className="text-3xl font-bold my-5">{user.username}</h1>
@@ -62,18 +62,16 @@ export default async function EventPage({
             <Link
               key={event.id}
               href={`/events/event/${event.id}`}
-              className=" w-[300px] flex border border-dark-bg dark:border-light-grey rounded-lg p-5 pb-10 gap-2 flex-col overflow-hidden shadow-xl bg-light-blue dark:bg-slate-500/20"
+              className=" w-[300px] flex border border-card rounded-lg p-5 pb-10 gap-2 flex-col justify-between overflow-hidden shadow-xl bg-card hover:opacity-80"
             >
-              <div className="flex flex-col gap-2 text-left border-b pb-5">
-                <h3 className="text-2xl font-bold">
-                  {event?.title}
-                  {'  '}
-                  <span className="font-thin text-lg">
-                    {' '}
-                    - {event?.category?.title}
-                  </span>
-                </h3>
-                <p>{event?.description}</p>
+              <div className="flex flex-col gap-2 text-left border-b border-light-borderCards dark:border-dark-borderCards pb-5">
+                <h3 className="text-2xl font-bold">{event?.title}</h3>
+                <span className="font-thin text-lg">
+                  {event?.category?.title}
+                </span>
+                <p className="mt-4 dark:text-gray-300 break-words line-clamp-3">
+                  {event?.description}
+                </p>
               </div>
               <div className="flex  justify-between ">
                 <div className="flex flex-col items-start gap-2">
@@ -81,7 +79,7 @@ export default async function EventPage({
                     <IconWrapper type="calendar" />
                     <div>
                       <p>{formatDate(event?.eventStart)}</p>
-                      <p>{formatDate(event?.eventEnd)}</p>
+                      {event?.eventEnd && <p>{formatDate(event?.eventEnd)}</p>}
                     </div>
                   </div>
                   <div className="flex items-center gap-2">

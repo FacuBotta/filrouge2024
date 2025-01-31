@@ -7,9 +7,9 @@ export default async function CommunityPage() {
   const users: BasicProfileInformation[] = await selectAllBasicUserInfos();
 
   return (
-    <section className="animate w-fit  mx-auto flex flex-col mt-5">
+    <section className="animate max-w-[1000px] mx-auto flex flex-col items-center justify-center mt-5">
       <PageHeader title="Communauté" searchType="users" />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-10">
+      <div className="w-full flex flex-wrap gap-10 mt-5 mb-10">
         {users.map((user) => (
           <UserCard key={user.id} user={user} />
         ))}

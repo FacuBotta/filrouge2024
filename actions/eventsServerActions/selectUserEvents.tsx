@@ -7,7 +7,7 @@ export const selectUserEvents = async (userId: string) => {
   try {
     const events: EventByUser[] | [] = await prisma.events.findMany({
       where: {
-        userId: userId,
+        userId,
       },
       select: {
         id: true,

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 'use client';
 import { EventAddress } from '@/types/types';
 import type { Libraries } from '@react-google-maps/api';
@@ -45,6 +46,14 @@ const MapWithAutocomplete = ({
       }
     }
   };
+  // Delete the window.google object to avoid conflicts with the Google Maps API
+  // this is the solution to the error 'Google API is already presented'
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.google) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      delete (window as any).google;
+    }
+  }, []);
   useEffect(() => {
     if (!isApiLoaded) {
       setIsApiLoaded(true);
@@ -58,10 +67,10 @@ const MapWithAutocomplete = ({
           <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
             <input
               placeholder="Chercher un lieu"
-              className="p-2 border-2 rounded-lg bg-none my-3 w-full"
+              className="newEventInput w-full mb-5"
             />
           </Autocomplete>
-          <div className="rounded-lg border-2 h-[500px] w-full">
+          <div className="rounded-lg border-2 border-black dark:border-dark-grey/50 overflow-hidden h-[500px] w-full">
             <GoogleMap
               center={place}
               zoom={zoom}

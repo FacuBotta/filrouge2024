@@ -24,7 +24,7 @@ export default async function EventsPage({
           </Link>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-10">
+        <div className="flex flex-wrap gap-10 mt-5 mb-10">
           {events.map((event) => (
             <EventCard key={event.id} event={event} category={category} />
           ))}

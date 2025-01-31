@@ -44,6 +44,9 @@ footer a:hover {
 .primary-btn {
   @apply inline-flex items-center justify-center w-fit px-4 py-1 border-2 text-lg rounded-lg bg-light-yellow text-dark-bg font-bold border-dark-bg hover:shadow-lg  transition-transform duration-300 ease-in-out;
 }
+.secondary-btn {
+  @apply inline-flex items-center justify-center w-fit px-4 py-1 border-2 text-lg rounded-lg bg-light-red text-dark-bg font-bold border-dark-bg hover:shadow-lg  transition-transform duration-300 ease-in-out;
+}
 .input-light {
   @apply bg-transparent ml-2 border-b focus:outline-none border-dark-bg dark:border-light-grey placeholder:text-light-blue placeholder:dark:text-dark-greenLight/50;
 }
@@ -54,7 +57,16 @@ footer a:hover {
 }
 /* ========== Cards ========== */
 .user-card {
-  @apply flex  max-w-[300px] flex-col items-center justify-center gap-2 p-4 border rounded-lg dark:hover:bg-dark-grey/10 hover:bg-light-blue/50 transition-transform duration-500 ease-in-out;
+  @apply flex max-w-[300px] flex-col items-center justify-center gap-2 p-4 border-2 border-light-borderCards dark:border-dark-borderCards rounded-lg dark:hover:bg-dark-grey/10 hover:bg-light-blue/50 transition-transform duration-500 ease-in-out shadow-lg;
+}
+.border-card {
+  @apply border-2 border-light-borderCards dark:border-dark-borderCards;
+}
+.bg-card {
+  @apply bg-light-cards dark:bg-dark-cards shadow-lg;
+}
+.bg-card:hover {
+  @apply bg-light-blue/50 dark:bg-dark-grey/10;
 }
 
 /* ============= Messages view ============= */
@@ -77,24 +89,6 @@ footer a:hover {
 }
 /* ========== Home page scroll animation ========== */
 
-/* Dashboard nav */
-@keyframes disappearInScroll {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-.animate-dashboard-nav {
-  animation: disappearInScroll 0.5s ease-in-out;
-  animation-fill-mode: forwards;
-  animation-timeline: scroll();
-  animation-range: entry 70% cover 95%;
-  animation-direction: alternate;
-  animation-duration: 1ms; /* Firefox requires this to apply the animation */
-}
-
 /* Can't use this animation with Tailwind because animation-timeline is not supported by Tailwind */
 @keyframes appear {
   from {
@@ -105,15 +99,17 @@ footer a:hover {
     opacity: 1;
   }
 }
-
-.animate h1,
-.animate div,
-.animate a {
-  animation: appear linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 20%;
-  animation-fill-mode: both;
-  animation-duration: 1ms; /* Firefox requires this to apply the animation */
+/* Animation applied only for large screens because the range is too big for small screens */
+@media screen and (min-width: 768px) {
+  .animate h1,
+  .animate div,
+  .animate a {
+    animation: appear linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 11%;
+    animation-fill-mode: both;
+    animation-duration: 1ms; /* Firefox requires this to apply the animation */
+  }
 }
 
 /* ============ SVG styles ============= */
@@ -176,4 +172,14 @@ footer a:hover {
 }
 #securityImage .color_3 {
   @apply fill-dark-bg dark:fill-dark-greenLight;
+}
+
+/* 
+=======================================================
+=============== Events ================================
+=======================================================
+*/
+
+.newEventInput {
+  @apply p-2 mt-2 border-2 rounded-lg w-full border-dark-bg dark:border-dark-grey/50 bg-white dark:bg-dark-cards dark:placeholder:text-dark-greenLight/50;
 }

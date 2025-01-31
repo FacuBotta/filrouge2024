@@ -1,9 +1,9 @@
 'use server';
 
 import prisma from '@/lib/prisma';
+import { categoryTitleSchema } from '@/lib/zodSchemas';
 import { EventWithUserAndCount } from '@/types/types';
 import { Category } from '@prisma/client';
-import { categoryTitleSchema } from '@/lib/zodSchemas';
 
 export const selectEventsByCategory = async (
   category: string
@@ -32,8 +32,13 @@ export const selectEventsByCategory = async (
         description: true,
         eventStart: true,
         eventEnd: true,
-        categoryId: true,
         isPublic: true,
+        image: true,
+        locationUrl: true,
+        lat: true,
+        lng: true,
+        vicinity: true,
+        formattedAddress: true,
         createdAt: true,
         updatedAt: true,
         category: {
@@ -45,10 +50,13 @@ export const selectEventsByCategory = async (
         user: {
           select: {
             id: true,
-            image: true,
+            email: true,
             username: true,
+            image: true,
+            description: true,
             _count: {
               select: {
+                EventsCreated: true,
                 Ratings: true,
               },
             },

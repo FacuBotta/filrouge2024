@@ -1,5 +1,4 @@
 import { User } from '@prisma/client';
-import { JsonValue } from 'next-auth/adapters';
 
 /* ========================================================================== */
 /* ============================ CONVERSATION TYPES =========================== */
@@ -71,6 +70,10 @@ export interface UserJoinedEvent {
 /* ========================================================================== */
 /* ============================ EVENT TYPES ================================= */
 /* ========================================================================== */
+export interface EventCoordinates {
+  lat?: number;
+  lng?: number;
+}
 export interface EventAddress {
   url?: string;
   lat?: number;
@@ -85,7 +88,12 @@ export interface EventWithUserAndCount {
   eventStart: Date;
   eventEnd: Date | null;
   isPublic: boolean | null;
-  address: EventAddress | JsonValue | null;
+  image: string | null;
+  locationUrl: string | null;
+  lat: number | null;
+  lng: number | null;
+  vicinity: string | null;
+  formattedAddress: string | null;
   createdAt: Date;
   updatedAt: Date;
   category: {
@@ -114,7 +122,7 @@ export interface EventByUser {
   image: string | null;
   description: string | null;
   eventStart: Date;
-  eventEnd: Date;
+  eventEnd: Date | null;
   isPublic: boolean;
   createdAt: Date;
   updatedAt: Date;

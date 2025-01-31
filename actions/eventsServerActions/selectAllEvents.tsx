@@ -15,6 +15,12 @@ export const selectAllEvents = async (): Promise<
         eventStart: true,
         eventEnd: true,
         isPublic: true,
+        image: true,
+        locationUrl: true,
+        lat: true,
+        lng: true,
+        vicinity: true,
+        formattedAddress: true,
         createdAt: true,
         updatedAt: true,
         category: {
@@ -26,10 +32,13 @@ export const selectAllEvents = async (): Promise<
         user: {
           select: {
             id: true,
-            image: true,
+            email: true,
             username: true,
+            image: true,
+            description: true,
             _count: {
               select: {
+                EventsCreated: true,
                 Ratings: true,
               },
             },

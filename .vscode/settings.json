@@ -1,4 +1,5 @@
 {
   "cSpell.words": ["extralight", "fredoka"],
-  "CodeGPT.apiKey": "Ollama"
+  "CodeGPT.apiKey": "Ollama",
+  "dimmer.enabled": false
 }

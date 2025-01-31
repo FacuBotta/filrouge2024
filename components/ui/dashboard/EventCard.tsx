@@ -2,19 +2,20 @@ import { UserAvatar } from '@/public/images/UserAvatar';
 import { EventWithUserAndCount } from '@/types/types';
 import { Category } from '@prisma/client';
 import { Link } from 'next-view-transitions';
+import React from 'react';
 export default async function EventCard({
   category,
   event,
 }: {
   category: Category;
   event: EventWithUserAndCount;
-}): Promise<JSX.Element> {
+}): Promise<React.JSX.Element> {
   return (
     <Link
       href={`/events/event/${event.id}`}
-      className="group relative w-[300px] flex border border-dark-bg dark:border-light-grey rounded-lg p-5 pb-10 gap-2 flex-col overflow-hidden shadow-xl bg-light-blue dark:bg-slate-500/20"
+      className="group relative w-[300px] flex borde  r border-card rounded-lg p-5 pb-10 gap-2 flex-col overflow-hidden bg-card"
     >
-      <div className="group-hover:animate-scaleHover transition-transform duration-700">
+      <div className="h-full flex flex-col justify-between">
         <div className="flex justify-between ">
           <h1 className="font-bold text-xl text-wrap">
             {event.title} <span> - {category.title}</span>
@@ -28,10 +29,12 @@ export default async function EventCard({
             Début le : {event.eventStart.toLocaleDateString()} a{' '}
             {event.eventStart.toLocaleTimeString()}
           </p>
-          <p className="text-sm">
-            Termine le : {event.eventEnd.toLocaleDateString()} a{' '}
-            {event.eventEnd.toLocaleTimeString()}
-          </p>
+          {event.eventEnd && (
+            <p className="text-sm">
+              Termine le : {event.eventEnd.toLocaleDateString()} a{' '}
+              {event.eventEnd.toLocaleTimeString()}
+            </p>
+          )}
         </div>
         <div className="flex items-center gap-2 my-2">
           <UserAvatar src={event.user.image} />
@@ -42,7 +45,7 @@ export default async function EventCard({
             </p>
           </div>
         </div>
-        <p className="text-sm">{event.description}</p>
+        <p className="text-sm text-balance break-words">{event.description}</p>
       </div>
     </Link>
   );
