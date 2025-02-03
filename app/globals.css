@@ -70,23 +70,7 @@ footer a:hover {
 }
 
 /* ============= Messages view ============= */
-/* include the left and right sections of the view */
-/* height applied whitout tailwind becose calc() is necesary */
-.main-container-messages {
-  /* 100vh - main navbar - user navbar  */
-  min-height: calc(100vh - 44px - 60px);
-}
-.main-container-messages .messages-container {
-  height: calc(100vh - 44px - 120px);
-}
-.main-container-messages .conversation-list-container {
-  height: calc(100vh - 44px - 160px);
-}
-@media screen and (min-width: 768px) {
-  .main-container-messages .messages-container {
-    height: calc(100vh - 44px - 100px);
-  }
-}
+
 /* ========== Home page scroll animation ========== */
 
 /* Can't use this animation with Tailwind because animation-timeline is not supported by Tailwind */

@@ -1,18 +1,17 @@
 'use client';
 
-import { DefaultUserAvatar } from '@/public/images/DefaultUserAvatar';
+import { UserAvatar } from '@/public/images/UserAvatar';
 import { Message } from '@/types/types';
-import Image from 'next/image';
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 interface messagesWindowsProps {
   messages: Message[];
-  session: any;
+  userId: string;
 }
 
 export default function DashboardMessagesWindow({
   messages,
-  session,
+  userId,
 }: messagesWindowsProps) {
   const messagesWindowRef = useRef<HTMLDivElement>(null);
 
@@ -34,7 +33,7 @@ export default function DashboardMessagesWindow({
   return (
     <div
       ref={messagesWindowRef}
-      className="no-scrollbar flex flex-col gap-2 w-full h-full mx-auto  px-2 pb-10 border-2 pt-5 rounded-xl my-3 overflow-y-scroll scroll-smooth bg-dark-grey/10"
+      className="no-scrollbar flex flex-col gap-2 w-full h-full mx-auto  px-2 pb-10 border border-light-borderCards dark:border-dark-borderCards pt-5 rounded-xl my-3 overflow-y-scroll scroll-smooth bg-dark-grey/10"
     >
       {messages?.reduce((acc, message, index, arr) => {
         if (index > 0) {
@@ -47,7 +46,11 @@ export default function DashboardMessagesWindow({
                 className="w-full text-center my-2 text-gray-500"
               >
                 <span className="px-2 ">
-                  {prevMessage.createdAt.toDateString()}
+                  {prevMessage.createdAt.toLocaleDateString('fr-FR', {
+                    weekday: 'long',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
                 </span>
                 <hr className="border-gray-500" />
               </div>
@@ -57,42 +60,34 @@ export default function DashboardMessagesWindow({
         acc.push(
           <div
             key={message.id}
-            className={`flex flex-row-reverse w-[80%] items-center ${
-              session?.user?.id === message?.sender?.id ? 'ml-5' : 'm-auto'
+            className={`flex flex-col-reverse sm:flex-row-reverse w-[80%] items-end relative ${
+              userId === message?.sender?.id ? 'ml-5' : 'm-auto'
             }`}
           >
             {/* message box */}
             <div
-              className={`border border-gray-800 px-2 pt-2 flex flex-col w-full shadow-xl ${
-                session?.user?.id === message?.sender?.id
-                  ? 'bg-dark-yellowLight/50 dark:bg-dark-greenLight/20'
-                  : 'bg-slate-600/50'
+              className={`border border-gray-800 p-2 sm:p-5 flex flex-col w-full shadow-xl rounded-t-lg ${
+                userId === message?.sender?.id
+                  ? 'bg-dark-yellowLight/50 dark:bg-dark-greenLight/20 rounded-br-lg ml-16'
+                  : 'bg-slate-600/50 rounded-bl-lg mr-16'
               }`}
             >
               <p>{message.content} </p>
               <div className="flex justify-between items-start text-sm pt-1 font-extralight border-t border-gray-900">
-                <span>{message.sender.email}</span>
+                <span>{message.sender.username || 'Aucun nom'}</span>
                 <span>{message.createdAt.toLocaleTimeString('fr-FR')}</span>
               </div>
             </div>
-            {message.sender.image ? (
-              <Image
-                width={40}
-                height={40}
-                className="size-12 aspect-square rounded-full border mx-2 hidden sm:block"
+            {
+              <UserAvatar
+                className={`size-12 mx-2 hidden sm:block absolute ${userId === message?.sender?.id ? 'left-0 -bottom-7' : 'right-0 -bottom-7'}`}
                 src={message.sender.image}
-                alt="user avatar"
               />
-            ) : (
-              <DefaultUserAvatar
-                key={message.sender.id}
-                className="size-12 mx-2 opacity-40 hidden sm:block"
-              />
-            )}
+            }
           </div>
         );
         return acc;
-      }, [] as JSX.Element[])}
+      }, [] as React.JSX.Element[])}
     </div>
   );
 }

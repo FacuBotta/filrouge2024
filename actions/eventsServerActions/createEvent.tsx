@@ -3,7 +3,7 @@
 import { auth } from '@/lib/auth/authConfig';
 import prisma from '@/lib/prisma';
 import { NewEventForm, newEventSchema } from '@/lib/zodSchemas';
-import { createConversation } from '../messagesServerActions/handleNewConversationSubmit';
+import { createConversation } from '../messagesServerActions/createConversation';
 import { uploadImage } from '../uploadImage';
 
 export const createEvent = async (event: NewEventForm) => {
@@ -74,7 +74,7 @@ export const createEvent = async (event: NewEventForm) => {
 
       await prisma.message.create({
         data: {
-          conversationId, // Cambié la clave a conversationId
+          conversationId,
           senderId: session.user.id,
           content: `Bonjour, nous sommes ravi·es de vous annoncer que vous êtes invité·e à l'événement : ${event.title} !`,
         },

@@ -9,14 +9,13 @@ import IconWrapper from '@/components/ui/IconWrapper';
 import MessageDefaultPageImage from '@/public/images/MessageDefaultPageImage';
 import { Conversation } from '@/types/types';
 import { Icon } from 'facu-ui';
-import { Link } from 'next-view-transitions';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect } from 'react';
 export default function MessagePage({
-  session,
+  userId,
   conversations,
 }: {
-  session: any;
+  userId: string;
   conversations: Conversation[];
 }) {
   const router = useRouter();
@@ -50,26 +49,14 @@ export default function MessagePage({
   };
 
   return (
-    <section className="main-container-messages max-w-max mx-auto min-h-full mb-5 mt-5 w-full flex items-start justify-start">
+    <section className="max-w-max mx-auto h-full mb-5 mt-5 w-full flex items-start justify-start">
       {/* conversations section */}
       <div
-        className={`${currentConversation ? 'hidden' : 'flex'} mx-auto max-w-[500px] lg:flex flex-col gap-2 w-screen lg:w-[40%] p-3 lg:border-r`}
+        className={`${currentConversation ? 'hidden' : 'flex'} mx-auto sm:min-w-[380px] lg:flex flex-col gap-2 w-screen lg:w-[40%] p-3 lg:border-r`}
       >
-        <div className="flex w-full items-center justify-between px-5 pb-2 border-b">
-          <h2 className="text-2xl">Chats</h2>
-          <Link aria-label="Créer un nouveau chat" href={'/messages/new'}>
-            <IconWrapper
-              type="add"
-              strokeWidth={2}
-              width={50}
-              className="hover:scale-110 transition-all ease-in-out "
-            />
-          </Link>
-        </div>
-        <ConversationsList session={session} conversations={conversations} />
+        <ConversationsList userId={userId} conversations={conversations} />
       </div>
       {/* default content when no conversation is selected */}
-
       {!currentConversation ? (
         <div className="hidden lg:flex items-center justify-center w-full my-auto  ">
           <div className="flex flex-wrap w-full max-w-[900px] justify-center">
@@ -83,7 +70,7 @@ export default function MessagePage({
               <p className="text-center text-lg lg:text-2xl font-extralight">
                 🌟 Ici, vous pouvez gérer toutes vos conversations en un seul
                 endroit. Communiquez, partagez vos idées et résolvez des
-                problèmes rapidement. La communication n'a jamais été aussi
+                problèmes rapidement. La communication n&apos;a jamais été aussi
                 simple !
               </p>
             </div>
@@ -94,27 +81,39 @@ export default function MessagePage({
         </div>
       ) : (
         <div
-          className={`messages-container ${currentConversation ? 'flex' : 'hidden'} lg:flex flex-col items-start justify-between px-2  pb-5 sm:pb-0 w-full `}
+          className={`${currentConversation ? 'flex' : 'hidden'} lg:flex flex-col items-start justify-between h-[90vh] px-2  pb-5 sm:pb-0 w-full`}
         >
           {/* conversation header */}
           <div className="flex items-start justify-between gap-2 w-full px-2 pt-3 ">
-            {/* button to go back to the conversations list */}
             <div className="flex gap-5 items-end">
-              <div className="border rounded-full size-8 flex justify-center items-center mb-2 peer hover:dark:text-dark-greenLight hover:dark:border-dark-greenLight hover:scale-110 transition-all ease-in-out">
-                <Icon
-                  type="goBack"
-                  // className="lg:hidden"
-                  onClick={() => router.push('/messages')}
-                />
+              <div className="flex justify-center items-center lg:!hidden border rounded-full size-8 mb-2 hover:dark:text-dark-greenLight hover:dark:border-dark-greenLight hover:scale-110 transition-all ease-in-out">
+                <Icon type="goBack" onClick={() => router.push('/messages')} />
               </div>
               <h2 className="mb-0 text-center">
                 {currentConversation?.title?.toLocaleUpperCase()}
                 <span className="font-extralight text-sm block sm:inline-block">
-                  <span className="hidden sm:inline-block mr-2">{' - '}</span>
-                  Created At: {currentConversation?.createdAt?.toLocaleString()}
+                  <span className="hidden sm:inline-block mx-2">{' - '}</span>
+                  Cree le{' '}
+                  {new Date(currentConversation.updatedAt).toLocaleDateString(
+                    'fr-FR',
+                    {
+                      weekday: 'long',
+                      month: 'long',
+                      day: 'numeric',
+                    }
+                  )}{' '}
+                  à{' '}
+                  {new Date(currentConversation.updatedAt).toLocaleTimeString(
+                    'fr-FR',
+                    {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    }
+                  )}
                 </span>
               </h2>
             </div>
+            {/* TODO : ver que onda eso es re al pedo */}
             <form action={handleDeleteConversation}>
               <input
                 type="hidden"
@@ -143,7 +142,7 @@ export default function MessagePage({
           {/* messages window */}
           <DashboardMessagesWindow
             messages={currentConversation?.messages || []}
-            session={session}
+            userId={userId}
           />
 
           {/* form to send messages to the current conversation */}

@@ -102,7 +102,7 @@ export default async function EventPage({
             <IconWrapper type="mapPin" />
             <p className="text-balance break-words">{event.formattedAddress}</p>
           </div>
-          <div className="flex items-center h-[250px] w-[320px] sm:w-[380px] sm:h-[470px] border-2 rounded-lg border-card">
+          <div className="flex items-center h-[250px] w-[320px] sm:w-[380px] sm:h-[470px] border-2 rounded-lg border-card overflow-hidden">
             {event.lat && event.lng ? (
               <MapInfoCard position={{ lat: event.lat, lng: event.lng }} />
             ) : (
