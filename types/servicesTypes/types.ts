@@ -60,6 +60,6 @@ export interface updateUserInvitationServiceProps {
 export interface createMessageServiceProps {
   content: string;
   conversationId: string;
-  invitationId: string | null;
+  invitationId?: string | null;
   senderId: string;
 }

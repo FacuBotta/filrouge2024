@@ -8,15 +8,16 @@ export const createMessageService = async ({
   invitationId,
   senderId,
 }: createMessageServiceProps): Promise<Message> => {
+  const data: createMessageServiceProps = {
+    content,
+    conversationId,
+    senderId,
+  };
+  if (invitationId) {
+    data.invitationId = invitationId;
+  }
   try {
-    const newMessage = await prisma.message.create({
-      data: {
-        content,
-        conversationId,
-        invitationId,
-        senderId,
-      },
-    });
+    const newMessage = await prisma.message.create({ data });
     return newMessage;
   } catch (error) {
     console.error('createMessageService: error', error);

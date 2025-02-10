@@ -14,11 +14,11 @@ const ChatInput = ({ currentConversationId }: ChatInputProps) => {
   const handleMessageSend = async () => {
     if (!message.trim()) return;
 
-    const formData = new FormData();
-    formData.append('conversationId', currentConversationId);
-    formData.append('message', message);
-
-    const response = await sendMessageInConversation(formData);
+    const response = await sendMessageInConversation({
+      conversationId: currentConversationId,
+      message,
+      invitationId: null,
+    });
     if (response?.ok) {
       console.log('message sent');
       setMessage(''); // 🔹 Resetea el textarea correctamente

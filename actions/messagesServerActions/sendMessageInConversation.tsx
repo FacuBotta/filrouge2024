@@ -44,11 +44,11 @@ export async function sendMessageInConversation({
       invitationId,
       senderId: sender.id as string,
     });
-
     // get the participants of the conversation
     // to set the messageStatus for each participant
     const participants =
       await getConversationParticipantsService(conversationId);
+    console.log(participants);
     for (const participant of participants) {
       await createMessageStatusService({
         userId: participant.id,
