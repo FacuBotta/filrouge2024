@@ -9,6 +9,7 @@ import { Category } from '@prisma/client';
 import { Icon } from 'facu-ui';
 import { useRouter } from 'next/navigation';
 import React, { useRef, useState } from 'react';
+import { toast } from 'sonner';
 import { z } from 'zod';
 export const NewEventPage = ({
   availableCategories,
@@ -53,7 +54,7 @@ export const NewEventPage = ({
     if (imageInputRef.current) {
       const file = imageInputRef.current.files?.[0];
       if (!file) return;
-      if (file.size > 3000000) {
+      if (file.size > 2000000) {
         setError({
           ...error,
           image: { message: 'La taille du fichier dépasse 2Mo !', value: true },
@@ -121,11 +122,11 @@ export const NewEventPage = ({
       },
     };
 
-    console.log(eventData);
     try {
       newEventSchema.parse(eventData);
       const response = await createEvent(eventData);
       if (response?.ok) {
+        toast.success(response.message);
         router.push(`/events`);
       }
     } catch (err) {
@@ -138,9 +139,11 @@ export const NewEventPage = ({
             [field]: { message: error.message, value: true },
           }));
         });
-      } else {
+      } else if (err instanceof Error) {
+        toast.error(err.message);
         console.log(err);
       }
+      toast.error('Une erreur est survenue 😑');
     }
   };
 
