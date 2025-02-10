@@ -1,7 +1,8 @@
 'use server';
 
 import { auth } from '@/lib/auth/authConfig';
-import prisma from '@/lib/prisma';
+import { createUserEventService } from '@/services/userEventServices';
+import { updateUserInvitationService } from '@/services/userInvitationServices';
 
 interface acceptEventInvitationProps {
   userInvitationId: string;
@@ -40,28 +41,22 @@ export const acceptEventInvitation = async ({
   }
   try {
     // attach the user to the event
-    await prisma.userEvents.create({
-      data: {
-        userId: participantId,
-        eventId,
-      },
-    });
+    await createUserEventService({ userId: participantId, eventId });
     // update the invitation status
+
     // TODO : this can be useful to make statistics of the sended invitations for any event...
-    await prisma.userInvitations.update({
-      where: {
-        id: userInvitationId,
-      },
-      data: {
-        status: 'JOINED',
-      },
+    await updateUserInvitationService({
+      participantId,
+      eventId,
+      status: 'JOINED',
     });
+
     return { ok: true, message: 'Invitation acceptée' };
   } catch (error) {
-    console.error('acceptEventInvitation: error', error);
+    console.error('acceptEventInvitationAction: error', error);
     return {
       ok: false,
-      message: 'Erreur lors de l&apos;acceptation de l&apos;invitation',
+      message: "Erreur lors de l'acceptation de l'invitation",
     };
   }
 };

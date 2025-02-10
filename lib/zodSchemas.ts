@@ -47,11 +47,11 @@ export const signUpSchema = z.object({
 });
 
 export const eventAddressSchema = z.object({
-  url: z.string().url().optional(), // La URL puede ser opcional
-  lat: z.number().optional(), // La latitud puede ser opcional
-  lng: z.number().optional(), // La longitud puede ser opcional
-  formattedAddress: z.string().optional(), // Dirección formateada opcional
-  vicinity: z.string().optional(), // Vecindad opcional
+  url: z.string().url(),
+  lat: z.number(),
+  lng: z.number(),
+  formattedAddress: z.string(),
+  vicinity: z.string(),
 });
 
 export const newEventSchema = z.object({
@@ -92,9 +92,9 @@ export const newEventSchema = z.object({
       }
     ),
   isPublic: z.boolean(),
-  participants: z.string().nullable(), // Lista de participantes como strings
-  address: eventAddressSchema, // Validación de dirección
-  image: z.instanceof(File).nullable(), // Validar que sea un archivo o nulo
+  participants: z.array(z.string()),
+  address: eventAddressSchema,
+  image: z.instanceof(File),
 });
 
 // Generar el tipo TypeScript a partir del esquema

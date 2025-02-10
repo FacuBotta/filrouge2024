@@ -1,7 +1,7 @@
 'use server';
 
 import { auth } from '@/lib/auth/authConfig';
-import prisma from '@/lib/prisma';
+import { createUserEventService } from '@/services/userEventServices';
 
 /**
  * Adds the authenticated user to an event.
@@ -22,12 +22,7 @@ export const joinUserToEvent = async (eventId: string) => {
     }
 
     // Add the user to the event
-    await prisma.userEvents.create({
-      data: {
-        userId: session.user.id,
-        eventId,
-      },
-    });
+    await createUserEventService({ userId: session.user.id, eventId });
 
     return { ok: true };
   } catch (error) {

@@ -1,7 +1,7 @@
 'use server';
 
 import { auth } from '@/lib/auth/authConfig';
-import prisma from '@/lib/prisma';
+import { createTaskService } from '@/services/tasksServices';
 
 interface NewTaskProps {
   content: string;
@@ -16,14 +16,12 @@ export const createTask = async (taskData: NewTaskProps) => {
     return;
   }
   try {
-    const newTask = await prisma.tasks.create({
-      data: {
-        userId: session.user?.id as string,
-        content: taskData.content as string,
-        completed: taskData.completed as boolean,
-        eventId: taskData.eventId || null,
-        order: 0,
-      },
+    const newTask = await createTaskService({
+      userId: session.user.id,
+      content: taskData.content,
+      completed: taskData.completed,
+      eventId: taskData.eventId,
+      order: 0,
     });
     return { ok: true, newTask };
   } catch (error) {

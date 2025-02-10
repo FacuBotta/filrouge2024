@@ -8,6 +8,7 @@ export const selectUserEventsJoined = async (): Promise<UserJoinedEvent[]> => {
     console.error('selectUserEvents: no session found');
     return [];
   }
+  // TODO : ver que onda esto...
   try {
     const userEvents = await prisma.userEvents.findMany({
       where: {

@@ -92,11 +92,11 @@ export default function TasksProfile({ tasks, eventId }: TasksProfileProps) {
     e: ChangeEvent<HTMLInputElement>,
     task?: Tasks
   ) => {
+    if (!task || !task.content) return;
     const updatedTask = {
       ...task,
       completed: e.target.checked,
     };
-    if (!task) return;
     try {
       await updateTask(updatedTask);
       setClientTasks(
@@ -180,38 +180,8 @@ export default function TasksProfile({ tasks, eventId }: TasksProfileProps) {
     }));
     setClientTasks(updatedTasks);
   };
-
-  // TODO: implementar el ordenamiento de las tareas
-  /* const handleOrderBy = (orderBy: string) => () => {
-    // Clonar el array para evitar modificar el estado directamente
-    const sortedTasks = [...clientTasks].sort((a: Tasks, b: Tasks) => {
-      if (orderBy === 'order') {
-        return (a.order || 0) - (b.order || 0);
-      } else if (orderBy === 'complete') {
-        return a.completed === b.completed ? 0 : a.completed ? -1 : 1;
-      } else if (orderBy === 'createdAt') {
-        return (
-          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-        );
-      }
-      return 0; // Fallback en caso de no coincidir con ninguno de los criterios
-    });
-
-    // Actualizar el estado con las tareas ordenadas
-    setClientTasks(sortedTasks);
-  }; */
   return (
     <div className="w-full flex flex-col items-center flex-wrap sm:!items-start">
-      {/* <select
-        onChange={(e) => handleOrderBy(e.target.value)}
-        className="border-b border-dark-bg dark:border-light-grey mb-1"
-      >
-        <option value="">Trier par</option>
-        <option value="order">Ordre</option>
-        <option value="complete">Complete</option>
-        <option value="createdAt">Date de création</option>
-      </select> */}
-      {/* new task form */}
       <form
         onSubmit={(e) => handleCreateTask(e)}
         className="flex items-end gap-5 mb-2 w-full"

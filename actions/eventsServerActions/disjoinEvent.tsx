@@ -1,9 +1,11 @@
 'use server';
 
 import { auth } from '@/lib/auth/authConfig';
-import prisma from '@/lib/prisma';
 import { EventWithUserAndCount } from '@/types/types';
 import { sendMessageInConversation } from '../messagesServerActions/sendMessageInConversation';
+import { updateUserInvitationService } from '@/services/userInvitationServices';
+import { deleteUserConversationService } from '@/services/userConversationServices';
+import { deleteUserEventService } from '@/services/userEventServices';
 
 interface DisjoinEventProps {
   event: EventWithUserAndCount;
@@ -40,34 +42,30 @@ export async function disjoinEvent({
   }
   try {
     // Update the invitation status to "DISJOINED"
-    await prisma.userInvitations.update({
-      where: {
-        participantId_eventId: { participantId: userId, eventId: event.id },
-      },
-      data: { status: 'DISJOINED' },
+    await updateUserInvitationService({
+      participantId: userId,
+      eventId: event.id,
+      status: 'DISJOINED',
     });
 
     // Send a message to the event conversation
-    const messageFormData = new FormData();
-    messageFormData.set('message', 'A quitté la conversation');
-    messageFormData.set('conversationId', event.conversation?.id as string);
-    await sendMessageInConversation(messageFormData);
+
+    await sendMessageInConversation({
+      conversationId: event.conversation?.id as string,
+      message: 'A quitté la conversation',
+      invitationId: null,
+    });
 
     // Remove the user from the event participants list
-    await prisma.userEvents.delete({
-      where: {
-        userId_eventId: { userId, eventId: event.id },
-      },
+    await deleteUserEventService({
+      userId,
+      eventId: event.id,
     });
 
     // Remove the user from the event conversation
-    await prisma.userConversation.delete({
-      where: {
-        userId_conversationId: {
-          userId,
-          conversationId: event.conversation?.id as string,
-        },
-      },
+    await deleteUserConversationService({
+      userId,
+      conversationId: event.conversation?.id as string,
     });
 
     return { ok: true };

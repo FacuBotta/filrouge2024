@@ -32,9 +32,9 @@ export const NewEventPage = ({
   const [finalAddress, setFinalAddress] = useState<EventAddress | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isUserListOpen, setIsUserListOpen] = useState(false);
-  const [selectedParticipants, setSelectedParticipants] = useState<
-    BasicProfileInformation[]
-  >([]);
+  const [selectedParticipants, setSelectedParticipants] = useState<string[]>(
+    []
+  );
   // Prevent accidentals submit when pressing enter in the form
   // e.preventDefault() wasn't enough to make it work
   const handleKeyDownImageInput = (
@@ -71,7 +71,7 @@ export const NewEventPage = ({
     }
   };
   // Take the selected users and close the modal
-  const setSelectedUsers = (selectedUsers: BasicProfileInformation[]) => {
+  const setSelectedUsers = (selectedUsers: string[]) => {
     setSelectedParticipants(selectedUsers);
     setIsUserListOpen(false);
   };
@@ -79,7 +79,6 @@ export const NewEventPage = ({
     setIsUserListOpen(!isUserListOpen);
   };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    console.log('submit called');
     e.preventDefault();
     setError({
       title: { message: '', value: false },
@@ -112,13 +111,19 @@ export const NewEventPage = ({
         ? null
         : new Date(formData.get('eventEnd') as string),
       description: formData.get('description') as string,
-      participants: selectedParticipants.map((user) => user.id).join(','),
-      address: finalAddress,
+      participants: selectedParticipants,
+      address: {
+        url: finalAddress.url as string,
+        lat: finalAddress.lat as number,
+        lng: finalAddress.lng as number,
+        formattedAddress: finalAddress.formattedAddress as string,
+        vicinity: finalAddress.vicinity as string,
+      },
     };
 
+    console.log(eventData);
     try {
       newEventSchema.parse(eventData);
-      console.log(eventData);
       const response = await createEvent(eventData);
       if (response?.ok) {
         router.push(`/events`);

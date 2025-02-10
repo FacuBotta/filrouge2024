@@ -289,7 +289,7 @@ model MessageStatus {
   userId String
   messageId String
   status Status @default(UNSEEN)
-  uptadateAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id])
   message Message @relation(fields: [messageId], references: [id])

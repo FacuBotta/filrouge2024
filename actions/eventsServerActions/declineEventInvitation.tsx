@@ -1,7 +1,8 @@
 'use server';
 
 import { auth } from '@/lib/auth/authConfig';
-import prisma from '@/lib/prisma';
+import { createMessageService } from '@/services/messagesServices';
+import { updateUserInvitationService } from '@/services/userInvitationServices';
 import { Invitation } from '@/types/types';
 
 interface DeclineEventInvitationProps {
@@ -45,19 +46,22 @@ export const declineEventInvitation = async ({
 
   try {
     // Update the invitation status in the database
-    await prisma.userInvitations.update({
-      where: { id: userInvitation.id },
-      data: { status: statusValue },
+    await updateUserInvitationService({
+      participantId: userInvitation.participantId,
+      eventId: userInvitation.eventId,
+      status: statusValue,
     });
 
     // Send a notification message in the event conversation
-    // TODO : poner la funcion de send message
-    await prisma.message.create({
-      data: {
-        conversationId: userInvitation.conversationId,
-        senderId: userInvitation.participantId,
-        content: 'Invitation refusée',
-      },
+    // TODO verificar si es necesario para el userInvitationId
+    await createMessageService({
+      content: 'Invitation refusée',
+      conversationId: userInvitation.conversationId,
+      senderId:
+        decliner === 'CREATOR'
+          ? userInvitation.creatorId
+          : userInvitation.participantId,
+      invitationId: userInvitation.id,
     });
 
     return { ok: true };

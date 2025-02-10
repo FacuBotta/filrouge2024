@@ -1,26 +1,32 @@
 'use server';
 
-import prisma from '@/lib/prisma';
 import { checkIsAuthenticated } from '../authServerActions/checkIsAuthenticated';
+import { updateUserService } from '@/services/userServices';
 
-export const updateUserProfile = async (formData: FormData): Promise<void> => {
+interface updateUserProfileProps {
+  username: string;
+  image: string;
+  description: string;
+}
+
+export const updateUserProfile = async ({
+  username,
+  image,
+  description,
+}: updateUserProfileProps): Promise<void> => {
   const { user } = await checkIsAuthenticated();
   if (!user) {
     console.error('updateUserProfile: no session found');
     return;
   }
-  const username = formData.get('username') as string;
-  const image = formData.get('image') as string;
-  const description = formData.get('description') as string;
+  // TODO : parse data with zod
   try {
-    await prisma.user.update({
-      where: {
-        id: user.id as string,
-      },
+    await updateUserService({
+      id: user.id,
       data: {
-        username: username as string,
-        image: image as string,
-        description: description as string,
+        username,
+        image,
+        description,
       },
     });
   } catch (error) {

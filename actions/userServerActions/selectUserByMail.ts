@@ -1,14 +1,10 @@
 'use server';
 
-import prisma from '@/lib/prisma';
+import { selectUserByEmailService } from '@/services/userServices';
 
 export default async function selectUserByMail(email: string) {
   try {
-    const user = await prisma.user.findFirst({
-      where: {
-        email,
-      },
-    });
+    const user = await selectUserByEmailService({ email });
     return user;
   } catch (error) {
     console.log(error);

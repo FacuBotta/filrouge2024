@@ -1,19 +1,15 @@
 'use server';
 
-import prisma from '@/lib/prisma';
+import { updateTaskService } from '@/services/tasksServices';
 import { Tasks } from '@prisma/client';
 
 export const updateTask = async (task: Tasks) => {
   try {
-    await prisma.tasks.update({
-      where: {
-        id: task.id,
-      },
-      data: {
-        content: task.content,
-        completed: task.completed,
-        order: task.order,
-      },
+    await updateTaskService({
+      taskId: task.id,
+      content: task.content,
+      completed: task.completed,
+      order: task.order,
     });
     return { ok: true };
   } catch (error) {

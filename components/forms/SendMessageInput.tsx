@@ -2,6 +2,7 @@
 
 import { sendMessageInConversation } from '@/actions/messagesServerActions/sendMessageInConversation';
 import { Icon } from 'facu-ui';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 interface ChatInputProps {
@@ -10,18 +11,18 @@ interface ChatInputProps {
 
 const ChatInput = ({ currentConversationId }: ChatInputProps) => {
   const [message, setMessage] = useState('');
-
+  const router = useRouter();
   const handleMessageSend = async () => {
     if (!message.trim()) return;
 
-    const formData = new FormData();
-    formData.append('conversationId', currentConversationId);
-    formData.append('message', message);
-
-    const response = await sendMessageInConversation(formData);
+    const response = await sendMessageInConversation({
+      conversationId: currentConversationId,
+      message,
+      invitationId: null,
+    });
     if (response?.ok) {
-      console.log('message sent');
-      setMessage(''); // 🔹 Resetea el textarea correctamente
+      setMessage('');
+      router.refresh();
     } else {
       console.error(response);
       // TODO: mostrar mensaje de error
@@ -30,7 +31,7 @@ const ChatInput = ({ currentConversationId }: ChatInputProps) => {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault(); // 🔹 Evita el salto de línea normal
+      e.preventDefault();
       handleMessageSend();
     }
   };
@@ -42,15 +43,15 @@ const ChatInput = ({ currentConversationId }: ChatInputProps) => {
           aria-label="message input"
           className="w-full min-h-14 p-2 rounded-xl border border-dark-bg shadow-lg"
           placeholder="Type a message..."
-          value={message} // 🔹 Controlado con estado
+          value={message}
           onChange={(e) => setMessage(e.target.value)}
-          onKeyDown={handleKeyDown} // 🔹 Detecta Enter para enviar
+          onKeyDown={handleKeyDown}
         />
         <button
           className="bg-light-yellow dark:bg-dark-greenLight p-2 m-2 rounded-md size-fit"
           type="button"
           aria-label="send message button"
-          onClick={handleMessageSend} // 🔹 Envía con el botón también
+          onClick={handleMessageSend}
         >
           <Icon type="send" color="black" strokeWidth={2} />
         </button>

@@ -1,60 +1,45 @@
 'use server';
 import { auth } from '@/lib/auth/authConfig';
-import prisma from '@/lib/prisma';
+import { getConversationByIdService } from '@/services/conversationServices';
 import { Conversation } from '@/types/types';
 
+// TODO:  unused
 export const getConversationById = async (conversationId: string) => {
   const session = await auth();
   if (!session) {
     console.error('getConversationById: no session found');
     return;
   }
-  const userId = session.user?.id;
-  const userConversation = await prisma.userConversation.findUnique({
-    where: {
-      userId_conversationId: {
-        userId: userId as string,
-        conversationId,
-      },
-    },
-    include: {
-      conversation: {
-        include: {
-          messages: {
-            include: {
-              sender: {
-                select: {
-                  id: true,
-                  name: true,
-                  username: true,
-                  email: true,
-                  image: true,
-                  updatedAt: true,
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-  });
-  const formateUserConversation = {
-    id: userConversation?.conversationId as string,
-    title: userConversation?.conversation?.title,
-    createdAt: userConversation?.conversation?.createdAt,
-    updatedAt: userConversation?.conversation?.updatedAt,
-    joinedAt: userConversation?.joinedAt,
-    role: userConversation?.role,
-    messages: userConversation?.conversation?.messages.map((message) => ({
+  const conversation: Conversation | null =
+    await getConversationByIdService(conversationId);
+
+  if (!conversation) {
+    return { ok: false, message: 'Conversation not found' };
+  }
+  const isParticipant = conversation?.participants?.some(
+    (participant) => participant?.id === session.user.id
+  );
+  if (!isParticipant) {
+    return { ok: false, message: 'Forbidden' };
+  }
+  const userRole = conversation?.participants?.find(
+    (participant) => participant?.id === session.user.id
+  )?.role;
+
+  // Adapter
+  const formattedConversation = {
+    id: conversation.id,
+    title: conversation.title,
+    createdAt: conversation.createdAt,
+    updatedAt: conversation.updatedAt,
+    role: userRole,
+    messages: conversation.messages?.map((message) => ({
       id: message.id,
       content: message.content,
       createdAt: message.createdAt,
       updatedAt: message.updatedAt,
-      replyToId: message.replyToId,
-      invitationId: message.invitationId,
       sender: {
         id: message.sender.id,
-        name: message.sender.name,
         username: message.sender.username,
         email: message.sender.email,
         image: message.sender.image,
@@ -63,5 +48,5 @@ export const getConversationById = async (conversationId: string) => {
     })),
   };
 
-  return formateUserConversation as Conversation;
+  return formattedConversation as Conversation;
 };
