@@ -4,7 +4,7 @@ import NavMenuButton from './NavMenuButton';
 import ThemeSwitcher from './ThemeSwitcher';
 
 export default async function Header() {
-  const userAuthenticated = await checkIsAuthenticated();
+  const { auth, user } = await checkIsAuthenticated();
 
   return (
     <>
@@ -22,24 +22,20 @@ export default async function Header() {
             </label>
             <ul className="mr-[-1.25rem] sm:mr-0 gap-4 font-bold text-dark-bg dark:text-dark-grey sm:flex sm:flex-row">
               <NavItem href="/">Home</NavItem>
-              {userAuthenticated && <NavItem href="/profile">Profile</NavItem>}
-              {userAuthenticated && (
-                <NavItem href="/communaute">Communauté</NavItem>
-              )}
-              {userAuthenticated ? (
+              {auth && <NavItem href="/profile">Profile</NavItem>}
+              {auth && <NavItem href="/communaute">Communauté</NavItem>}
+              {auth ? (
                 <NavItem href="/events">Events</NavItem>
               ) : (
                 <NavItem href="/login">LogIn</NavItem>
               )}
-              {!userAuthenticated && <NavItem href="/about">About</NavItem>}
-              {userAuthenticated && (
-                <NavItem href="/messages">Messages</NavItem>
-              )}
-              {userAuthenticated && (
-                <NavItem href="/calendrier">Calendrier</NavItem>
-              )}
+              {!auth && <NavItem href="/about">About</NavItem>}
+              {auth && <NavItem href="/messages">Messages</NavItem>}
 
-              {!userAuthenticated && <NavItem href="/contact">Contact</NavItem>}
+              {!auth && <NavItem href="/contact">Contact</NavItem>}
+              {auth && user?.role === 'admin' && (
+                <NavItem href="/admin">Admin</NavItem>
+              )}
             </ul>
           </div>
         </nav>
@@ -47,6 +43,3 @@ export default async function Header() {
     </>
   );
 }
-
-//  por que no max-h-fit? porque la transicion no funciona con max-h-fit, css necesita un valor para poder hacer la transicion...
-// podria lograrse con la propiedad calc() de CSS pero no tiene soporte para todos los navegadores.

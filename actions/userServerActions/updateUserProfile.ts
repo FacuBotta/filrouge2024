@@ -1,11 +1,10 @@
 'use server';
 
-import { auth } from '@/lib/auth/authConfig';
 import prisma from '@/lib/prisma';
 import { checkIsAuthenticated } from '../authServerActions/checkIsAuthenticated';
 
 export const updateUserProfile = async (formData: FormData): Promise<void> => {
-  const user = await checkIsAuthenticated();
+  const { user } = await checkIsAuthenticated();
   if (!user) {
     console.error('updateUserProfile: no session found');
     return;

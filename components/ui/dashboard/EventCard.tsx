@@ -45,7 +45,9 @@ export default async function EventCard({
             </p>
           </div>
         </div>
-        <p className="text-sm text-balance break-words">{event.description}</p>
+        <p className="text-sm text-balance break-words line-clamp-3">
+          {event.description}
+        </p>
       </div>
     </Link>
   );

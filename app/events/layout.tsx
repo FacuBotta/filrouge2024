@@ -1,7 +1,5 @@
-import { checkIsAuthenticated } from '@/actions/authServerActions/checkIsAuthenticated';
 import CategoryNav from '@/components/ui/CategoryNav';
 import prisma from '@/lib/prisma';
-import { redirect } from 'next/navigation';
 import React from 'react';
 
 export default async function EventsLayout({
@@ -9,14 +7,6 @@ export default async function EventsLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const userAuthenticated = await checkIsAuthenticated();
-  if (!userAuthenticated) {
-    redirect('/login');
-  }
-  if (userAuthenticated && !userAuthenticated.password) {
-    redirect('/set-password');
-  }
-
   const categories = await prisma.category.findMany({
     select: {
       id: true,

@@ -3,34 +3,29 @@
 import { auth } from '@/lib/auth/authConfig';
 import prisma from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+// import { revalidatePath } from 'next/cache';
 
-// TODO: luego sera necesario enviar solicitud de mensaje cuando no este establecida la conversacion.
-
-export async function handleMessageSendSubmit(formData: FormData) {
+/**
+ * Send a message in a existing conversation
+ * formData should contain the following fields:
+ * - conversationId (string)
+ * - message (string)
+ * - invitationId (string) is optional
+ * @param formData
+ * @returns
+ */
+export async function sendMessageInConversation(formData: FormData) {
   try {
     const { user: sender } = (await auth()) || {};
     if (!sender) {
-      console.error('handleMessageSendSubmit: no sender found');
+      console.error('sendMessageInConversation: no sender found');
       return;
     }
     const conversationId = formData.get('conversationId') as string;
     const message = formData.get('message') as string;
-
-    if (!message) {
-      console.error('Incomplete form data:', { sender, message });
-      return;
-    }
-    // check if the sender is participant in the conversation
-    const senderIsParticipant = await prisma.userConversation.findUnique({
-      where: {
-        userId_conversationId: {
-          userId: sender.id as string,
-          conversationId,
-        },
-      },
-    });
-    if (!senderIsParticipant) {
-      console.error('handleMessageSendSubmit: sender is not participant');
+    const invitationId = (formData.get('invitationId') as string) || null;
+    if (!message || !conversationId) {
+      console.error('Incomplete form data');
       return;
     }
     // send the message
@@ -39,6 +34,7 @@ export async function handleMessageSendSubmit(formData: FormData) {
         conversationId,
         senderId: sender.id as string,
         content: message,
+        invitationId: invitationId || null,
       },
     });
 

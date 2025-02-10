@@ -1,9 +1,10 @@
 'use server';
-import prisma from '@/lib/prisma';
-import bcrypt from 'bcrypt';
-import { passwordSchema } from '@/lib/zodSchemas';
-import { z } from 'zod';
 import { auth } from '@/lib/auth/authConfig';
+import prisma from '@/lib/prisma';
+import { passwordSchema } from '@/lib/zodSchemas';
+import bcrypt from 'bcrypt';
+import { z } from 'zod';
+import { handleSignOut } from '../authServerActions/signOutServerAction';
 
 export const updatePassword = async (formData: FormData) => {
   const session = await auth();
@@ -31,9 +32,12 @@ export const updatePassword = async (formData: FormData) => {
       },
       data: {
         password: hashedPassword,
+        hasPassword: true,
       },
     });
-    return { ok: true, message: 'Mot de passe modifié' };
+    // TODO: ver esto, capaz se puede actualizar la session sin tener que desconectar y reconectar?
+    await handleSignOut();
+    // return { ok: true, message: 'Mot de passe modifié' };
   } catch (error: unknown) {
     if (error instanceof z.ZodError) {
       const firstError = error.errors[0];

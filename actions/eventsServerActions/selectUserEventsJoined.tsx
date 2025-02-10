@@ -1,13 +1,17 @@
+import { auth } from '@/lib/auth/authConfig';
 import prisma from '@/lib/prisma';
 import { UserJoinedEvent } from '@/types/types';
 
-export const selectUserEventsJoined = async (
-  userId: string
-): Promise<UserJoinedEvent[]> => {
+export const selectUserEventsJoined = async (): Promise<UserJoinedEvent[]> => {
+  const session = await auth();
+  if (!session) {
+    console.error('selectUserEvents: no session found');
+    return [];
+  }
   try {
     const userEvents = await prisma.userEvents.findMany({
       where: {
-        userId: userId,
+        userId: session.user?.id,
       },
       include: {
         event: {

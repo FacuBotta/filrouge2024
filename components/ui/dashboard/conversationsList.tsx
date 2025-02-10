@@ -38,8 +38,8 @@ export const ConversationsList = ({
       '/messages/?' + pushConversationIdToSearchParams('id', conversationId)
     );
     await updateMessagesStatus({
-      user_id: userId,
-      conversation_id: conversationId,
+      userId,
+      conversationId,
     });
     // update the conversations opened to update the notifications in client side
     setConversationsOpen((prev) => [...prev, conversationId]);

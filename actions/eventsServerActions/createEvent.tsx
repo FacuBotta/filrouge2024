@@ -6,27 +6,58 @@ import { NewEventForm, newEventSchema } from '@/lib/zodSchemas';
 import { createConversation } from '../messagesServerActions/createConversation';
 import { uploadImage } from '../uploadImage';
 
-export const createEvent = async (event: NewEventForm) => {
+interface CreateEventResponse {
+  ok: boolean;
+}
+
+/**
+ * Creates a new event and sets up a conversation for it.
+ *
+ * - **Validates event data** using Zod.
+ * - **Uploads the event image** and generates a unique filename.
+ * - **Saves the event to the database** with the given details.
+ * - **Creates a conversation** linked to the event.
+ * - **Sends invitations** to participants if provided.
+ *
+ * @param {NewEventForm} event - The event details provided by the user.
+ * @returns {Promise<CreateEventResponse>} - Returns `{ ok: true }` if successful, or `{ ok: false, message: string }` if an error occurs.
+ *
+ * @throws {Error} If the user is not authenticated or event data is invalid.
+ */
+export const createEvent = async (
+  event: NewEventForm
+): Promise<CreateEventResponse> => {
   const session = await auth();
   if (!session || !session.user?.id) {
     throw new Error('Vous devez être connecté pour créer un événement');
   }
+
   try {
+    /* 
+    ============= VALIDATE EVENT DATA =============
+    */
     newEventSchema.parse(event);
 
     const imageFile = event.image as File;
     if (!imageFile) {
       throw new Error("Aucun fichier d'image n'a été sélectionné");
     }
-    // generate a name and path for the image
-    const imageName = `${event.title}_${session.user?.id}.jpg`;
-    const imagePath = `/images/uploads/${imageName}`;
-    // upload the image to the server
-    const { success } = await uploadImage(imageFile, imageName);
+
+    /* 
+    ============= UPLOAD IMAGE =============
+    */
+    const safeTitle = event.title.replace(/[^a-zA-Z0-9-_]/g, '_');
+    const imageName = `${safeTitle}_${Date.now()}.jpg`;
+    const imagePath = `/uploads/${imageName}`;
+
+    const success = await uploadImage(imageFile, imageName);
     if (!success) {
       throw new Error("Erreur lors du téléchargement de l'image");
     }
-    // parse event data
+
+    /* 
+    ============= CREATE EVENT =============
+    */
     const newEvent = {
       userId: session.user.id,
       categoryId: event.categoryId,
@@ -42,47 +73,68 @@ export const createEvent = async (event: NewEventForm) => {
       vicinity: event.address?.vicinity,
       formattedAddress: event.address?.formattedAddress,
     };
-    console.log(newEvent);
+
     const newEventResponse = await prisma.events.create({
       data: newEvent,
     });
-    if (event.participants.length === 0) {
-      return {
-        ok: true,
-        message: 'Aucun participant n&apos;a été sélectionné',
-      };
-    }
-    // If the event has be created so create the user-event association in the DB for all participants
-    const participantsIdArray = event.participants.split(',');
-    const userEventArray = participantsIdArray.map((id) => {
-      return { userId: id, eventId: newEventResponse.id };
-    });
-    await prisma.userEvents.createMany({
-      data: userEventArray,
-    });
-    // create conversation
+
+    /* 
+    ============= CREATE CONVERSATION =============
+    */
     const conversationFormData = new FormData();
     conversationFormData.set('sujet', event.title);
-    participantsIdArray.forEach((id) => {
-      conversationFormData.append('participantsId', id);
-    });
+    conversationFormData.set('eventId', newEventResponse.id);
+
+    if (event.participants) {
+      event.participants.split(',').forEach((id) => {
+        conversationFormData.append('participantsId', id);
+      });
+    }
 
     const conversationResponse = await createConversation(conversationFormData);
 
+    if (!event.participants) {
+      return { ok: true };
+    }
+
+    /* 
+    ============= SEND INVITATIONS =============
+    */
     if (conversationResponse?.ok && conversationResponse.conversation) {
       const conversationId = conversationResponse.conversation.id;
 
-      await prisma.message.create({
-        data: {
-          conversationId,
-          senderId: session.user.id,
-          content: `Bonjour, nous sommes ravi·es de vous annoncer que vous êtes invité·e à l'événement : ${event.title} !`,
-        },
-      });
+      const userInvitationsArray = await Promise.all(
+        event.participants.split(',').map(async (participantId) => {
+          return prisma.userInvitations.create({
+            data: {
+              creatorId: session.user?.id as string,
+              participantId,
+              eventId: newEventResponse.id,
+              status: 'WAITING_PARTICIPANT_RESPONSE',
+              conversationId,
+            },
+          });
+        })
+      );
+
+      // Send messages for each invitation
+      await Promise.all(
+        userInvitationsArray.map((invitation) =>
+          prisma.message.create({
+            data: {
+              conversationId,
+              invitationId: invitation.id,
+              senderId: session.user?.id as string,
+              content: `Bonjour, je vous invite à mon nouvel événement ${event.title} !`,
+            },
+          })
+        )
+      );
     }
-    return { ok: true, message: 'Événement créé avec succès' };
+
+    return { ok: true };
   } catch (error) {
-    console.log(error);
-    throw error;
+    console.error('createEvent: Error creating event', error);
+    return { ok: false };
   }
 };

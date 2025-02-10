@@ -1,16 +1,22 @@
 import { checkIsAuthenticated } from '@/actions/authServerActions/checkIsAuthenticated';
+import selectUserById from '@/actions/userServerActions/selectUserById';
 import { updateUserProfile } from '@/actions/userServerActions/updateUserProfile';
 import Backdrop from '@/components/layouts/Backdrop';
 import IconWrapper from '@/components/ui/IconWrapper';
 import { UserAvatar } from '@/public/images/UserAvatar';
+import { BasicProfileInformation } from '@/types/types';
 import { Link } from 'next-view-transitions';
 import { redirect } from 'next/navigation';
 const EditProfilePage = async () => {
-  const userAuthenticated = await checkIsAuthenticated();
-  if (!userAuthenticated) {
+  const { user } = await checkIsAuthenticated();
+
+  const userData: BasicProfileInformation | null = await selectUserById(
+    user?.id as string
+  );
+  if (!userData) {
     redirect('/login');
   }
-  const { username, image, description } = userAuthenticated;
+  const { description, username, image } = userData;
 
   return (
     <Backdrop>

@@ -1,15 +1,14 @@
-import PasswordForm from '@/components/forms/passwordForm';
 import { checkIsAuthenticated } from '@/actions/authServerActions/checkIsAuthenticated';
-import { redirect } from 'next/navigation';
+import PasswordForm from '@/components/forms/passwordForm';
 import Backdrop from '@/components/layouts/Backdrop';
+import { redirect } from 'next/navigation';
 
 export default async function SetPasswordPage() {
-  const userAuthenticated = await checkIsAuthenticated();
-  console.log(userAuthenticated);
-  if (!userAuthenticated) {
+  const { auth, user } = await checkIsAuthenticated();
+  if (!auth && !user) {
     redirect('/login');
   }
-  const isUpdated = userAuthenticated.password !== null;
+  const isUpdated = user?.hasPassword !== null;
   return (
     <div className="bg-light-ciel dark:bg-dark-bg h-screen">
       <Backdrop>
@@ -26,7 +25,7 @@ export default async function SetPasswordPage() {
                 : "Vous devez d'abord créer un mot de passe pour pouvoir commencer."}
             </p>
           </div>
-          <PasswordForm isUpdated={isUpdated} id={userAuthenticated.id} />
+          <PasswordForm isUpdated={isUpdated} id={user?.id as string} />
         </div>
       </Backdrop>
     </div>

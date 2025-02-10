@@ -1,9 +1,15 @@
+import { auth } from '@/lib/auth/authConfig';
 import prisma from '@/lib/prisma';
 import { BasicProfileInformation } from '@/types/types';
 
 export const selectAllBasicUserInfos = async (): Promise<
   BasicProfileInformation[] | []
 > => {
+  const session = await auth();
+  if (!session) {
+    console.error('selectAllBasicUserInfos: no session found');
+    return [];
+  }
   try {
     const users = await prisma.user.findMany({
       select: {
@@ -23,6 +29,7 @@ export const selectAllBasicUserInfos = async (): Promise<
     // Check to not return users with null values
     return users.filter(
       (user): user is BasicProfileInformation =>
+        user.id !== session?.user?.id &&
         user.username !== null &&
         user.email !== null &&
         user.image !== null &&

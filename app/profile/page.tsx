@@ -2,38 +2,43 @@ import { checkIsAuthenticated } from '@/actions/authServerActions/checkIsAuthent
 import { selectUserEvents } from '@/actions/eventsServerActions/selectUserEvents';
 import { selectUserEventsJoined } from '@/actions/eventsServerActions/selectUserEventsJoined';
 import { selectUserTasks } from '@/actions/TasksServerActions/selectUserTasks';
+import selectUserById from '@/actions/userServerActions/selectUserById';
 import PageHeader from '@/components/layouts/PageHeader';
-import MiniCardEvent from '@/components/ui/cards/MiniCardEvent';
+import OwnerEventCard from '@/components/ui/cards/OwnerEventCard';
+import SignOutButton from '@/components/ui/dashboard/SignOutButton';
 import TasksProfile from '@/components/ui/dashboard/TasksProfile';
 import UserCard from '@/components/ui/dashboard/UserCard';
 import IconWrapper from '@/components/ui/IconWrapper';
 import RantingUser from '@/components/ui/RantingUser';
 import { UserAvatar } from '@/public/images/UserAvatar';
-import { EventByUser, UserJoinedEvent } from '@/types/types';
+import {
+  BasicProfileInformation,
+  EventWithUserAndCount,
+  UserJoinedEvent,
+} from '@/types/types';
 import { Tasks } from '@prisma/client';
 import { Link } from 'next-view-transitions';
 import { redirect } from 'next/navigation';
 import React from 'react';
 const DashboardPage: React.FC = async () => {
-  const userAuthenticated = await checkIsAuthenticated();
-  if (!userAuthenticated) {
+  const { user } = await checkIsAuthenticated();
+  const userData: BasicProfileInformation | null = await selectUserById(
+    user?.id as string
+  );
+  if (!userData) {
     redirect('/login');
   }
-  if (userAuthenticated && !userAuthenticated.password) {
-    redirect('/set-password');
-  }
-  const { id, description, username, email, image } = userAuthenticated;
-  const userTasks: Tasks[] = await selectUserTasks(id as string);
-  const userEventsCreated: EventByUser[] = await selectUserEvents(id as string);
-  const userEventsJoined: UserJoinedEvent[] = await selectUserEventsJoined(
-    id as string
-  );
+  const { description, username, email, image } = userData;
+  const userTasks: Tasks[] = await selectUserTasks();
+  const userEventsCreated: EventWithUserAndCount[] = await selectUserEvents();
+  const userEventsJoined: UserJoinedEvent[] = await selectUserEventsJoined();
 
   return (
     <section className="min-h-screen mt-10 relative px-2 w-full max-w-max mx-auto flex flex-col sm:!flex-row justify-start gap-5 divide-y sm:divide-y-0 sm:divide-x ">
       {/* profile section - left side */}
       <aside className="w-full sm:sticky top-24 max-w-[400px] h-fit p-5 flex">
         <div className="flex flex-col items-center justify-center pt-5 gap-2">
+          <SignOutButton />
           <div className="relative">
             <Link aria-label="Éditer profile" href="/profile/edition">
               <IconWrapper
@@ -83,19 +88,19 @@ const DashboardPage: React.FC = async () => {
           {userEventsCreated?.length === 0 ? (
             <p>Vous n&apos;avez pas encore créé d&apos;événement</p>
           ) : (
-            userEventsCreated.map((event: EventByUser) => (
-              <MiniCardEvent key={event.id} event={event} />
+            userEventsCreated.map((event: EventWithUserAndCount) => (
+              <OwnerEventCard key={event.id} event={event} />
             ))
           )}
 
           <h1 className="font-bold text-2xl">Mes événements a venir</h1>
           {userEventsJoined?.length === 0 ? (
             <div>
-              <p>Vous n'avez pas encore rejoint des événements</p>
+              <p>Vous n&apos;avez pas encore rejoint des événements</p>
             </div>
           ) : (
             // TODO: add a button to join an event
-            userEventsJoined.map((event: UserJoinedEvent, index: number) => (
+            userEventsJoined.map((event: UserJoinedEvent) => (
               <div
                 key={event.id}
                 className="w-full flex border border-dark-bg dark:border-light-grey rounded-lg p-5 gap-5 flex-col"

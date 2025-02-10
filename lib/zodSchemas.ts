@@ -92,7 +92,7 @@ export const newEventSchema = z.object({
       }
     ),
   isPublic: z.boolean(),
-  participants: z.string(), // Lista de participantes como strings
+  participants: z.string().nullable(), // Lista de participantes como strings
   address: eventAddressSchema, // Validación de dirección
   image: z.instanceof(File).nullable(), // Validar que sea un archivo o nulo
 });

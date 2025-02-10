@@ -23,6 +23,11 @@ export const selectAllEvents = async (): Promise<
         formattedAddress: true,
         createdAt: true,
         updatedAt: true,
+        conversation: {
+          select: {
+            id: true,
+          },
+        },
         category: {
           select: {
             id: true,

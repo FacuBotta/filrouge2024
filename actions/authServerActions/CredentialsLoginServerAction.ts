@@ -1,15 +1,15 @@
 'use server';
 
+import { emailSchema } from '@/lib/zodSchemas';
+import { signIn } from '../../lib/auth/authConfig';
 import { checkPassword } from '../userServerActions/checkPassword';
 import selectUserByMail from '../userServerActions/selectUserByMail';
-import { signIn } from '../../lib/auth/authConfig';
-import { emailSchema } from '@/lib/zodSchemas';
-import { z } from 'zod';
 
 export const CredentialsLoginServerAction = async (formData: FormData) => {
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
   try {
+    emailSchema.parse({ email });
     const user = await selectUserByMail(email);
     if (!user) {
       return {

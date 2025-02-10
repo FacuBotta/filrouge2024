@@ -1,9 +1,14 @@
+import { JoinEventRequestProps } from '@/actions/eventsServerActions/jointEventRequest';
 import { selectEventById } from '@/actions/eventsServerActions/selectEventById';
 import MapInfoCard from '@/components/ui/cards/MapInfoCard';
+import AcceptInvitationButton from '@/components/ui/dashboard/AcceptInvitationButton';
+import DeclineInvitationButton from '@/components/ui/dashboard/DeclineInvitationButton';
+import DisjoinEventButton from '@/components/ui/dashboard/DisjoinEventButton';
+import JoinEventButton from '@/components/ui/dashboard/joinEventButton';
 import UserCard from '@/components/ui/dashboard/UserCard';
 import IconWrapper from '@/components/ui/IconWrapper';
-import type { EventWithUserAndCount } from '@/types/types';
-import { Link } from 'next-view-transitions';
+import { auth } from '@/lib/auth/authConfig';
+import type { EventWithUserAndCount, Invitation } from '@/types/types';
 import Image from 'next/image';
 
 export default async function EventPage({
@@ -11,9 +16,12 @@ export default async function EventPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
+  const session = await auth();
+  if (!session || !session.user?.id) {
+    throw new Error("Vous devez être connecté pour voir l'événement");
+  }
   const { id } = await params;
   const event: EventWithUserAndCount | null = await selectEventById(id);
-  console.log(event);
 
   const formatDate = (dateString: Date | string) => {
     return new Date(dateString).toLocaleDateString('fr-FR', {
@@ -27,12 +35,60 @@ export default async function EventPage({
   };
 
   if (!event) {
-    return (
-      <div className="flex h-[50vh] items-center justify-center">
-        <p className="text-xl">Event not found</p>
-      </div>
-    );
+    throw new Error("L'événement n'existe pas");
   }
+
+  // verify if user has an invitation to event
+  const userInvitation: Invitation | undefined = event.UserInvitations?.find(
+    (invitation) => invitation.participantId === session.user?.id
+  );
+  // console.log({ event });
+  const renderActionButton = () => {
+    if (event.user.id === session.user?.id) {
+      return (
+        // TODO : ver que hago aca...
+        <div className="primary-btn mt-5">
+          Vous êtes le créateur de cet événement
+        </div>
+      );
+    }
+    if (userInvitation?.status === 'JOINED') {
+      return (
+        <div>
+          <DisjoinEventButton
+            event={event}
+            userId={session.user?.id as string}
+            className="mt-5"
+          />
+          <div>ajouter au calendrier btn coming soon</div>
+        </div>
+      );
+    }
+    if (userInvitation?.status === 'DECLINED_BY_CREATOR') {
+      return <div className="primary-btn mt-5">Invitation refusée</div>;
+    }
+    if (userInvitation?.status === 'WAITING_CREATOR_RESPONSE') {
+      return <div className="primary-btn mt-5">Invitation envoyée</div>;
+    }
+    if (userInvitation?.status === 'WAITING_PARTICIPANT_RESPONSE') {
+      return (
+        <div className="mt-5 flex gap-2">
+          <AcceptInvitationButton userInvitation={userInvitation} />
+          <DeclineInvitationButton userInvitation={userInvitation} />
+        </div>
+      );
+    }
+    const joinEventParams: JoinEventRequestProps = {
+      eventId: event.id,
+      eventCreatorId: event.user.id,
+      conversationId: event.conversation?.id as string,
+      existingInvitationId: userInvitation?.id,
+    };
+
+    return (
+      <JoinEventButton joinEventParams={joinEventParams} className=" mt-10" />
+    );
+  };
 
   return (
     <main className="min-h-screen w-full max-w-[1000px] pb-10 mx-auto text-dark-bg dark:text-white">
@@ -42,7 +98,7 @@ export default async function EventPage({
             width={1200}
             height={500}
             className="h-[500px] w-full object-cover shadow-lg"
-            src="/images/default_event_image.webp"
+            src={event.image || '/images/default_event_image.webp'}
             alt={`Image for ${event.title}`}
             priority
           />
@@ -60,9 +116,7 @@ export default async function EventPage({
               <p className="mt-4 text-balance break-words">
                 {event.description}
               </p>
-              <Link className="primary-btn mt-10" href={`/events/${id}/join`}>
-                Rejoindre l&apos;événement 🚀
-              </Link>
+              {renderActionButton()}
             </div>
           </div>
         </div>

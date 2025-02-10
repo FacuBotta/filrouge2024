@@ -23,12 +23,29 @@ export async function getUserConversations() {
       title: true,
       createdAt: true,
       updatedAt: true,
+      event: {
+        select: {
+          id: true,
+          title: true,
+        },
+      },
       messages: {
         select: {
           id: true,
           content: true,
           createdAt: true,
           updatedAt: true,
+          invitation: {
+            select: {
+              id: true,
+              status: true,
+              conversationId: true,
+              eventId: true,
+              createdAt: true,
+              participantId: true,
+              creatorId: true,
+            },
+          },
           sender: {
             select: {
               id: true,
@@ -53,6 +70,7 @@ export async function getUserConversations() {
       participants: {
         select: {
           joinedAt: true,
+          role: true,
           user: {
             select: {
               id: true,
@@ -71,29 +89,33 @@ export async function getUserConversations() {
     },
   });
 
-  const formattedConversations = conversations.map((conversation) => {
-    const unreadMessages = conversation.messages.reduce((count, message) => {
-      return count + message.messageStatuses.length;
-    }, 0);
+  const formattedConversations: Conversation[] = conversations.map(
+    (conversation) => {
+      const unreadMessages = conversation.messages.reduce((count, message) => {
+        return count + message.messageStatuses.length;
+      }, 0);
 
-    return {
-      id: conversation.id,
-      title: conversation.title,
-      createdAt: conversation.createdAt,
-      updatedAt: conversation.updatedAt,
-      unreadMessages,
-      messages: conversation.messages,
-      participants: conversation.participants.map((participant) => ({
-        id: participant.user.id,
-        name: participant.user.name,
-        username: participant.user.username,
-        email: participant.user.email,
-        image: participant.user.image,
-        joinedAt: participant.joinedAt,
-        updatedAt: participant.user.updatedAt,
-      })),
-    };
-  });
+      return {
+        id: conversation.id,
+        title: conversation.title,
+        createdAt: conversation.createdAt,
+        updatedAt: conversation.updatedAt,
+        event: conversation.event as { id: string; title: string },
+        unreadMessages,
+        messages: conversation.messages,
+        participants: conversation.participants.map((participant) => ({
+          id: participant.user.id,
+          name: participant.user.name,
+          username: participant.user.username,
+          email: participant.user.email,
+          image: participant.user.image,
+          joinedAt: participant.joinedAt,
+          updatedAt: participant.user.updatedAt,
+          role: participant.role,
+        })),
+      };
+    }
+  );
 
   return formattedConversations;
 }

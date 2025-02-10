@@ -27,6 +27,7 @@ export default async function selectUserById(
     });
     return user as BasicProfileInformation;
   } catch (error) {
+    console.error(error);
     return null;
   }
 }

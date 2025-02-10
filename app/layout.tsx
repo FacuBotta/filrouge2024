@@ -20,8 +20,6 @@ export default async function RootLayout({
   children: React.ReactNode;
   auth: React.ReactNode;
 }>) {
-  // const userAuthenticated = await checkIsAuthenticated();
-
   return (
     <ViewTransitions>
       <html

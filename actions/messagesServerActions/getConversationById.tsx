@@ -14,7 +14,7 @@ export const getConversationById = async (conversationId: string) => {
     where: {
       userId_conversationId: {
         userId: userId as string,
-        conversationId: conversationId,
+        conversationId,
       },
     },
     include: {
@@ -50,6 +50,8 @@ export const getConversationById = async (conversationId: string) => {
       content: message.content,
       createdAt: message.createdAt,
       updatedAt: message.updatedAt,
+      replyToId: message.replyToId,
+      invitationId: message.invitationId,
       sender: {
         id: message.sender.id,
         name: message.sender.name,

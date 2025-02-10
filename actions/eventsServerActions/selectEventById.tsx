@@ -23,6 +23,27 @@ export const selectEventById = async (
         formattedAddress: true,
         createdAt: true,
         updatedAt: true,
+        conversation: {
+          select: {
+            id: true,
+          },
+        },
+        participants: {
+          select: {
+            userId: true,
+          },
+        },
+        UserInvitations: {
+          select: {
+            id: true,
+            participantId: true,
+            creatorId: true,
+            eventId: true,
+            conversationId: true,
+            createdAt: true,
+            status: true,
+          },
+        },
         category: {
           select: {
             id: true,

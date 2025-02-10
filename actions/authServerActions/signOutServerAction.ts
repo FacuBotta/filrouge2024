@@ -2,7 +2,7 @@
 
 import { signOut } from '../../lib/auth/authConfig';
 
-export async function handleSignOut () {
+export async function handleSignOut() {
   try {
     await signOut({ redirectTo: '/' });
   } catch (error) {

@@ -5,8 +5,8 @@ import { redirect } from 'next/navigation';
 import React from 'react';
 
 const LoginPage: React.FC = async () => {
-  const isAuthenticated = await checkIsAuthenticated();
-  if (isAuthenticated) {
+  const { auth } = await checkIsAuthenticated();
+  if (auth) {
     redirect('/profile');
   } else {
     return (

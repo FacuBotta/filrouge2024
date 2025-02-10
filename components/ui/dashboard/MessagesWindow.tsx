@@ -1,15 +1,17 @@
 'use client';
 
 import { UserAvatar } from '@/public/images/UserAvatar';
-import { Message } from '@/types/types';
+import { Invitation, Message } from '@/types/types';
+import { Link } from 'next-view-transitions';
 import React, { useEffect, useRef } from 'react';
+import AcceptInvitationButton from './AcceptInvitationButton';
 
 interface messagesWindowsProps {
   messages: Message[];
   userId: string;
 }
 
-export default function DashboardMessagesWindow({
+export default function MessagesWindow({
   messages,
   userId,
 }: messagesWindowsProps) {
@@ -21,7 +23,6 @@ export default function DashboardMessagesWindow({
         messagesWindowRef.current.scrollHeight;
     }
   }, [messages]);
-
   const isDifferentDay = (date1: Date, date2: Date) => {
     return (
       date1.getFullYear() !== date2.getFullYear() ||
@@ -30,10 +31,59 @@ export default function DashboardMessagesWindow({
     );
   };
 
+  const renderInvitationButton = (invitation: Invitation) => {
+    if (
+      invitation.status === 'WAITING_PARTICIPANT_RESPONSE' &&
+      userId === invitation.participantId
+    ) {
+      return (
+        <Link href={`/events/event/${invitation.eventId}`}>
+          <button className="primary-btn my-2">Voir l&apos;événement</button>
+        </Link>
+      );
+    }
+    if (
+      invitation.status === 'WAITING_CREATOR_RESPONSE' &&
+      userId === invitation.creatorId
+    ) {
+      return (
+        <AcceptInvitationButton userInvitation={invitation} className="my-2" />
+      );
+    }
+    if (invitation.status === 'JOINED') {
+      return (
+        <div className="font-extralight text-lg opacity-50">
+          Invitation acceptée
+        </div>
+      );
+    }
+    if (
+      invitation.status === 'DECLINED_BY_CREATOR' ||
+      invitation.status === 'DECLINED_BY_PARTICIPANT'
+    ) {
+      return (
+        <div className="font-extralight text-lg opacity-50">
+          Invitation déclinée
+        </div>
+      );
+    }
+    if (
+      invitation.status === 'WAITING_CREATOR_RESPONSE' ||
+      invitation.status === 'WAITING_PARTICIPANT_RESPONSE'
+    ) {
+      return (
+        <div className="font-extralight text-lg opacity-50">
+          Invitation en attente de réponse
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
     <div
       ref={messagesWindowRef}
-      className="no-scrollbar flex flex-col gap-2 w-full h-full mx-auto  px-2 pb-10 border border-light-borderCards dark:border-dark-borderCards pt-5 rounded-xl my-3 overflow-y-scroll scroll-smooth bg-dark-grey/10"
+      className="no-scrollbar flex flex-col items-center gap-10 w-full h-full mx-auto  px-2 pb-10 border border-light-borderCards dark:border-dark-borderCards pt-5 rounded-xl my-3 overflow-y-scroll scroll-smooth bg-dark-grey/10"
     >
       {messages?.reduce((acc, message, index, arr) => {
         if (index > 0) {
@@ -61,7 +111,7 @@ export default function DashboardMessagesWindow({
           <div
             key={message.id}
             className={`flex flex-col-reverse sm:flex-row-reverse w-[80%] items-end relative ${
-              userId === message?.sender?.id ? 'ml-5' : 'm-auto'
+              userId === message?.sender?.id ? 'ml-5' : 'mx-auto'
             }`}
           >
             {/* message box */}
@@ -73,9 +123,19 @@ export default function DashboardMessagesWindow({
               }`}
             >
               <p>{message.content} </p>
+              {message.invitation && renderInvitationButton(message.invitation)}
               <div className="flex justify-between items-start text-sm pt-1 font-extralight border-t border-gray-900">
-                <span>{message.sender.username || 'Aucun nom'}</span>
-                <span>{message.createdAt.toLocaleTimeString('fr-FR')}</span>
+                <span>
+                  {message.sender.id === userId
+                    ? 'Moi'
+                    : message.sender.username || message.sender.email}
+                </span>
+                <span>
+                  {new Date(message.createdAt).toLocaleTimeString('fr-FR', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </span>
               </div>
             </div>
             {

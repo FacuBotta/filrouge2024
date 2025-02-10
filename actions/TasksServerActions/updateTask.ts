@@ -1,8 +1,9 @@
 'use server';
 
 import prisma from '@/lib/prisma';
+import { Tasks } from '@prisma/client';
 
-export const updateTask = async (task: any) => {
+export const updateTask = async (task: Tasks) => {
   try {
     await prisma.tasks.update({
       where: {
@@ -17,6 +18,6 @@ export const updateTask = async (task: any) => {
     return { ok: true };
   } catch (error) {
     console.error(error);
-    return { ok: false, error: error };
+    return { ok: false };
   }
 };

@@ -41,7 +41,7 @@ export async function getConversationMessages() {
             },
           },
           orderBy: {
-            createdAt: 'asc', // Ordena los mensajes por fecha de creación ascendente
+            createdAt: 'asc',
           },
         },
       },

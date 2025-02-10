@@ -3,6 +3,8 @@ import { User } from '@prisma/client';
 /* ========================================================================== */
 /* ============================ CONVERSATION TYPES =========================== */
 /* ========================================================================== */
+export type UserRole = 'GUEST' | 'CREATOR';
+
 export interface Participant {
   id: string;
   name: string | null;
@@ -11,10 +13,29 @@ export interface Participant {
   image: string | null;
   joinedAt?: Date;
   updatedAt: Date;
+  role?: UserRole;
+}
+type InvitationStatus =
+  | 'WAITING_CREATOR_RESPONSE'
+  | 'WAITING_PARTICIPANT_RESPONSE'
+  | 'JOINED'
+  | 'DISJOINED'
+  | 'DECLINED_BY_CREATOR'
+  | 'DECLINED_BY_PARTICIPANT';
+
+export interface Invitation {
+  id: string;
+  participantId: string;
+  creatorId: string;
+  eventId: string;
+  status: InvitationStatus;
+  conversationId: string;
+  createdAt: Date;
 }
 export interface Message {
   id: string;
   content: string;
+  invitation: Invitation | null;
   createdAt: Date;
   updatedAt: Date;
   sender: Participant;
@@ -26,15 +47,15 @@ export interface Conversation {
   createdAt: Date;
   updatedAt: Date;
   participants?: Participant[];
+  event?: { id: string; title: string };
+  eventId?: string | null;
   messages?: Message[];
   unreadMessages?: number;
-  role?: string;
 }
 
 /* ========================================================================== */
 /* ============================ USER TYPES ================================== */
 /* ========================================================================== */
-
 export interface BasicProfileInformation {
   id: string;
   email: string | null;
@@ -81,6 +102,27 @@ export interface EventAddress {
   formattedAddress?: string;
   vicinity?: string;
 }
+// TODO: quitar esta interface
+export interface UserInvitation {
+  id: string;
+  userId: string;
+  eventId: string;
+  status: string;
+  conversationId: string;
+  createdAt: Date;
+}
+type EventParticipant = {
+  userId: string;
+};
+type Tasks = {
+  id: string;
+  content: string;
+  userId: string;
+  completed: boolean;
+  createdAt: Date;
+  order: number;
+  eventId: string | null;
+};
 export interface EventWithUserAndCount {
   id: string;
   title: string;
@@ -96,11 +138,15 @@ export interface EventWithUserAndCount {
   formattedAddress: string | null;
   createdAt: Date;
   updatedAt: Date;
+  Tasks?: Tasks[];
+  participants?: EventParticipant[];
+  conversation: { id: string } | null;
+  UserInvitations?: Invitation[];
   category: {
     id: string;
     title: string;
   };
-  user: BasicProfileInformation;
+  user?: BasicProfileInformation;
   _count: {
     participants: number | null;
   };
@@ -116,6 +162,7 @@ export interface NewEventForm {
   address: EventAddress;
   image: File | null;
 }
+
 export interface EventByUser {
   id: string;
   title: string;
@@ -126,6 +173,8 @@ export interface EventByUser {
   isPublic: boolean;
   createdAt: Date;
   updatedAt: Date;
+  Tasks?: Tasks[];
+  conversation: { id: string } | null;
   category: {
     id: string;
     title: string;

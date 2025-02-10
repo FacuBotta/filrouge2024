@@ -6,18 +6,23 @@ import { updateTask } from '@/actions/TasksServerActions/updateTask';
 import { Tasks } from '@prisma/client';
 import { Icon } from 'facu-ui';
 import { Reorder } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 
-export default function TasksProfile({ tasks }: { tasks: Tasks[] }) {
-  const [clientTasks, setClientTasks] = useState<any>(tasks);
-  const [currentTask, setCurrentTask] = useState<any>(null);
+interface TasksProfileProps {
+  tasks: Tasks[];
+  eventId?: string;
+}
+
+export default function TasksProfile({ tasks, eventId }: TasksProfileProps) {
+  const [clientTasks, setClientTasks] = useState<Tasks[]>(tasks);
+  const [currentTask, setCurrentTask] = useState<Tasks | null>(null);
   const [currentContent, setCurrentContent] = useState<string>('');
   const tasksFormRef = useRef<HTMLFormElement>(null);
   const newTaskInputRef = useRef<HTMLTextAreaElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement[]>([]);
   // This useEffect is used to set the textarea height to the content
   useEffect(() => {
-    clientTasks.forEach((task: any, index: number) => {
+    clientTasks.forEach((task: Tasks, index: number) => {
       const input = textareaRef.current[index];
       if (input) {
         input.style.height = '10px';
@@ -34,7 +39,7 @@ export default function TasksProfile({ tasks }: { tasks: Tasks[] }) {
   // This useEffect is used to save the task when the user leaves the page
   // It use the beforeunload event and after it'is called the eventListener is removed
   useEffect(() => {
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+    const handleBeforeUnload = () => {
       if (currentTask) {
         handleUpdateTaskContent();
       }
@@ -45,13 +50,14 @@ export default function TasksProfile({ tasks }: { tasks: Tasks[] }) {
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTask, currentContent]);
 
   const handleDeleteTask = async (id: string) => {
     if (!id) return;
     const response = await deleteUserTask(id);
     if (response?.ok) {
-      setClientTasks(clientTasks.filter((task: any) => task.id !== id));
+      setClientTasks(clientTasks.filter((task: Tasks) => task.id !== id));
     }
   };
 
@@ -71,7 +77,7 @@ export default function TasksProfile({ tasks }: { tasks: Tasks[] }) {
       const result = await updateTask(updatedTask);
       if (result.ok) {
         setClientTasks(
-          clientTasks.map((task: any) =>
+          clientTasks.map((task: Tasks) =>
             task.id === updatedTask.id ? updatedTask : task
           )
         );
@@ -82,7 +88,10 @@ export default function TasksProfile({ tasks }: { tasks: Tasks[] }) {
   };
 
   // this function update the status of a task (completed or not) when the user click on the checkbox
-  const handleUpdateTaskStatus = async (e?: any, task?: any) => {
+  const handleUpdateTaskStatus = async (
+    e: ChangeEvent<HTMLInputElement>,
+    task?: Tasks
+  ) => {
     const updatedTask = {
       ...task,
       completed: e.target.checked,
@@ -91,6 +100,7 @@ export default function TasksProfile({ tasks }: { tasks: Tasks[] }) {
     try {
       await updateTask(updatedTask);
       setClientTasks(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         clientTasks.map((task: any) =>
           task.id === updatedTask.id ? updatedTask : task
         )
@@ -101,21 +111,27 @@ export default function TasksProfile({ tasks }: { tasks: Tasks[] }) {
   };
 
   // this function create a new task with its content and default status to 'todo'
-  const handleCreateTask = async (e: any) => {
+  const handleCreateTask = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const content = formData.get('content') as string;
+
     if (content.length === 0) return;
     // reorder the tasks when the user create a new task
     // like that the new task will be the first task with order 0
-    const reorderedTasks = clientTasks.map((task: any, index: number) => {
+    const reorderedTasks = clientTasks.map((task: Tasks, index: number) => {
       task.order = index + 1;
       return task;
     });
-    const response = await createTask({ content, completed: false });
+    const newTaskData = {
+      content,
+      completed: false,
+      eventId: eventId || null,
+    };
+    const response = await createTask(newTaskData);
     if (response?.ok) {
-      setClientTasks([response.newTask, ...reorderedTasks]);
-      e.target.reset();
+      setClientTasks([response.newTask as Tasks, ...reorderedTasks]);
+      (e.target as HTMLFormElement).reset();
       // Adjust the width of the create task input
       if (newTaskInputRef.current) {
         newTaskInputRef.current.style.width = '10ch';
@@ -124,7 +140,10 @@ export default function TasksProfile({ tasks }: { tasks: Tasks[] }) {
   };
 
   // this function set the current content state and update the textarea height
-  const handleInputChange = (e: any, index?: number) => {
+  const handleInputChange = (
+    e: ChangeEvent<HTMLTextAreaElement>,
+    index?: number
+  ) => {
     if (typeof index === 'number') {
       const updatedTasks = [...clientTasks];
       updatedTasks[index] = { ...updatedTasks[index], content: e.target.value };
@@ -154,8 +173,8 @@ export default function TasksProfile({ tasks }: { tasks: Tasks[] }) {
     }
   };
   // this function handle the drag visual order of the tasks
-  const handleReorderTasks = async (newOrder: any) => {
-    const updatedTasks = newOrder.map((task: any, index: number) => ({
+  const handleReorderTasks = async (newOrder: Tasks[]) => {
+    const updatedTasks = newOrder.map((task: Tasks, index: number) => ({
       ...task,
       order: index + 1,
     }));
@@ -219,7 +238,7 @@ export default function TasksProfile({ tasks }: { tasks: Tasks[] }) {
             name="content"
             placeholder="Nouvelle tâche"
             autoComplete="off"
-            className="resize-none no-scrollbar min-w-[90%] bg-transparent ml-2 border-b focus:outline-none border-dark-bg dark:border-light-grey placeholder:text-light-blue placeholder:dark:text-dark-greenLight/50"
+            className="resize-none no-scrollbar w-[90%] bg-transparent ml-2 border-b focus:outline-none border-dark-bg dark:border-light-grey placeholder:text-light-blue placeholder:dark:text-dark-greenLight/50"
             onChange={(e) => handleInputChange(e)}
           />
         </div>
@@ -232,7 +251,7 @@ export default function TasksProfile({ tasks }: { tasks: Tasks[] }) {
           values={clientTasks}
           onReorder={handleReorderTasks}
         >
-          {clientTasks?.map((task: any, index: number) => {
+          {clientTasks?.map((task: Tasks, index: number) => {
             return (
               <Reorder.Item
                 value={task}

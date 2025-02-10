@@ -12,10 +12,12 @@ model User {
   name          String?
   username      String?   @unique
   password      String?
+  hasPassword   Boolean   @default(false)
   email         String?   @unique
   emailVerified DateTime?
   image         String?
   description   String?
+  role          String? @default("user")
 
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
@@ -34,6 +36,7 @@ model User {
   MessagesSent     Message[]          @relation("SentMessages")
   UserConversation UserConversation[]
   MessageStatus    MessageStatus[]
+  UserInvitations  UserInvitations[]
 }
 
 model Tasks {
@@ -172,6 +175,30 @@ model Ratings {
 
   @@index([userId])
 }
+enum UserInvitationStatus {
+  JOINED
+  DISJOINED
+  WAITING_CREATOR_RESPONSE
+  WAITING_PARTICIPANT_RESPONSE
+  DECLINED_BY_CREATOR
+  DECLINED_BY_PARTICIPANT
+}
+model UserInvitations {
+  id String @id @default(cuid())
+  eventId String
+  participantId String
+  creatorId String
+  conversationId String
+  status UserInvitationStatus @default(WAITING_CREATOR_RESPONSE)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  event Events @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  message Message? @relation("MessageInvitation")
+  @@unique([participantId, eventId])
+}
+
 model UserEvents {
   userId String
   eventId String
@@ -182,36 +209,6 @@ model UserEvents {
 
   @@id([userId, eventId])
 }
-model Events {
-  id          String   @id @default(cuid())
-  userId      String
-  categoryId  String
-  title       String
-  description String? @db.Text
-  eventStart  DateTime
-  eventEnd    DateTime?
-  isPublic    Boolean  @default(false)
-
-  image       String?
-  locationUrl         String?
-  lat         Float?
-  lng         Float?
-  vicinity    String?
-  formattedAddress String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user     User       @relation(fields: [userId], references: [id])
-  category Category   @relation(fields: [categoryId], references: [id])
-  Comments Comments[]
-  Trash    Trash[]
-  Tasks    Tasks[]
-  participants UserEvents[]
-
-  @@index([userId])
-  @@index([categoryId])
-}
 
 model Category {
   id          String   @id @default(cuid())
@@ -220,14 +217,50 @@ model Category {
   Events      Events[]
 }
 
-model Conversation {
-  id        String   @id @default(cuid())
-  title     String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Events {
+  id             String   @id @default(cuid())
+  userId         String
+  categoryId     String
 
-  messages     Message[]
-  participants UserConversation[]
+  title          String
+  description    String? @db.Text
+  eventStart     DateTime
+  eventEnd       DateTime?
+  isPublic       Boolean  @default(false)
+
+  image          String?
+  locationUrl    String?
+  lat            Float?
+  lng            Float?
+  vicinity       String?
+  formattedAddress String?
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  conversation   Conversation?
+  user          User        @relation(fields: [userId], references: [id])
+  category      Category    @relation(fields: [categoryId], references: [id])
+  Comments      Comments[]
+  Trash         Trash[]
+  Tasks         Tasks[]
+  participants  UserEvents[]
+  UserInvitations UserInvitations[]
+
+  @@index([userId])
+  @@index([categoryId])
+}
+model Conversation {
+  id             String   @id @default(cuid())
+  title          String?
+  eventId        String?   @unique
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  messages       Message[]
+  participants   UserConversation[]
+  UserInvitations UserInvitations[]
+  event          Events?   @relation(fields: [eventId], references: [id])
 }
 enum Role {
   CREATOR
@@ -239,7 +272,7 @@ model UserConversation {
   userId         String
   conversationId String
   joinedAt       DateTime @default(now())
-    role           Role @default(GUEST)
+  role           Role @default(GUEST)
   user         User         @relation(fields: [userId], references: [id])
   conversation Conversation @relation(fields: [conversationId], references: [id])
 
@@ -273,12 +306,14 @@ model Message {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
   replyToId      String?
+  invitationId   String? @unique
 
   replyTo        Message?  @relation("ReplyTo", fields: [replyToId], references: [id])
   replies        Message[] @relation("ReplyTo")
 
   sender          User         @relation("SentMessages", fields: [senderId], references: [id])
   conversation    Conversation @relation(fields: [conversationId], references: [id])
+  invitation      UserInvitations? @relation("MessageInvitation", fields: [invitationId], references: [id])
 
   messageStatuses MessageStatus[]
   @@index([senderId])

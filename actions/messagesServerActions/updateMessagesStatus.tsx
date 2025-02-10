@@ -1,18 +1,18 @@
 'use server';
 import prisma from '@/lib/prisma';
-
+// TODO : delete messages from messagesStatus when seen ?
 export async function updateMessagesStatus({
-  user_id,
-  conversation_id,
+  userId,
+  conversationId,
 }: {
-  user_id: string;
-  conversation_id: string;
+  userId: string;
+  conversationId: string;
 }) {
   await prisma.messageStatus.updateMany({
     where: {
-      userId: user_id,
+      userId,
       message: {
-        conversationId: conversation_id,
+        conversationId,
       },
       status: 'UNSEEN',
     },

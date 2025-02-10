@@ -1,9 +1,10 @@
-import NextAuth from 'next-auth';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { PrismaClient } from '@prisma/client';
+import NextAuth from 'next-auth';
+import { Adapter } from 'next-auth/adapters';
+import Credentials from 'next-auth/providers/credentials';
 import Google from 'next-auth/providers/google';
 import Nodemailer from 'next-auth/providers/nodemailer';
-import Credentials from 'next-auth/providers/credentials';
 import { createTransport } from 'nodemailer';
 import { html, text } from '../emailTemplate';
 
@@ -11,7 +12,7 @@ const prisma = new PrismaClient();
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   trustHost: true, // This is required for NextAuth to work properly in localHost
-  adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(prisma) as Adapter,
   secret: process.env.AUTH_SECRET,
   session: {
     strategy: 'jwt',
@@ -22,12 +23,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     signIn: '/app/login',
   },
   callbacks: {
-    async jwt({ token, user }) {
+    jwt: async ({ token, user }) => {
       if (user) {
-        return {
-          ...token,
-          id: user.id,
-        };
+        token.id = user.id;
+        token.role = user.role;
+        token.hasPassword = user.hasPassword;
       }
       return token;
     },
@@ -35,8 +35,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return {
         ...session,
         user: {
-          ...session.user,
           id: token.id as string,
+          role: token.role as string,
+          email: token.email as string,
+          hasPassword: token.hasPassword as boolean,
         },
       };
     },
@@ -89,9 +91,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         }
         return {
           id: credentials.id as string,
-          name: (credentials.name as string) || null,
           email: credentials.email as string,
-          image: (credentials.image as string) || null,
+          role: credentials.role as string,
+          hasPassword: credentials.hasPassword as boolean,
         };
       },
     }),

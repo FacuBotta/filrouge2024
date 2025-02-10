@@ -1,16 +1,14 @@
 'use client';
 
-import { handleDeleteConversation } from '@/actions/messagesServerActions/handleDeleteConversation';
-import { handleMessageSendSubmit } from '@/actions/messagesServerActions/handleMessageSendSubmit';
-import { SendMessageInput } from '@/components/forms/SendMessageInput';
+import ChatInput from '@/components/forms/SendMessageInput';
 import { ConversationsList } from '@/components/ui/dashboard/conversationsList';
-import DashboardMessagesWindow from '@/components/ui/dashboard/DashboardMessagesWindow';
+import MessagesWindow from '@/components/ui/dashboard/MessagesWindow';
 import IconWrapper from '@/components/ui/IconWrapper';
 import MessageDefaultPageImage from '@/public/images/MessageDefaultPageImage';
 import { Conversation } from '@/types/types';
 import { Icon } from 'facu-ui';
 import { useRouter, useSearchParams } from 'next/navigation';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 export default function MessagePage({
   userId,
   conversations,
@@ -31,23 +29,16 @@ export default function MessagePage({
       document.body.classList.remove('no-scroll');
     };
   }, []);
+  const userRoleInConversation = currentConversation?.participants?.find(
+    (participant) => participant.id === userId && participant.role
+  )?.role;
 
-  const handleMessageSend = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const message = formData.get('message') as string;
-    if (!message) {
-      return;
-    }
-    const response = await handleMessageSendSubmit(formData);
-    if (response?.ok) {
-      console.log('message sent');
-    } else {
-      // TODO: mostrar un mensaje de error o algo asi
-      console.error(response);
-    }
+  const handleDeleteConversation = () => {
+    console.log('coming soon', currentConversation);
   };
-
+  const handleLeaveConversation = () => {
+    console.log('coming soon', currentConversation);
+  };
   return (
     <section className="max-w-max mx-auto h-full mb-5 mt-5 w-full flex items-start justify-start">
       {/* conversations section */}
@@ -84,14 +75,19 @@ export default function MessagePage({
           className={`${currentConversation ? 'flex' : 'hidden'} lg:flex flex-col items-start justify-between h-[90vh] px-2  pb-5 sm:pb-0 w-full`}
         >
           {/* conversation header */}
-          <div className="flex items-start justify-between gap-2 w-full px-2 pt-3 ">
+          <header className="flex items-start justify-between gap-2 w-full px-2 pt-3 ">
             <div className="flex gap-5 items-end">
               <div className="flex justify-center items-center lg:!hidden border rounded-full size-8 mb-2 hover:dark:text-dark-greenLight hover:dark:border-dark-greenLight hover:scale-110 transition-all ease-in-out">
                 <Icon type="goBack" onClick={() => router.push('/messages')} />
               </div>
               <h2 className="mb-0 text-center">
-                {currentConversation?.title?.toLocaleUpperCase()}
-                <span className="font-extralight text-sm block sm:inline-block">
+                {currentConversation?.title?.toLocaleUpperCase()}{' '}
+                {currentConversation.event && (
+                  <span className="font-extralight text-sm">
+                    {' - événement'}
+                  </span>
+                )}
+                <span className="font-extralight text-sm hidden sm:inline-block">
                   <span className="hidden sm:inline-block mx-2">{' - '}</span>
                   Cree le{' '}
                   {new Date(currentConversation.updatedAt).toLocaleDateString(
@@ -113,47 +109,29 @@ export default function MessagePage({
                 </span>
               </h2>
             </div>
-            {/* TODO : ver que onda eso es re al pedo */}
-            <form action={handleDeleteConversation}>
-              <input
-                type="hidden"
-                name="conversationId"
-                value={currentConversation?.id}
+            {userRoleInConversation === 'CREATOR' ? (
+              <IconWrapper
+                type="delete"
+                strokeWidth={2}
+                className="hover:text-red-600 dark:hover:text-dark-greenLight hover:scale-110"
+                onClick={handleDeleteConversation}
               />
-              <button
-                aria-label={`${currentConversation?.role === 'CREATOR' ? 'Supprimer' : 'Fermer'} la conversation`}
-              >
-                {currentConversation?.role === 'CREATOR' ? (
-                  <IconWrapper
-                    type="delete"
-                    strokeWidth={2}
-                    className="hover:text-red-600 dark:hover:text-dark-greenLight hover:scale-110"
-                  />
-                ) : (
-                  <IconWrapper
-                    type="logOut"
-                    strokeWidth={2}
-                    className="hover:text-red-600 dark:hover:text-dark-greenLight hover:scale-110"
-                  />
-                )}
-              </button>
-            </form>
-          </div>
-          {/* messages window */}
-          <DashboardMessagesWindow
+            ) : (
+              <IconWrapper
+                type="logOut"
+                strokeWidth={2}
+                className="hover:text-red-600 dark:hover:text-dark-greenLight hover:scale-110"
+                onClick={handleLeaveConversation}
+              />
+            )}
+          </header>
+          <MessagesWindow
             messages={currentConversation?.messages || []}
             userId={userId}
           />
 
           {/* form to send messages to the current conversation */}
-          <form onSubmit={(e) => handleMessageSend(e)} className="w-full ">
-            <input
-              type="hidden"
-              name="conversationId"
-              value={currentConversation?.id}
-            />
-            <SendMessageInput />
-          </form>
+          <ChatInput currentConversationId={currentConversation.id} />
         </div>
       )}
     </section>

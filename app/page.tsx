@@ -10,7 +10,7 @@ import SportImage from '@/public/images/categoryImages/SportImage';
 import { Link } from 'next-view-transitions';
 import HomeImage from '../public/images/HomeImage';
 export default async function Home() {
-  const isAuthenticated = await checkIsAuthenticated();
+  const { auth } = await checkIsAuthenticated();
   return (
     <main className="flex min-h-screen flex-col select-none">
       <section className="animate flex items-center justify-center w-full min-h-screen bg-light-ciel dark:bg-dark-bg snap-start  ">
@@ -30,7 +30,7 @@ export default async function Home() {
               !
             </p>
             <div className="flex gap-8 mt-4 justify-center lg:!justify-start">
-              {isAuthenticated ? (
+              {auth ? (
                 <Link className="primary-btn" href="/profile">
                   Voir le tableau de bord
                 </Link>

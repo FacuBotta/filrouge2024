@@ -20,7 +20,7 @@ export async function getMessagesConversation(formData: FormData) {
       },
     },
     orderBy: {
-      createdAt: 'asc', // Ordena los mensajes por fecha de creación ascendente
+      createdAt: 'asc',
     },
   });
   revalidatePath('/Messages');

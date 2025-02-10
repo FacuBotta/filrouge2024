@@ -13,9 +13,9 @@ export async function uploadImage(file: File, fileName: string) {
 
   try {
     await writeFile(filepath, Buffer.from(buffer));
-    return { success: true };
+    return true;
   } catch (error) {
     console.error("Erreur lors de la sauvegarde de l'image:", error);
-    return { success: false, error: "Erreur lors de la sauvegarde de l'image" };
+    return null;
   }
 }
