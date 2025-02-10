@@ -1,32 +1,21 @@
 import { deleteEvent } from '@/actions/eventsServerActions/deleteEvent';
-import { deleteConversation } from '@/actions/messagesServerActions/deleteConversation';
-import { deleteUserTask } from '@/actions/TasksServerActions/deleteUserTask';
 import SubmitButton from '@/components/forms/SubmitFormButtom';
-import { EventWithUserAndCount } from '@/types/types';
 import { redirect } from 'next/navigation';
 import React from 'react';
 
 interface DeleteEventModalProps {
-  event: EventWithUserAndCount;
+  eventId: string;
   toggleModal: () => void;
 }
 export default function DeleteEventModal({
-  event,
+  eventId,
   toggleModal,
 }: DeleteEventModalProps) {
   const handleSubmitDelete = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const eventId = event.id;
-    const conversationId = event.conversation?.id;
-    const eventTasks = event.Tasks;
+
     try {
-      await deleteConversation(conversationId as string);
-      if (eventTasks && eventTasks.length > 0) {
-        await Promise.all(
-          eventTasks.map((task) => deleteUserTask(task.id as string))
-        );
-      }
-      await deleteEvent({ eventId, imagePath: event.image });
+      await deleteEvent({ eventId });
     } catch (error) {
       console.error(error);
     }

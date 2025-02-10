@@ -129,8 +129,6 @@ export default function MessagePage({
             messages={currentConversation?.messages || []}
             userId={userId}
           />
-
-          {/* form to send messages to the current conversation */}
           <ChatInput currentConversationId={currentConversation.id} />
         </div>
       )}

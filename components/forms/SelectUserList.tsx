@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 
 interface SelectUserListProps {
   users: BasicProfileInformation[];
-  takeUsers: (selectedUsers: BasicProfileInformation[]) => void;
+  takeUsers: (selectedUsers: string[]) => void;
   closeModal: () => void;
 }
 
@@ -42,10 +42,7 @@ export default function SelectUserList({
   };
 
   const confirmSelection = () => {
-    const selectedUsers = users.filter((user) =>
-      selectedUserIds.includes(user.id)
-    );
-    takeUsers(selectedUsers);
+    takeUsers(selectedUserIds);
     closeModal();
   };
 

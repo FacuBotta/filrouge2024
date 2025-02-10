@@ -73,7 +73,7 @@ export default function OwnerEventCard({
         <TasksProfile tasks={event.Tasks || []} eventId={event.id} />
       </div>
       {modalOpen && (
-        <DeleteEventModal event={event} toggleModal={toggleDeleteModal} />
+        <DeleteEventModal eventId={event.id} toggleModal={toggleDeleteModal} />
       )}
     </div>
   );

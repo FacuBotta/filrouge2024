@@ -1,16 +1,16 @@
 import prisma from '@/lib/prisma';
 import { createEventServiceProps } from '@/types/servicesTypes/types';
-import { Events } from '@prisma/client';
 import { EventWithUserAndCount } from '@/types/types';
+import { Events } from '@prisma/client';
 
 export const createEventService = async (
   newEvent: createEventServiceProps
 ): Promise<Events> => {
   try {
-    const newEven = await prisma.events.create({
+    const newEventData = await prisma.events.create({
       data: newEvent,
     });
-    return newEven;
+    return newEventData;
   } catch (error) {
     console.error('createEventService: error', error);
     throw new Error('Service error: createEventService');

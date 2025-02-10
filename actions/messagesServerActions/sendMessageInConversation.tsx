@@ -4,16 +4,16 @@ import { auth } from '@/lib/auth/authConfig';
 import { createMessageService } from '@/services/messagesServices';
 import { createMessageStatusService } from '@/services/messagesStatusServices';
 import { getConversationParticipantsService } from '@/services/userConversationServices';
-// import { revalidatePath } from 'next/cache';
-
 /**
- * Send a message in a existing conversation
- * formData should contain the following fields:
- * - conversationId (string)
- * - message (string)
- * - invitationId (string) is optional
- * @param formData
- * @returns
+ * Sends a message in an existing conversation.
+ *
+ * @param {Object} params - The message parameters.
+ * @param {string} params.conversationId - The ID of the conversation.
+ * @param {string} params.message - The message content.
+ * @param {string | null} params.invitationId - (Optional) The invitation ID associated with the message.
+ * @returns {Promise<{ ok: boolean; message: string }>} - A response indicating success or failure.
+ *
+ * @throws {Error} Throws an error if the user is not authenticated or if the message creation fails.
  */
 
 interface sendMessageInConversationProps {
@@ -31,36 +31,42 @@ export async function sendMessageInConversation({
     const { user: sender } = (await auth()) || {};
     if (!sender) {
       console.error('sendMessageInConversation: no sender found');
-      return;
+      return { ok: false, message: 'User not authenticated' };
     }
     if (!message || !conversationId) {
       console.error('Incomplete form data');
-      return;
+      return { ok: false, message: 'Missing required fields' };
     }
-    // send the message
+
     const newMessage = await createMessageService({
       content: message,
       conversationId,
       invitationId,
       senderId: sender.id as string,
     });
-    // get the participants of the conversation
-    // to set the messageStatus for each participant
-    const participants =
-      await getConversationParticipantsService(conversationId);
-    console.log(participants);
-    for (const participant of participants) {
-      await createMessageStatusService({
-        userId: participant.id,
-        messageId: newMessage.id,
-        status: 'UNSEEN',
-      });
+
+    if (!newMessage || !newMessage.id) {
+      console.error('Failed to create message');
+      return { ok: false, message: 'Error creating message' };
     }
 
-    // revalidatePath('/Messages');
-    return { ok: true, message: '' };
+    const participants =
+      await getConversationParticipantsService(conversationId);
+    await Promise.all(
+      participants
+        .filter(({ userId }) => userId !== sender.id)
+        .map(({ userId }) =>
+          createMessageStatusService({
+            userId,
+            messageId: newMessage.id,
+            status: 'UNSEEN',
+          })
+        )
+    );
+
+    return { ok: true, message: 'Message sent' };
   } catch (error) {
     console.error('Error sending message:', error);
-    return { ok: false, message: error };
+    return { ok: false, message: 'Internal server error' };
   }
 }

@@ -2,12 +2,12 @@
 
 import { auth } from '@/lib/auth/authConfig';
 import { NewEventForm, newEventSchema } from '@/lib/zodSchemas';
+import { createEventService } from '@/services/eventServices';
+import { createMessageService } from '@/services/messagesServices';
+import { createUserInvitationService } from '@/services/userInvitationServices';
+import { createEventServiceProps } from '@/types/servicesTypes/types';
 import { createConversation } from '../messagesServerActions/createConversation';
 import { uploadImage } from '../uploadImage';
-import { createEventService } from '@/services/eventServices';
-import { createUserInvitationService } from '@/services/userInvitationServices';
-import { createMessageService } from '@/services/messagesServices';
-import { createEventServiceProps } from '@/types/servicesTypes/types';
 
 interface CreateEventResponse {
   ok: boolean;
@@ -81,11 +81,11 @@ export const createEvent = async (
     /* 
     ============= CREATE CONVERSATION =============
     */
-
+    console.log(newEventResponse);
     const newConversation = await createConversation({
       sujet: event.title,
-      participantsId: event.participants ? event.participants : null,
       eventId: newEventResponse.id,
+      participantsId: event.participants ? event.participants : null,
     });
 
     if (!event.participants) {

@@ -28,7 +28,7 @@ export async function createConversation({
 }: createConversationProps) {
   const { user } = (await auth()) || {};
   if (!user) {
-    console.error('createConversation: no sender found');
+    console.error('createConversation: no user found');
     return;
   }
   try {
@@ -55,7 +55,7 @@ export async function createConversation({
           await createUserConversationService({
             userId: participant.userId,
             conversationId: newConversation.id,
-            role: 'PARTICIPANT' as Role,
+            role: 'GUEST' as Role,
           });
         })
       );

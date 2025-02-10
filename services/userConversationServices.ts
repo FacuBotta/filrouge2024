@@ -67,8 +67,11 @@ export const getConversationParticipantsService = async (
   conversationId: string
 ) => {
   try {
-    const participants = await prisma.conversation.findMany({
-      where: { id: conversationId },
+    const participants = await prisma.userConversation.findMany({
+      where: { conversationId },
+      select: {
+        userId: true,
+      },
     });
     return participants;
   } catch (error) {
