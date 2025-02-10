@@ -1,8 +1,9 @@
 'use server';
 
 import { auth } from '@/lib/auth/authConfig';
-import prisma from '@/lib/prisma';
-import { revalidatePath } from 'next/cache';
+import { createMessageService } from '@/services/messagesServices';
+import { createMessageStatusService } from '@/services/messagesStatusServices';
+import { getConversationParticipantsService } from '@/services/userConversationServices';
 // import { revalidatePath } from 'next/cache';
 
 /**
@@ -14,46 +15,49 @@ import { revalidatePath } from 'next/cache';
  * @param formData
  * @returns
  */
-export async function sendMessageInConversation(formData: FormData) {
+
+interface sendMessageInConversationProps {
+  conversationId: string;
+  message: string;
+  invitationId: string | null;
+}
+
+export async function sendMessageInConversation({
+  conversationId,
+  message,
+  invitationId,
+}: sendMessageInConversationProps) {
   try {
     const { user: sender } = (await auth()) || {};
     if (!sender) {
       console.error('sendMessageInConversation: no sender found');
       return;
     }
-    const conversationId = formData.get('conversationId') as string;
-    const message = formData.get('message') as string;
-    const invitationId = (formData.get('invitationId') as string) || null;
     if (!message || !conversationId) {
       console.error('Incomplete form data');
       return;
     }
     // send the message
-    const newMessage = await prisma.message.create({
-      data: {
-        conversationId,
-        senderId: sender.id as string,
-        content: message,
-        invitationId: invitationId || null,
-      },
+    const newMessage = await createMessageService({
+      content: message,
+      conversationId,
+      invitationId,
+      senderId: sender.id as string,
     });
 
     // get the participants of the conversation
     // to set the messageStatus for each participant
-    const participants = await prisma.userConversation.findMany({
-      where: { conversationId },
-    });
+    const participants =
+      await getConversationParticipantsService(conversationId);
     for (const participant of participants) {
-      await prisma.messageStatus.create({
-        data: {
-          userId: participant.userId,
-          messageId: newMessage.id,
-          status: 'UNSEEN',
-        },
+      await createMessageStatusService({
+        userId: participant.id,
+        messageId: newMessage.id,
+        status: 'UNSEEN',
       });
     }
 
-    revalidatePath('/Messages');
+    // revalidatePath('/Messages');
     return { ok: true, message: '' };
   } catch (error) {
     console.error('Error sending message:', error);

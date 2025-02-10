@@ -1,11 +1,12 @@
 'use server';
 
 import { auth } from '@/lib/auth/authConfig';
-import prisma from '@/lib/prisma';
-import { revalidatePath } from 'next/cache';
+import { deleteConversationService } from '@/services/conversationServices';
+import { selectConversationService } from '@/services/userConversationServices';
 
 interface DeleteConversationResponse {
   ok: boolean;
+  message: string;
 }
 
 /**
@@ -36,56 +37,26 @@ export async function deleteConversation(
   }
 
   // Check if the user is the creator of the conversation
-  const userRoleInConversation = await prisma.userConversation.findUnique({
-    where: {
-      userId_conversationId: {
-        userId: user.id as string,
-        conversationId,
-      },
-    },
+  const userConversation = await selectConversationService({
+    conversationId,
+    userId: user.id,
   });
 
-  if (!userRoleInConversation || userRoleInConversation.role !== 'CREATOR') {
-    console.error('deleteConversation: User is not the creator');
+  if (!userConversation || userConversation.role !== 'CREATOR') {
     return {
       ok: false,
+      message: 'Il faut être créateur de la conversation',
     };
   }
 
   try {
-    // Fetch all message IDs related to the conversation
-    const messages = await prisma.message.findMany({
-      where: { conversationId },
-      select: { id: true },
-    });
-    const messageIds = messages.map((message) => message.id);
-
-    // Delete all related data in a transaction
-    await prisma.$transaction([
-      // Delete related message statuses
-      prisma.messageStatus.deleteMany({
-        where: { messageId: { in: messageIds } },
-      }),
-      // Delete messages
-      prisma.message.deleteMany({
-        where: { conversationId },
-      }),
-      // Delete user conversations
-      prisma.userConversation.deleteMany({
-        where: { conversationId },
-      }),
-      // Delete the conversation itself
-      prisma.conversation.delete({
-        where: { id: conversationId },
-      }),
-    ]);
-
-    // Revalidate the messages page cache
-    revalidatePath('/messages');
-
-    return { ok: true };
+    await deleteConversationService(conversationId);
+    return { ok: true, message: 'Conversation deleted successfully' };
   } catch (error) {
     console.error('deleteConversation: Error deleting conversation', error);
-    return { ok: false };
+    return {
+      ok: false,
+      message: 'Erreur lors de la suppression de la conversation',
+    };
   }
 }

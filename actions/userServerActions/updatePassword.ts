@@ -1,10 +1,10 @@
 'use server';
 import { auth } from '@/lib/auth/authConfig';
-import prisma from '@/lib/prisma';
 import { passwordSchema } from '@/lib/zodSchemas';
 import bcrypt from 'bcrypt';
 import { z } from 'zod';
 import { handleSignOut } from '../authServerActions/signOutServerAction';
+import { updateUserService } from '@/services/userServices';
 
 export const updatePassword = async (formData: FormData) => {
   const session = await auth();
@@ -26,10 +26,8 @@ export const updatePassword = async (formData: FormData) => {
   try {
     passwordSchema.parse({ password });
     const hashedPassword = await hashPassword(password);
-    await prisma.user.update({
-      where: {
-        id,
-      },
+    await updateUserService({
+      id,
       data: {
         password: hashedPassword,
         hasPassword: true,

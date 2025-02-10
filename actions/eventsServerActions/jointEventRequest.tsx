@@ -1,9 +1,13 @@
 'use server';
 
 import { auth } from '@/lib/auth/authConfig';
-import prisma from '@/lib/prisma';
 import { Invitation } from '@/types/types';
 import { sendMessageInConversation } from '../messagesServerActions/sendMessageInConversation';
+import {
+  createUserInvitationService,
+  updateUserInvitationService,
+} from '@/services/userInvitationServices';
+import { createUserConversationService } from '@/services/userConversationServices';
 
 interface JoinEventRequestResponse {
   ok: boolean;
@@ -51,49 +55,38 @@ export async function joinEventRequest({
     let userInvitation: Invitation | null = null;
 
     if (existingInvitationId) {
-      userInvitation = await prisma.userInvitations.update({
-        where: {
-          participantId_eventId: {
-            participantId: session.user.id as string,
-            eventId,
-          },
-        },
-        data: {
-          status: 'WAITING_CREATOR_RESPONSE',
-        },
+      userInvitation = await updateUserInvitationService({
+        participantId: session.user.id as string,
+        eventId,
+        status: 'WAITING_CREATOR_RESPONSE',
       });
     } else {
-      userInvitation = await prisma.userInvitations.create({
-        data: {
-          creatorId: eventCreatorId,
-          participantId: session.user.id as string,
-          eventId,
-          conversationId,
-          status: 'WAITING_CREATOR_RESPONSE',
-        },
+      userInvitation = await createUserInvitationService({
+        creatorId: eventCreatorId,
+        participantId: session.user.id as string,
+        eventId,
+        status: 'WAITING_CREATOR_RESPONSE',
+        conversationId,
       });
     }
 
     /* 
     ============= ASSOCIATE USER WITH CONVERSATION =============
     */
-    await prisma.userConversation.create({
-      data: {
-        userId: session.user.id,
-        conversationId,
-        role: 'GUEST',
-      },
+    await createUserConversationService({
+      userId: session.user.id,
+      conversationId,
+      role: 'GUEST',
     });
-
     /* 
     ============= SEND MESSAGE TO EVENT CONVERSATION =============
     */
-    const messageFormData = new FormData();
-    messageFormData.set('message', 'Je voudrais participer à l’événement !');
-    messageFormData.set('conversationId', conversationId);
-    messageFormData.set('invitationId', userInvitation.id);
 
-    await sendMessageInConversation(messageFormData);
+    await sendMessageInConversation({
+      message: 'Je voudrais participer à l’événement !',
+      conversationId,
+      invitationId: userInvitation.id,
+    });
 
     return { ok: true };
   } catch (error) {

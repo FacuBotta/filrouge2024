@@ -31,6 +31,7 @@ const DashboardPage: React.FC = async () => {
   const { description, username, email, image } = userData;
   const userTasks: Tasks[] = await selectUserTasks();
   const userEventsCreated: EventWithUserAndCount[] = await selectUserEvents();
+  // TODO : ver si es necesario o que... puedo recuperar directamente desde las userInvitation
   const userEventsJoined: UserJoinedEvent[] = await selectUserEventsJoined();
 
   return (

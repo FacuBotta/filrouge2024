@@ -1,15 +1,11 @@
 'use server';
 
-import prisma from '@/lib/prisma';
+import { selectAllCategoriesService } from '@/services/categoriesServices';
 import { Category } from '@prisma/client';
 
 export const selectCategories = async (): Promise<Category[]> => {
   try {
-    const categories = await prisma.category.findMany({
-      orderBy: {
-        title: 'asc',
-      },
-    });
+    const categories = await selectAllCategoriesService();
     return categories;
   } catch (error) {
     console.error(error);

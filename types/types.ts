@@ -15,7 +15,7 @@ export interface Participant {
   updatedAt: Date;
   role?: UserRole;
 }
-type InvitationStatus =
+export type InvitationStatus =
   | 'WAITING_CREATOR_RESPONSE'
   | 'WAITING_PARTICIPANT_RESPONSE'
   | 'JOINED'

@@ -1,8 +1,8 @@
 'use server';
 
 import { auth } from '@/lib/auth/authConfig';
-import prisma from '@/lib/prisma';
 import { deleteImage } from '../deleteImage';
+import { deleteEventService } from '@/services/eventServices';
 
 interface deleteEventProps {
   eventId: string;
@@ -21,11 +21,7 @@ export const deleteEvent = async ({ eventId, imagePath }: deleteEventProps) => {
     if (imagePath) {
       await deleteImage(imagePath);
     }
-    await prisma.events.delete({
-      where: {
-        id: eventId,
-      },
-    });
+    await deleteEventService(eventId);
     return { ok: true };
   } catch (error) {
     console.error(error);

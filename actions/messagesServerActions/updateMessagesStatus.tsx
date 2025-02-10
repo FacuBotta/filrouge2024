@@ -1,5 +1,5 @@
 'use server';
-import prisma from '@/lib/prisma';
+import { updateMessageStatusService } from '@/services/messagesStatusServices';
 // TODO : delete messages from messagesStatus when seen ?
 export async function updateMessagesStatus({
   userId,
@@ -8,16 +8,10 @@ export async function updateMessagesStatus({
   userId: string;
   conversationId: string;
 }) {
-  await prisma.messageStatus.updateMany({
-    where: {
-      userId,
-      message: {
-        conversationId,
-      },
-      status: 'UNSEEN',
-    },
-    data: {
-      status: 'SEEN',
-    },
-  });
+  try {
+    await updateMessageStatusService({ userId, conversationId });
+  } catch (error) {
+    console.error('updateMessagesStatus action: error', error);
+    return { ok: false, message: 'Erreur lors de la mise à jour des messages' };
+  }
 }

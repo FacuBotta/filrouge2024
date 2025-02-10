@@ -1,10 +1,13 @@
 'use server';
 
 import { auth } from '@/lib/auth/authConfig';
-import prisma from '@/lib/prisma';
 import { NewEventForm, newEventSchema } from '@/lib/zodSchemas';
 import { createConversation } from '../messagesServerActions/createConversation';
 import { uploadImage } from '../uploadImage';
+import { createEventService } from '@/services/eventServices';
+import { createUserInvitationService } from '@/services/userInvitationServices';
+import { createMessageService } from '@/services/messagesServices';
+import { createEventServiceProps } from '@/types/servicesTypes/types';
 
 interface CreateEventResponse {
   ok: boolean;
@@ -58,7 +61,7 @@ export const createEvent = async (
     /* 
     ============= CREATE EVENT =============
     */
-    const newEvent = {
+    const newEvent: createEventServiceProps = {
       userId: session.user.id,
       categoryId: event.categoryId,
       title: event.title,
@@ -74,45 +77,33 @@ export const createEvent = async (
       formattedAddress: event.address?.formattedAddress,
     };
 
-    const newEventResponse = await prisma.events.create({
-      data: newEvent,
-    });
-
+    const newEventResponse = await createEventService(newEvent);
     /* 
     ============= CREATE CONVERSATION =============
     */
-    const conversationFormData = new FormData();
-    conversationFormData.set('sujet', event.title);
-    conversationFormData.set('eventId', newEventResponse.id);
 
-    if (event.participants) {
-      event.participants.split(',').forEach((id) => {
-        conversationFormData.append('participantsId', id);
-      });
-    }
-
-    const conversationResponse = await createConversation(conversationFormData);
+    const newConversation = await createConversation({
+      sujet: event.title,
+      participantsId: event.participants ? event.participants : null,
+      eventId: newEventResponse.id,
+    });
 
     if (!event.participants) {
       return { ok: true };
     }
 
     /* 
-    ============= SEND INVITATIONS =============
+    ============= CREATE USER INVITATIONS =============
     */
-    if (conversationResponse?.ok && conversationResponse.conversation) {
-      const conversationId = conversationResponse.conversation.id;
-
+    if (newConversation) {
       const userInvitationsArray = await Promise.all(
-        event.participants.split(',').map(async (participantId) => {
-          return prisma.userInvitations.create({
-            data: {
-              creatorId: session.user?.id as string,
-              participantId,
-              eventId: newEventResponse.id,
-              status: 'WAITING_PARTICIPANT_RESPONSE',
-              conversationId,
-            },
+        event.participants.map(async (participantId) => {
+          return createUserInvitationService({
+            creatorId: session.user?.id as string,
+            participantId,
+            eventId: newEventResponse.id,
+            status: 'WAITING_PARTICIPANT_RESPONSE',
+            conversationId: newConversation.id,
           });
         })
       );
@@ -120,13 +111,11 @@ export const createEvent = async (
       // Send messages for each invitation
       await Promise.all(
         userInvitationsArray.map((invitation) =>
-          prisma.message.create({
-            data: {
-              conversationId,
-              invitationId: invitation.id,
-              senderId: session.user?.id as string,
-              content: `Bonjour, je vous invite à mon nouvel événement ${event.title} !`,
-            },
+          createMessageService({
+            content: `Bonjour, je vous invite à mon nouvel événement ${event.title} !`,
+            conversationId: newConversation.id,
+            invitationId: invitation.id,
+            senderId: session.user?.id as string,
           })
         )
       );

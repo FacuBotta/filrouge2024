@@ -1,5 +1,5 @@
 import { auth } from '@/lib/auth/authConfig';
-import prisma from '@/lib/prisma';
+import { selectAllUsersService } from '@/services/userServices';
 import { BasicProfileInformation } from '@/types/types';
 
 export const selectAllBasicUserInfos = async (): Promise<
@@ -11,21 +11,11 @@ export const selectAllBasicUserInfos = async (): Promise<
     return [];
   }
   try {
-    const users = await prisma.user.findMany({
-      select: {
-        id: true,
-        email: true,
-        username: true,
-        image: true,
-        description: true,
-        _count: {
-          select: {
-            Ratings: true,
-            EventsCreated: true,
-          },
-        },
-      },
-    });
+    const users = await selectAllUsersService();
+    if (!users) {
+      return [];
+    }
+    // ADAPTER
     // Check to not return users with null values
     return users.filter(
       (user): user is BasicProfileInformation =>
