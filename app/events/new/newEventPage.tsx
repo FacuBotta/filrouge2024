@@ -9,6 +9,7 @@ import { Category } from '@prisma/client';
 import { Icon } from 'facu-ui';
 import { useRouter } from 'next/navigation';
 import React, { useRef, useState } from 'react';
+import { toast } from 'sonner';
 import { z } from 'zod';
 export const NewEventPage = ({
   availableCategories,
@@ -53,7 +54,7 @@ export const NewEventPage = ({
     if (imageInputRef.current) {
       const file = imageInputRef.current.files?.[0];
       if (!file) return;
-      if (file.size > 3000000) {
+      if (file.size > 2000000) {
         setError({
           ...error,
           image: { message: 'La taille du fichier dépasse 2Mo !', value: true },
@@ -76,6 +77,7 @@ export const NewEventPage = ({
     setIsUserListOpen(false);
   };
   const closeModal = () => {
+    setSelectedParticipants([]);
     setIsUserListOpen(!isUserListOpen);
   };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -121,11 +123,11 @@ export const NewEventPage = ({
       },
     };
 
-    console.log(eventData);
     try {
       newEventSchema.parse(eventData);
       const response = await createEvent(eventData);
       if (response?.ok) {
+        toast.success(response.message);
         router.push(`/events`);
       }
     } catch (err) {
@@ -138,9 +140,11 @@ export const NewEventPage = ({
             [field]: { message: error.message, value: true },
           }));
         });
-      } else {
+      } else if (err instanceof Error) {
+        toast.error(err.message);
         console.log(err);
       }
+      toast.error('Une erreur est survenue 😑');
     }
   };
 
@@ -159,7 +163,7 @@ export const NewEventPage = ({
       <main className="flex flex-col items-center justify-center mb-5 w-full relative rounded-xl border-2 border-light-borderCards bg-light-cards dark:border-dark-borderCards dark:bg-dark-cards">
         <form className="flex flex-col w-full gap-5 " onSubmit={handleSubmit}>
           <header
-            className="h-[300px] w-full border-b-2 border-black dark:border-dark-borderCards relative hover:bg-light-grey/10 bg-cover bg-center"
+            className="h-[300px] w-full border-b-2 rounded-tl-lg rounded-tr-lg border-black dark:border-dark-borderCards relative hover:bg-light-grey/10 bg-cover bg-center"
             style={{ backgroundImage: `url(${imagePreview})` }}
           >
             <input
@@ -300,11 +304,9 @@ export const NewEventPage = ({
             </div>
           </section>
           <div className="w-full p-5">
-            <input
-              className="primary-btn w-full"
-              type="submit"
-              value="Créer l'événement"
-            />
+            <button className="primary-btn w-full" type="submit">
+              Créer l&apos;événement
+            </button>
           </div>
         </form>
         {isUserListOpen && (

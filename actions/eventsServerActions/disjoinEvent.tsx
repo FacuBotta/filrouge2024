@@ -1,19 +1,20 @@
 'use server';
 
 import { auth } from '@/lib/auth/authConfig';
-import { EventWithUserAndCount } from '@/types/types';
-import { sendMessageInConversation } from '../messagesServerActions/sendMessageInConversation';
-import { updateUserInvitationService } from '@/services/userInvitationServices';
+import { selectEventByIdService } from '@/services/eventServices';
 import { deleteUserConversationService } from '@/services/userConversationServices';
 import { deleteUserEventService } from '@/services/userEventServices';
+import { updateUserInvitationService } from '@/services/userInvitationServices';
+import { sendMessageInConversation } from '../messagesServerActions/sendMessageInConversation';
 
 interface DisjoinEventProps {
-  event: EventWithUserAndCount;
+  eventId: string;
   userId: string;
 }
 
 interface DisjoinEventResponse {
   ok: boolean;
+  message: string;
 }
 
 /**
@@ -32,7 +33,7 @@ interface DisjoinEventResponse {
  * @throws {Error} If the user is not authenticated or required data is missing.
  */
 export async function disjoinEvent({
-  event,
+  eventId,
   userId,
 }: DisjoinEventProps): Promise<DisjoinEventResponse> {
   const session = await auth();
@@ -41,6 +42,11 @@ export async function disjoinEvent({
     throw new Error('Vous devez être connecté pour accéder à cette page');
   }
   try {
+    // check if the event exists
+    const event = await selectEventByIdService(eventId);
+    if (!event) {
+      return { ok: false, message: "L'événement n'existe pas" };
+    }
     // Update the invitation status to "DISJOINED"
     await updateUserInvitationService({
       participantId: userId,
@@ -68,9 +74,9 @@ export async function disjoinEvent({
       conversationId: event.conversation?.id as string,
     });
 
-    return { ok: true };
+    return { ok: true, message: "Vous avez quitté l'événement" };
   } catch (error) {
     console.error('disjoinEvent: error', error);
-    return { ok: false };
+    return { ok: false, message: 'Une erreur est survenue' };
   }
 }

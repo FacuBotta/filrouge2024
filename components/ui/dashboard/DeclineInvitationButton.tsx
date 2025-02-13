@@ -2,7 +2,9 @@
 
 import { declineEventInvitation } from '@/actions/eventsServerActions/declineEventInvitation';
 import { Invitation } from '@/types/types';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 interface DeclineInvitationButtonProps {
   userInvitation: Invitation;
@@ -13,9 +15,8 @@ export default function DeclineInvitationButton({
   userInvitation,
   className,
 }: DeclineInvitationButtonProps) {
-  const [btnText, setBtnText] = useState<string>("Decliner l'invitation");
   const [btnLoading, setBtnLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
   async function handleDeclineInvitationToEvent() {
     setBtnLoading(true);
 
@@ -24,22 +25,20 @@ export default function DeclineInvitationButton({
       decliner: 'PARTICIPANT',
     });
     if (response?.ok) {
-      setBtnText('Invitation déclinée');
+      toast.success(response.message);
+      router.refresh();
     } else {
-      setError('Une erreur est survenue 😑');
+      toast.error(response.message);
     }
     setBtnLoading(false);
   }
   return (
-    <>
-      <button
-        onClick={() => handleDeclineInvitationToEvent()}
-        className={`${className} primary-btn`}
-        disabled={btnLoading}
-      >
-        {btnText}
-      </button>
-      {error && <p className="text-red-500">{error}</p>}
-    </>
+    <button
+      onClick={() => handleDeclineInvitationToEvent()}
+      className={`${className} primary-btn`}
+      disabled={btnLoading}
+    >
+      Decliner l&apos;invitation
+    </button>
   );
 }

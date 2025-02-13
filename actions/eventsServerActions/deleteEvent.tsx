@@ -22,7 +22,6 @@ export const deleteEvent = async ({ eventId }: deleteEventProps) => {
   try {
     // Check if event exist and user is creator or admin
     const eventToDelete = await selectEventByIdService(eventId);
-    console.log(eventToDelete);
     if (!eventToDelete) {
       console.error('deleteEvent: event not found');
       return { ok: false, message: 'Aucun événement trouvé' };

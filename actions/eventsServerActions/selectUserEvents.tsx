@@ -4,7 +4,7 @@ import { auth } from '@/lib/auth/authConfig';
 import { selectEventsByUserService } from '@/services/eventServices';
 import { EventWithUserAndCount } from '@/types/types';
 
-export const selectUserEvents = async () => {
+export const selectUserEvents = async ({ userId }: { userId: string }) => {
   const session = await auth();
   if (!session) {
     console.error('selectUserEvents: no session found');
@@ -12,7 +12,7 @@ export const selectUserEvents = async () => {
   }
   try {
     const events: EventWithUserAndCount[] | [] =
-      await selectEventsByUserService(session.user.id);
+      await selectEventsByUserService(userId);
     return events;
   } catch (error) {
     console.error(error);

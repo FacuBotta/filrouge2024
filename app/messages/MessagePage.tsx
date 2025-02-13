@@ -1,14 +1,18 @@
 'use client';
 
+import { deleteConversation } from '@/actions/messagesServerActions/deleteConversation';
 import ChatInput from '@/components/forms/SendMessageInput';
 import { ConversationsList } from '@/components/ui/dashboard/conversationsList';
+import DisjoinEventButton from '@/components/ui/dashboard/DisjoinEventButton';
 import MessagesWindow from '@/components/ui/dashboard/MessagesWindow';
 import IconWrapper from '@/components/ui/IconWrapper';
 import MessageDefaultPageImage from '@/public/images/MessageDefaultPageImage';
 import { Conversation } from '@/types/types';
 import { Icon } from 'facu-ui';
+import { Link } from 'next-view-transitions';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
+import { toast } from 'sonner';
 export default function MessagePage({
   userId,
   conversations,
@@ -33,17 +37,58 @@ export default function MessagePage({
     (participant) => participant.id === userId && participant.role
   )?.role;
 
-  const handleDeleteConversation = () => {
-    console.log('coming soon', currentConversation);
+  const handleDeleteConversation = async () => {
+    const response = await deleteConversation(currentConversation.id);
+    if (response?.ok) {
+      toast.success(response.message);
+      router.push('/messages');
+    }
   };
   const handleLeaveConversation = () => {
     console.log('coming soon', currentConversation);
+  };
+  const renderConversationButton = () => {
+    if (userRoleInConversation === 'CREATOR' && !currentConversation.event) {
+      return (
+        <IconWrapper
+          type="delete"
+          strokeWidth={2}
+          className="hover:text-red-600 dark:hover:text-dark-greenLight hover:scale-110"
+          onClick={handleDeleteConversation}
+        />
+      );
+    }
+    if (userRoleInConversation === 'CREATOR' && currentConversation.event) {
+      return (
+        <Link className="primary-btn" href={'/profile'}>
+          Gérer mon événement
+        </Link>
+      );
+    }
+    if (userRoleInConversation === 'GUEST' && currentConversation.event) {
+      return (
+        <DisjoinEventButton
+          eventId={currentConversation.event.id}
+          userId={userId}
+        />
+      );
+    }
+    if (userRoleInConversation === 'GUEST' && !currentConversation.event) {
+      return (
+        <IconWrapper
+          type="logOut"
+          strokeWidth={2}
+          className="hover:text-red-600 dark:hover:text-dark-greenLight hover:scale-110"
+          onClick={handleLeaveConversation}
+        />
+      );
+    }
   };
   return (
     <section className="max-w-max mx-auto h-full mb-5 mt-5 w-full flex items-start justify-start">
       {/* conversations section */}
       <div
-        className={`${currentConversation ? 'hidden' : 'flex'} mx-auto sm:min-w-[380px] lg:flex flex-col gap-2 w-screen lg:w-[40%] p-3 lg:border-r`}
+        className={`${currentConversation ? 'hidden' : 'flex'} mx-auto sm:min-w-[380px] lg:flex flex-col gap-2 w-screen lg:w-[40%] p-3 `}
       >
         <ConversationsList userId={userId} conversations={conversations} />
       </div>
@@ -109,21 +154,7 @@ export default function MessagePage({
                 </span>
               </h2>
             </div>
-            {userRoleInConversation === 'CREATOR' ? (
-              <IconWrapper
-                type="delete"
-                strokeWidth={2}
-                className="hover:text-red-600 dark:hover:text-dark-greenLight hover:scale-110"
-                onClick={handleDeleteConversation}
-              />
-            ) : (
-              <IconWrapper
-                type="logOut"
-                strokeWidth={2}
-                className="hover:text-red-600 dark:hover:text-dark-greenLight hover:scale-110"
-                onClick={handleLeaveConversation}
-              />
-            )}
+            {renderConversationButton()}
           </header>
           <MessagesWindow
             messages={currentConversation?.messages || []}

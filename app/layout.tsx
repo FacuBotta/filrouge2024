@@ -3,6 +3,7 @@ import { Fredoka } from '@/public/fonts/localFonts';
 import type { Metadata } from 'next';
 import { ViewTransitions } from 'next-view-transitions';
 import React from 'react';
+import { Toaster } from 'sonner';
 import Header from '../components/layouts/header/Header';
 import './globals.css';
 import { Providers } from './providers';
@@ -30,13 +31,14 @@ export default async function RootLayout({
         <body className={`${Fredoka.variable} font-fredoka `}>
           <Providers>
             <Header />
-            <main className="dashboard-main">
-              {/* {userAuthenticated && (
-                <DashboardNav userAuthenticated={userAuthenticated} />
-              )} */}
-              {children}
-            </main>
+            <main className="dashboard-main">{children}</main>
             {auth}
+            <Toaster
+              richColors
+              position="top-right"
+              closeButton={true}
+              toastOptions={{ style: { marginTop: '20px' } }}
+            />
             <Footer />
           </Providers>
         </body>
@@ -44,3 +46,6 @@ export default async function RootLayout({
     </ViewTransitions>
   );
 }
+/* 
+<div class="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"></div>
+*/

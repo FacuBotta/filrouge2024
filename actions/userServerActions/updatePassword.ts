@@ -1,10 +1,9 @@
 'use server';
 import { auth } from '@/lib/auth/authConfig';
 import { passwordSchema } from '@/lib/zodSchemas';
+import { updateUserService } from '@/services/userServices';
 import bcrypt from 'bcrypt';
 import { z } from 'zod';
-import { handleSignOut } from '../authServerActions/signOutServerAction';
-import { updateUserService } from '@/services/userServices';
 
 export const updatePassword = async (formData: FormData) => {
   const session = await auth();
@@ -33,9 +32,7 @@ export const updatePassword = async (formData: FormData) => {
         hasPassword: true,
       },
     });
-    // TODO: ver esto, capaz se puede actualizar la session sin tener que desconectar y reconectar?
-    await handleSignOut();
-    // return { ok: true, message: 'Mot de passe modifié' };
+    return { ok: true, message: 'Mot de passe modifié' };
   } catch (error: unknown) {
     if (error instanceof z.ZodError) {
       const firstError = error.errors[0];

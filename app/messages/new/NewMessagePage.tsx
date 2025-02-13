@@ -9,6 +9,7 @@ import { RegisteredUsers } from '@/types/types';
 import { Link } from 'next-view-transitions';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import { toast } from 'sonner';
 export const NewMessagePage = ({ users }: { users: RegisteredUsers[] }) => {
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const router = useRouter();
@@ -16,14 +17,18 @@ export const NewMessagePage = ({ users }: { users: RegisteredUsers[] }) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const selectedUsersIds = selectedUsers.join(',');
-    formData.set('participantsId', selectedUsersIds);
+    const conversationData = {
+      sujet: formData.get('sujet') as string,
+      participantsId: selectedUsers,
+    };
 
-    const response = await createConversation(formData);
+    const response = await createConversation(conversationData);
     if (response?.ok) {
+      toast.success(response.message);
       router.push(`/messages`);
     } else {
       console.error(response);
+      toast.error(response.message);
     }
   };
   const toggleUserSelection = (userId: string) => {

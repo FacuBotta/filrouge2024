@@ -1,16 +1,17 @@
 'use server';
 
 import { auth } from '@/lib/auth/authConfig';
-import { Invitation } from '@/types/types';
-import { sendMessageInConversation } from '../messagesServerActions/sendMessageInConversation';
+import { createUserConversationService } from '@/services/userConversationServices';
 import {
   createUserInvitationService,
   updateUserInvitationService,
 } from '@/services/userInvitationServices';
-import { createUserConversationService } from '@/services/userConversationServices';
+import { Invitation } from '@/types/types';
+import { sendMessageInConversation } from '../messagesServerActions/sendMessageInConversation';
 
 interface JoinEventRequestResponse {
   ok: boolean;
+  message: string;
 }
 
 export interface JoinEventRequestProps {
@@ -88,9 +89,9 @@ export async function joinEventRequest({
       invitationId: userInvitation.id,
     });
 
-    return { ok: true };
+    return { ok: true, message: 'Invitation envoyée' };
   } catch (error) {
     console.error('joinEventRequest: error', error);
-    return { ok: false };
+    return { ok: false, message: 'Une erreur est survenue' };
   }
 }

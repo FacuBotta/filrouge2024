@@ -3,13 +3,13 @@
 import { CredentialsLoginServerAction } from '@/actions/authServerActions/CredentialsLoginServerAction';
 import { emailSignInServerAction } from '@/actions/authServerActions/emailSignInServerAction';
 import { handleGoogleSignIn } from '@/actions/authServerActions/googleSignInServerAction';
+import { emailSchema } from '@/lib/zodSchemas';
 import { Icon, Input } from 'facu-ui';
 import { Link } from 'next-view-transitions';
 import { useRouter } from 'next/navigation';
 import React, { useState, useTransition } from 'react';
-import Button from '../ui/Button';
-import { emailSchema } from '@/lib/zodSchemas';
 import { z } from 'zod';
+import Button from '../ui/Button';
 
 export default function LogForm() {
   const Router = useRouter();
@@ -41,11 +41,11 @@ export default function LogForm() {
         setError((prevError) => ({
           ...prevError,
           mail:
-            response.typeError === 'email'
+            response?.typeError === 'email'
               ? { message: response.message as string, value: true }
               : prevError.mail,
           password:
-            response.typeError === 'password'
+            response?.typeError === 'password'
               ? { message: response.message as string, value: true }
               : prevError.password,
         }));
@@ -103,7 +103,6 @@ export default function LogForm() {
             ...error,
             mail: { message: result?.message as string, value: true },
           });
-          return;
         } else if (result.ok) {
           setEmailSent(true);
         }
@@ -179,10 +178,6 @@ export default function LogForm() {
           />
           {formType === 'Sign-In' ? (
             <Input
-              regexp={{
-                message: 'Characters @ - _ ; " \' are not allowed',
-                pattern: /[@-_;"']/,
-              }}
               className={inputClasses}
               required={true}
               label="Mot de passe"

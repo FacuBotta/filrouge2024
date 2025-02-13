@@ -83,7 +83,7 @@ export default function MessagesWindow({
   return (
     <div
       ref={messagesWindowRef}
-      className="no-scrollbar flex flex-col items-center gap-10 w-full h-full mx-auto  px-2 pb-10 border border-light-borderCards dark:border-dark-borderCards pt-5 rounded-xl my-3 overflow-y-scroll scroll-smooth bg-dark-grey/10"
+      className="no-scrollbar flex flex-col items-center gap-10 w-full h-full mx-auto  px-2 pb-10 border border-light-borderCards dark:border-dark-borderCards pt-5 rounded-xl my-3 overflow-y-scroll scroll-smooth bg-light-grey dark:bg-dark-grey/10"
     >
       {messages?.reduce((acc, message, index, arr) => {
         if (index > 0) {
@@ -139,10 +139,12 @@ export default function MessagesWindow({
               </div>
             </div>
             {
-              <UserAvatar
-                className={`size-12 mx-2 hidden sm:block absolute ${userId === message?.sender?.id ? 'left-0 -bottom-7' : 'right-0 -bottom-7'}`}
-                src={message.sender.image}
-              />
+              <Link href={`/communaute/profile/${message.sender.id}`}>
+                <UserAvatar
+                  className={`size-12 mx-2 hidden sm:block absolute ${userId === message?.sender?.id ? 'left-0 -bottom-7' : 'right-0 -bottom-7'}`}
+                  src={message.sender.image}
+                />
+              </Link>
             }
           </div>
         );

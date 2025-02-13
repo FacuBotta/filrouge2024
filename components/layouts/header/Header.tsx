@@ -25,11 +25,11 @@ export default async function Header() {
               {auth && <NavItem href="/profile">Profile</NavItem>}
               {auth && <NavItem href="/communaute">Communauté</NavItem>}
               {auth ? (
-                <NavItem href="/events">Events</NavItem>
+                <NavItem href="/events">Événements</NavItem>
               ) : (
-                <NavItem href="/login">LogIn</NavItem>
+                <NavItem href="/login">Connection</NavItem>
               )}
-              {!auth && <NavItem href="/about">About</NavItem>}
+              {!auth && <NavItem href="/about">À propos</NavItem>}
               {auth && <NavItem href="/messages">Messages</NavItem>}
 
               {!auth && <NavItem href="/contact">Contact</NavItem>}

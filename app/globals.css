@@ -53,11 +53,11 @@ footer a:hover {
 
 /* ============= Dashboard layout ============= */
 .dashboard-main {
-  @apply min-h-screen w-full pt-2 flex flex-col gap-2 bg-light-ciel dark:bg-dark-bg;
+  @apply min-h-screen w-full  flex flex-col gap-2 bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] dark:bg-none dark:bg-dark-bg;
 }
 /* ========== Cards ========== */
 .user-card {
-  @apply flex max-w-[300px] flex-col items-center justify-center gap-2 p-4 border-2 border-light-borderCards dark:border-dark-borderCards rounded-lg dark:hover:bg-dark-grey/10 hover:bg-light-blue/50 transition-transform duration-500 ease-in-out shadow-lg;
+  @apply bg-card flex w-[300px] flex-col items-center justify-center gap-2 p-4 border-2 border-light-borderCards dark:border-dark-borderCards rounded-lg dark:hover:bg-dark-grey/10 hover:bg-light-blue/50 transition-transform duration-500 ease-in-out shadow-lg;
 }
 .border-card {
   @apply border-2 border-light-borderCards dark:border-dark-borderCards;
@@ -65,7 +65,7 @@ footer a:hover {
 .bg-card {
   @apply bg-light-cards dark:bg-dark-cards shadow-lg;
 }
-.bg-card:hover {
+.user-card:hover {
   @apply bg-light-blue/50 dark:bg-dark-grey/10;
 }
 

@@ -7,11 +7,14 @@ export const createConversationService = async ({
   eventId,
 }: createConversationServiceProps): Promise<Conversation> => {
   try {
+    const conversationData: createConversationServiceProps = {
+      title,
+    };
+    if (eventId) {
+      conversationData.eventId = eventId;
+    }
     const newConversationResponse = await prisma.conversation.create({
-      data: {
-        title,
-        eventId,
-      },
+      data: conversationData,
     });
     return newConversationResponse;
   } catch (error) {
@@ -24,14 +27,12 @@ export const deleteConversationService = async (
   conversationId: string
 ): Promise<void> => {
   try {
-    // Obtener todos los mensajes asociados a la conversación
     const messages = await prisma.message.findMany({
       where: { conversationId },
       select: { id: true },
     });
     const messageIds = messages.map((message) => message.id);
 
-    // Ejecutar la eliminación en una transacción
     await prisma.$transaction([
       prisma.messageStatus.deleteMany({
         where: { messageId: { in: messageIds } },

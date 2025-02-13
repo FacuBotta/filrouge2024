@@ -2,6 +2,7 @@ import { deleteEvent } from '@/actions/eventsServerActions/deleteEvent';
 import SubmitButton from '@/components/forms/SubmitFormButtom';
 import { redirect } from 'next/navigation';
 import React from 'react';
+import { toast } from 'sonner';
 
 interface DeleteEventModalProps {
   eventId: string;
@@ -16,6 +17,7 @@ export default function DeleteEventModal({
 
     try {
       await deleteEvent({ eventId });
+      toast.success('Événement supprimé avec succès');
     } catch (error) {
       console.error(error);
     }

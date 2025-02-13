@@ -6,7 +6,13 @@ import { updateTask } from '@/actions/TasksServerActions/updateTask';
 import { Tasks } from '@prisma/client';
 import { Icon } from 'facu-ui';
 import { Reorder } from 'framer-motion';
-import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
+import React, {
+  ChangeEvent,
+  FormEvent,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 interface TasksProfileProps {
   tasks: Tasks[];
@@ -134,7 +140,7 @@ export default function TasksProfile({ tasks, eventId }: TasksProfileProps) {
       (e.target as HTMLFormElement).reset();
       // Adjust the width of the create task input
       if (newTaskInputRef.current) {
-        newTaskInputRef.current.style.width = '10ch';
+        newTaskInputRef.current.style.width = '100%';
       }
     }
   };
@@ -161,6 +167,16 @@ export default function TasksProfile({ tasks, eventId }: TasksProfileProps) {
       }
     }
     setCurrentContent(e.target.value);
+  };
+  // TODO : improve this, because it cause a refresh of the page
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const form = e.currentTarget.closest('form');
+      if (form) {
+        form.requestSubmit();
+      }
+    }
   };
   // this function is used to update the order of the tasks when the user drags and drops a task
   const handleDragEnd = async () => {
@@ -208,8 +224,9 @@ export default function TasksProfile({ tasks, eventId }: TasksProfileProps) {
             name="content"
             placeholder="Nouvelle tâche"
             autoComplete="off"
-            className="resize-none no-scrollbar w-[90%] bg-transparent ml-2 border-b focus:outline-none border-dark-bg dark:border-light-grey placeholder:text-light-blue placeholder:dark:text-dark-greenLight/50"
+            className="resize-none no-scrollbar w-[90%] bg-transparent ml-2 border-b focus:outline-none border-dark-bg dark:border-light-grey placeholder:text-black/50 placeholder:dark:text-dark-greenLight/50"
             onChange={(e) => handleInputChange(e)}
+            onKeyDown={(e) => handleKeyDown(e)}
           />
         </div>
       </form>
@@ -255,6 +272,7 @@ export default function TasksProfile({ tasks, eventId }: TasksProfileProps) {
                   }} // Set task and content on focus on
                   onChange={(e) => handleInputChange(e, index)} // Handle content change
                   onBlur={handleUpdateTaskContent} // Save task content when user leaves the textarea
+                  onKeyDown={(e) => handleKeyDown(e)}
                   defaultValue={task.content}
                   placeholder="..."
                 />

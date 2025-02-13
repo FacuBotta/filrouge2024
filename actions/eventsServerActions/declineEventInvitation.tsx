@@ -2,6 +2,7 @@
 
 import { auth } from '@/lib/auth/authConfig';
 import { createMessageService } from '@/services/messagesServices';
+import { deleteUserConversationService } from '@/services/userConversationServices';
 import { updateUserInvitationService } from '@/services/userInvitationServices';
 import { Invitation } from '@/types/types';
 
@@ -12,6 +13,7 @@ interface DeclineEventInvitationProps {
 
 interface DeclineEventInvitationResponse {
   ok: boolean;
+  message: string;
 }
 
 /**
@@ -37,11 +39,11 @@ export const declineEventInvitation = async ({
   if (!session || !session.user?.id) {
     throw new Error('Vous devez être connecté pour accéder à cette page');
   }
-  if (!userInvitation) {
+  if (!userInvitation || !userInvitation.id || !userInvitation.conversationId) {
     throw new Error('Données manquantes');
   }
 
-  const statusValue =
+  const newStatusValue =
     decliner === 'CREATOR' ? 'DECLINED_BY_CREATOR' : 'DECLINED_BY_PARTICIPANT';
 
   try {
@@ -49,24 +51,36 @@ export const declineEventInvitation = async ({
     await updateUserInvitationService({
       participantId: userInvitation.participantId,
       eventId: userInvitation.eventId,
-      status: statusValue,
+      status: newStatusValue,
     });
 
     // Send a notification message in the event conversation
-    // TODO verificar si es necesario para el userInvitationId
+    const senderId =
+      decliner === 'CREATOR'
+        ? userInvitation.creatorId
+        : userInvitation.participantId;
+    console.log({
+      datos: userInvitation.id,
+      senderId,
+      userInvitation,
+      decliner,
+    });
     await createMessageService({
       content: 'Invitation refusée',
       conversationId: userInvitation.conversationId,
-      senderId:
-        decliner === 'CREATOR'
-          ? userInvitation.creatorId
-          : userInvitation.participantId,
       invitationId: userInvitation.id,
+      senderId,
     });
 
-    return { ok: true };
+    // remove the user from the event conversation
+    await deleteUserConversationService({
+      userId: userInvitation.participantId,
+      conversationId: userInvitation.conversationId,
+    });
+
+    return { ok: true, message: 'Invitation refusée' };
   } catch (error) {
     console.error('declineEventInvitation: Error processing request', error);
-    return { ok: false };
+    return { ok: false, message: 'Une erreur est survenue' };
   }
 };

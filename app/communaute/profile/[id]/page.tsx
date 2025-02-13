@@ -3,7 +3,7 @@ import selectUserById from '@/actions/userServerActions/selectUserById';
 import IconWrapper from '@/components/ui/IconWrapper';
 import RantingUser from '@/components/ui/RantingUser';
 import { UserAvatar } from '@/public/images/UserAvatar';
-import { BasicProfileInformation, EventByUser } from '@/types/types';
+import { BasicProfileInformation, EventWithUserAndCount } from '@/types/types';
 import { Link } from 'next-view-transitions';
 
 export default async function EventPage({
@@ -15,12 +15,13 @@ export default async function EventPage({
   const user: BasicProfileInformation | null = await selectUserById(id);
 
   // TODO : actualisar esto cuando agregue la funcion para cambiar is public...
-  let publicUserEvents: EventByUser[] = [];
+  let publicUserEvents: EventWithUserAndCount[] = [];
   if (user && user._count.EventsCreated > 0) {
-    const dbEvents: EventByUser[] | [] = await selectUserEvents(id);
+    const dbEvents: EventWithUserAndCount[] | [] = await selectUserEvents({
+      userId: user.id,
+    });
     publicUserEvents = [...dbEvents];
   }
-  console.log({ user, publicUserEvents });
 
   const formatDate = (dateString: Date | string) => {
     return new Date(dateString).toLocaleDateString('fr', {

@@ -11,6 +11,7 @@ import { uploadImage } from '../uploadImage';
 
 interface CreateEventResponse {
   ok: boolean;
+  message: string;
 }
 
 /**
@@ -81,15 +82,14 @@ export const createEvent = async (
     /* 
     ============= CREATE CONVERSATION =============
     */
-    console.log(newEventResponse);
-    const newConversation = await createConversation({
+    const { newConversation } = await createConversation({
       sujet: event.title,
       eventId: newEventResponse.id,
       participantsId: event.participants ? event.participants : null,
     });
 
     if (!event.participants) {
-      return { ok: true };
+      return { ok: true, message: 'Événement créé avec succès' };
     }
 
     /* 
@@ -121,9 +121,9 @@ export const createEvent = async (
       );
     }
 
-    return { ok: true };
+    return { ok: true, message: 'Événement créé avec succès' };
   } catch (error) {
     console.error('createEvent: Error creating event', error);
-    return { ok: false };
+    return { ok: false, message: "Erreur lors de la création de l'événement" };
   }
 };

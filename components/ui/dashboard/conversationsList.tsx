@@ -108,7 +108,7 @@ export const ConversationsList = ({
               show: { opacity: 1 },
             }}
             key={conversation.id}
-            className={`hover:scale-x-[1.01] transition-transform ease-in-out border ${
+            className={`hover:scale-x-[1.01] transition-transform ease-in-out border-2 ${
               currentConversationId === conversation.id
                 ? 'border-light-yellow'
                 : 'border-dark-bg/50'
