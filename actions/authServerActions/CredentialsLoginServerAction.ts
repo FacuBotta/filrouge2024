@@ -37,6 +37,12 @@ export const CredentialsLoginServerAction = async (formData: FormData) => {
     };
 
     await signIn('credentials', credentials);
+    /* await signIn('credentials', {
+      ...credentials,
+      callbackUrl: '/profile',
+      redirect: false,
+    }); */
+    return { ok: true, message: 'Connexion réussie' };
   } catch (error: unknown) {
     console.error('error in handleCredentialsSignIn', error);
     return {

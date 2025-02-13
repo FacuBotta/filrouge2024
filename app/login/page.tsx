@@ -1,17 +1,15 @@
-import { checkIsAuthenticated } from '@/actions/authServerActions/checkIsAuthenticated';
 import LogForm from '@/components/forms/LogForm';
 import Backdrop from '@/components/layouts/Backdrop';
-import { redirect } from 'next/navigation';
 import React from 'react';
 import HomeImage from '../../public/images/HomeImage';
 
 const LoginPage: React.FC = async () => {
-  const { auth } = await checkIsAuthenticated();
+  /* const { auth } = await checkIsAuthenticated();
   console.log({ auth });
 
   if (auth) {
     redirect('/profile');
-  }
+  } */
 
   return (
     <>

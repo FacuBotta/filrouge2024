@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE `UserInvitations` ADD COLUMN `status` ENUM('JOINED', 'WAITING', 'DECLINED') NOT NULL DEFAULT 'WAITING';

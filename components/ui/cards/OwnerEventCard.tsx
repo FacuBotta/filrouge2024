@@ -97,14 +97,14 @@ export default function OwnerEventCard({
         }`}
       >
         <div className="flex flex-wrap gap-2 mt-2 mb-5">
-          <Link href={`/events/event/${event.id}`} className="primary-btn">
+          <Link href={`/events/edit/${event.id}`} className="primary-btn">
             Éditer
           </Link>
           <button
             className="primary-btn"
             onClick={() => setIsUserListOpen(true)}
           >
-            Inviter des participants
+            Gérer les participants
           </button>
           <button className="secondary-btn" onClick={toggleDeleteModal}>
             Supprimer
@@ -116,11 +116,14 @@ export default function OwnerEventCard({
         <DeleteEventModal eventId={event.id} toggleModal={toggleDeleteModal} />
       )}
       {isUserListOpen && (
-        <div className="fixed top-0 left-0 w-full h-full bg-black/80 flex justify-center items-center sm:pt-20">
+        <div className="fixed z-[100] top-0 left-0 w-full h-full bg-black/80 flex justify-center items-center sm:pt-20">
           <SelectUserList
             users={contacts}
             takeUsers={handleTakeUsers}
             closeModal={closeUserListModal}
+            preSelectedUsers={event.participants?.map(
+              (participant) => participant.userId
+            )}
           />
         </div>
       )}

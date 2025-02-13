@@ -33,7 +33,12 @@ export default async function RootLayout({
             <Header />
             <main className="dashboard-main">{children}</main>
             {auth}
-            <Toaster richColors position="top-right" closeButton={true} />
+            <Toaster
+              richColors
+              position="top-right"
+              closeButton={true}
+              toastOptions={{ style: { marginTop: '20px' } }}
+            />
             <Footer />
           </Providers>
         </body>

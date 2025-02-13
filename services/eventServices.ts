@@ -17,6 +17,22 @@ export const createEventService = async (
   }
 };
 
+export const updateEventService = async (
+  newEventData: createEventServiceProps,
+  eventId: string
+): Promise<Events> => {
+  try {
+    const newEvent = await prisma.events.update({
+      where: { id: eventId },
+      data: newEventData,
+    });
+    return newEvent;
+  } catch (error) {
+    console.error('updateEventService: error', error);
+    throw new Error('Service error: updateEventService');
+  }
+};
+
 export const deleteEventService = async (eventId: string) => {
   try {
     await prisma.events.delete({
@@ -26,6 +42,75 @@ export const deleteEventService = async (eventId: string) => {
   } catch (error) {
     console.error('deleteEventService: error', error);
     throw new Error('Service error: deleteEventService');
+  }
+};
+
+export const selectEventsJoinedByUserService = async (
+  userId: string
+): Promise<EventWithUserAndCount[] | []> => {
+  try {
+    const events = await prisma.userEvents.findMany({
+      where: {
+        userId,
+      },
+      include: {
+        event: {
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            eventStart: true,
+            eventEnd: true,
+            isPublic: true,
+            image: true,
+            locationUrl: true,
+            lat: true,
+            lng: true,
+            vicinity: true,
+            formattedAddress: true,
+            createdAt: true,
+            updatedAt: true,
+            conversation: {
+              select: {
+                id: true,
+              },
+            },
+            participants: {
+              select: {
+                userId: true,
+              },
+            },
+            UserInvitations: {
+              select: {
+                id: true,
+                participantId: true,
+                creatorId: true,
+                eventId: true,
+                conversationId: true,
+                createdAt: true,
+                status: true,
+              },
+            },
+            category: {
+              select: {
+                id: true,
+                title: true,
+              },
+            },
+            _count: {
+              select: {
+                participants: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return events.map((event) => event.event);
+  } catch (error) {
+    console.error(error);
+    return [];
   }
 };
 

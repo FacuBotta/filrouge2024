@@ -15,6 +15,9 @@ export async function middleware(req: NextRequest) {
       return NextResponse.redirect(new URL('/unauthorized', req.url));
     }
   }
+  if (req.nextUrl.pathname.startsWith('/login') && isAuth) {
+    return NextResponse.redirect(new URL('/profile', req.url));
+  }
   if (
     req.nextUrl.pathname.startsWith('/profile') ||
     req.nextUrl.pathname.startsWith('/messages') ||
@@ -34,6 +37,7 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
+    '/login',
     '/admin/:path*',
     '/profile/:path*',
     '/messages/:path*',

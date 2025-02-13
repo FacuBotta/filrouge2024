@@ -6,7 +6,7 @@ export default async function EventsLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex mt-10 min-h-screen gap-10 max-w-max w-full mx-auto ">
+    <div className="flex justify-start items-start mt-10 min-h-screen gap-10 max-w-max w-full mx-auto">
       {children}
     </div>
   );

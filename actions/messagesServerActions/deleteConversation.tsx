@@ -51,12 +51,12 @@ export async function deleteConversation(
 
   try {
     await deleteConversationService(conversationId);
-    return { ok: true, message: 'Conversation deleted successfully' };
+    return { ok: true, message: 'Conversation supprimée' };
   } catch (error) {
     console.error('deleteConversation: Error deleting conversation', error);
     return {
       ok: false,
-      message: 'Erreur lors de la suppression de la conversation',
+      message: 'Une erreur est survenue',
     };
   }
 }

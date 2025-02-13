@@ -9,6 +9,7 @@ import UserCard from '@/components/ui/dashboard/UserCard';
 import IconWrapper from '@/components/ui/IconWrapper';
 import { auth } from '@/lib/auth/authConfig';
 import type { EventWithUserAndCount, Invitation } from '@/types/types';
+import { Link } from 'next-view-transitions';
 import Image from 'next/image';
 
 export default async function EventPage({
@@ -22,6 +23,7 @@ export default async function EventPage({
   }
   const { id } = await params;
   const event: EventWithUserAndCount | null = await selectEventById(id);
+  console.log({ event });
 
   const formatDate = (dateString: Date | string) => {
     return new Date(dateString).toLocaleDateString('fr-FR', {
@@ -42,21 +44,19 @@ export default async function EventPage({
   const userInvitation: Invitation | undefined = event.UserInvitations?.find(
     (invitation) => invitation.participantId === session.user?.id
   );
-  // console.log({ event });
   const renderActionButton = () => {
     if (event.user?.id === session.user?.id) {
       return (
-        // TODO : ver que hago aca...
-        <div className="primary-btn mt-5">
-          Vous êtes le créateur de cet événement
-        </div>
+        <Link className="primary-btn" href={'/profile'}>
+          Gérer mon événement
+        </Link>
       );
     }
     if (userInvitation?.status === 'JOINED') {
       return (
         <div>
           <DisjoinEventButton
-            event={event}
+            eventId={event.id}
             userId={session.user?.id as string}
             className="mt-5"
           />

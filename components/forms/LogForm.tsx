@@ -41,11 +41,11 @@ export default function LogForm() {
         setError((prevError) => ({
           ...prevError,
           mail:
-            response.typeError === 'email'
+            response?.typeError === 'email'
               ? { message: response.message as string, value: true }
               : prevError.mail,
           password:
-            response.typeError === 'password'
+            response?.typeError === 'password'
               ? { message: response.message as string, value: true }
               : prevError.password,
         }));
@@ -178,10 +178,6 @@ export default function LogForm() {
           />
           {formType === 'Sign-In' ? (
             <Input
-              regexp={{
-                message: 'Characters @ - _ ; " \' are not allowed',
-                pattern: /[@-_;"']/,
-              }}
               className={inputClasses}
               required={true}
               label="Mot de passe"

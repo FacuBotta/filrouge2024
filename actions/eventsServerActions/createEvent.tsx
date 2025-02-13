@@ -82,7 +82,7 @@ export const createEvent = async (
     /* 
     ============= CREATE CONVERSATION =============
     */
-    const newConversation = await createConversation({
+    const { newConversation } = await createConversation({
       sujet: event.title,
       eventId: newEventResponse.id,
       participantsId: event.participants ? event.participants : null,

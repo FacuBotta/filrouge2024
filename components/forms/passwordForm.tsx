@@ -3,8 +3,10 @@
 import { updatePassword } from '@/actions/userServerActions/updatePassword';
 import { passwordRegex, passwordSchema } from '@/lib/zodSchemas';
 import { PasswordInput } from 'facu-ui';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import React, { useState, useTransition } from 'react';
+import { toast } from 'sonner';
 import { z } from 'zod';
 import Button from '../ui/Button';
 
@@ -14,6 +16,8 @@ type PasswordFormProps = {
 };
 export default function PasswordForm({ id, isUpdated }: PasswordFormProps) {
   const router = useRouter();
+  const { update } = useSession();
+
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState({
     password: { message: '', value: false },
@@ -55,7 +59,9 @@ export default function PasswordForm({ id, isUpdated }: PasswordFormProps) {
             password: { message: result?.message as string, value: true },
           });
         } else if (result.ok) {
+          await update({ hasPassword: true });
           router.push('/profile');
+          toast.success('Mot de passe modifié');
         }
       });
     } catch (error) {

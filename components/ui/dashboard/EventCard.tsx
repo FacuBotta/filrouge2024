@@ -1,13 +1,12 @@
 import { UserAvatar } from '@/public/images/UserAvatar';
 import { EventWithUserAndCount } from '@/types/types';
-import { Category } from '@prisma/client';
 import { Link } from 'next-view-transitions';
 import React from 'react';
 export default async function EventCard({
   category,
   event,
 }: {
-  category: Category;
+  category: { id: string; title: string };
   event: EventWithUserAndCount;
 }): Promise<React.JSX.Element> {
   return (
@@ -18,7 +17,8 @@ export default async function EventCard({
       <div className="h-full flex flex-col justify-between">
         <div className="flex justify-between ">
           <h1 className="font-bold text-xl text-wrap">
-            {event.title} <span> - {category.title}</span>
+            {event.title}{' '}
+            <span className="text-sm font-thin"> - {category.title}</span>
           </h1>
         </div>
         <div className="">
@@ -37,11 +37,11 @@ export default async function EventCard({
           )}
         </div>
         <div className="flex items-center gap-2 my-2">
-          <UserAvatar src={event.user.image} />
+          <UserAvatar src={event.user?.image} />
           <div>
-            <p className="text-sm">Cree par {event.user.username}</p>
+            <p className="text-sm">Cree par {event.user?.username}</p>
             <p className="text-sm">
-              {event.user._count?.Ratings} avis sur ce sujet
+              {event.user?._count?.Ratings} avis sur ce sujet
             </p>
           </div>
         </div>

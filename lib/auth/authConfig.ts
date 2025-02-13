@@ -23,11 +23,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     signIn: '/app/login',
   },
   callbacks: {
-    jwt: async ({ token, user }) => {
+    jwt: async ({ token, trigger, session, user }) => {
       if (user) {
         token.id = user.id;
         token.role = user.role;
         token.hasPassword = user.hasPassword;
+      }
+      if (trigger === 'update' && session?.hasPassword !== undefined) {
+        token.hasPassword = session.hasPassword;
       }
       return token;
     },

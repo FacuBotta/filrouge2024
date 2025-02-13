@@ -1,24 +1,30 @@
 'use client';
 
-import { createEvent } from '@/actions/eventsServerActions/createEvent';
+import { updateEvent } from '@/actions/eventsServerActions/updateEvent';
 import SelectUserList from '@/components/forms/SelectUserList';
 import AutocompletedMapCard from '@/components/ui/cards/AutocompleteMapCard';
 import { NewEventForm, newEventSchema } from '@/lib/zodSchemas';
-import { BasicProfileInformation, EventAddress } from '@/types/types';
+import {
+  BasicProfileInformation,
+  EventAddress,
+  EventWithUserAndCount,
+} from '@/types/types';
 import { Category } from '@prisma/client';
 import { Icon } from 'facu-ui';
 import { useRouter } from 'next/navigation';
 import React, { useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { z } from 'zod';
-export const NewEventPage = ({
+
+export const EditEventPage = ({
   availableCategories,
   contacts,
+  event,
 }: {
   availableCategories: Category[];
   contacts: BasicProfileInformation[];
+  event: EventWithUserAndCount; // ID del evento a editar
 }) => {
-  // const [isPending, startTransition] = useTransition();
   const [error, setError] = useState({
     title: { message: '', value: false },
     category: { message: '', value: false },
@@ -30,20 +36,26 @@ export const NewEventPage = ({
   });
   const router = useRouter();
   const imageInputRef = useRef<HTMLInputElement>(null);
-  const [finalAddress, setFinalAddress] = useState<EventAddress | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [finalAddress, setFinalAddress] = useState<EventAddress | null>({
+    lat: event.lat as number,
+    lng: event.lng as number,
+    formattedAddress: event.formattedAddress as string,
+    vicinity: event.vicinity as string,
+    url: event.locationUrl as string,
+  });
+  const [imagePreview, setImagePreview] = useState<string | null>(event.image);
   const [isUserListOpen, setIsUserListOpen] = useState(false);
   const [selectedParticipants, setSelectedParticipants] = useState<string[]>(
-    []
+    event.participants?.map((participant) => participant.userId) ?? []
   );
-  // Prevent accidentals submit when pressing enter in the form
-  // e.preventDefault() wasn't enough to make it work
-  const handleKeyDownImageInput = (
-    e: React.KeyboardEvent<HTMLInputElement>
-  ) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-    }
+  // Take the selected users and close the modal
+  const setSelectedUsers = (selectedUsers: string[]) => {
+    setSelectedParticipants(selectedUsers);
+    setIsUserListOpen(false);
+  };
+  const closeModal = () => {
+    setSelectedParticipants([]);
+    setIsUserListOpen(!isUserListOpen);
   };
   const handleImagePreview = () => {
     setError({
@@ -71,15 +83,20 @@ export const NewEventPage = ({
       }
     }
   };
-  // Take the selected users and close the modal
-  const setSelectedUsers = (selectedUsers: string[]) => {
-    setSelectedParticipants(selectedUsers);
-    setIsUserListOpen(false);
+  // Format the date and time to a string for the defaultValue of date inputs
+  const formatDateTime = (date: Date) => {
+    const pad = (num: number) => num.toString().padStart(2, '0');
+
+    const year = date.getFullYear();
+    const month = pad(date.getMonth() + 1);
+    const day = pad(date.getDate());
+    const hours = pad(date.getHours());
+    const minutes = pad(date.getMinutes());
+
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
   };
-  const closeModal = () => {
-    setSelectedParticipants([]);
-    setIsUserListOpen(!isUserListOpen);
-  };
+
+  console.log({ event });
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError({
@@ -125,10 +142,13 @@ export const NewEventPage = ({
 
     try {
       newEventSchema.parse(eventData);
-      const response = await createEvent(eventData);
+      console.log({ eventData });
+      const response = await updateEvent({ eventData, eventId: event.id });
       if (response?.ok) {
         toast.success(response.message);
-        router.push(`/events`);
+        router.push(`/profile`);
+      } else if (!response.ok) {
+        toast.error(response.message);
       }
     } catch (err) {
       console.log(err);
@@ -147,11 +167,10 @@ export const NewEventPage = ({
       toast.error('Une erreur est survenue 😑');
     }
   };
-
   return (
     <div className="w-full max-w-[900px] mx-auto">
       <header className="relative w-full mb-5">
-        <h1 className="text-4xl font-bold">Créer un éventement 🚀</h1>
+        <h1 className="text-4xl font-bold">Editar l&apos;événement 🚀</h1>
         <button onClick={() => router.back()}>
           <Icon
             type="goBack"
@@ -169,13 +188,11 @@ export const NewEventPage = ({
             <input
               ref={imageInputRef}
               onChange={() => handleImagePreview()}
-              onKeyDown={handleKeyDownImageInput}
               type="file"
               accept="image/*"
               name="image"
-              required={true}
               className="relative h-full w-full opacity-0 cursor-pointer"
-            ></input>
+            />
             <span
               className={`absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] text-2xl dark:text-light-grey/50 cursor-pointer ${error.image.value ? 'text-red-500' : ''}`}
             >
@@ -184,15 +201,15 @@ export const NewEventPage = ({
                 : 'Sélectionner une image'}
             </span>
           </header>
-          <section className="flex w-full gap-5 mt-2 justify-between  flex-wrap px-5">
-            {/* Title, category and public fields */}
-            <fieldset className="flex flex-col sm:w-[50%] ">
+          <section className="flex w-full gap-5 mt-2 justify-between flex-wrap px-5">
+            <fieldset className="flex flex-col sm:w-[50%]">
               <div className="flex w-full gap-2 flex-col">
                 <input
                   className="newEventInput sm:!w-[500px] "
                   type="text"
                   name="title"
                   placeholder="Titre du événement (max 100 caractères)"
+                  defaultValue={event.title}
                   required={true}
                 />
                 {error.title?.value && (
@@ -200,7 +217,11 @@ export const NewEventPage = ({
                     {error.title?.message}
                   </span>
                 )}
-                <select className="newEventInput" name="category">
+                <select
+                  className="newEventInput"
+                  name="category"
+                  defaultValue={event.category.id}
+                >
                   <option>Catégorie</option>
                   {availableCategories.map((category: Category) => (
                     <option key={category.id} value={category.id}>
@@ -220,7 +241,7 @@ export const NewEventPage = ({
                   className="primary-btn h-10"
                   onClick={() => setIsUserListOpen(true)}
                 >
-                  Inviter des participants
+                  Gérer les participants
                 </button>
                 <label
                   htmlFor="isPublic"
@@ -231,6 +252,7 @@ export const NewEventPage = ({
                     name="isPublic"
                     id="isPublic"
                     className="w-4"
+                    defaultChecked={event.isPublic ?? false}
                   />
                   Événement publique
                 </label>
@@ -248,6 +270,9 @@ export const NewEventPage = ({
                   type="datetime-local"
                   name="eventStart"
                   placeholder="Date de début"
+                  defaultValue={
+                    event.eventStart ? formatDateTime(event.eventStart) : ''
+                  }
                 />
               </label>
               {error.eventStart?.value && (
@@ -265,6 +290,9 @@ export const NewEventPage = ({
                   type="datetime-local"
                   name="eventEnd"
                   placeholder="Date de fin"
+                  defaultValue={
+                    event.eventEnd ? formatDateTime(event.eventEnd) : ''
+                  }
                 />
               </label>
               <label
@@ -276,6 +304,7 @@ export const NewEventPage = ({
                   name="endSameDay"
                   id="endSameDay"
                   className="w-4"
+                  defaultChecked={!event.eventEnd}
                 />
                 Se termine la même journée
               </label>
@@ -287,6 +316,7 @@ export const NewEventPage = ({
               rows={10}
               name="description"
               placeholder="Description du événement (entre 30 et 1000 caractères 😉)"
+              defaultValue={event.description as string}
             />
             {error.description?.value && (
               <span className="text-blue-500 text-[1.2rem] mx-auto">
@@ -300,7 +330,16 @@ export const NewEventPage = ({
               {error.address?.message ? error.address?.message : ''}
             </span>
             <div className="">
-              <AutocompletedMapCard onAddressChange={setFinalAddress} />
+              <AutocompletedMapCard
+                onAddressChange={setFinalAddress}
+                existingAddress={{
+                  lat: event.lat as number,
+                  lng: event.lng as number,
+                  formattedAddress: event.formattedAddress as string,
+                  vicinity: event.vicinity as string,
+                  url: event.locationUrl as string,
+                }}
+              />
             </div>
           </section>
           <div className="w-full p-5">
@@ -315,6 +354,7 @@ export const NewEventPage = ({
               users={contacts}
               takeUsers={setSelectedUsers}
               closeModal={closeModal}
+              preSelectedUsers={selectedParticipants}
             />
           </div>
         )}

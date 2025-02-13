@@ -8,14 +8,18 @@ interface SelectUserListProps {
   users: BasicProfileInformation[];
   takeUsers: (selectedUsers: string[]) => void;
   closeModal: () => void;
+  preSelectedUsers?: string[];
 }
 
 export default function SelectUserList({
   users,
   takeUsers,
   closeModal,
+  preSelectedUsers,
 }: SelectUserListProps) {
-  const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
+  const [selectedUserIds, setSelectedUserIds] = useState<string[]>(
+    preSelectedUsers ?? []
+  );
   const [filterUser, setFilterUser] =
     useState<BasicProfileInformation[]>(users);
 
@@ -58,6 +62,9 @@ export default function SelectUserList({
         />
       </header>
       <ul className="flex flex-col w-full h-full no-scrollbar overflow-y-scroll inset-shadow-lg border border-light-borderCards dark:border-dark-borderCards rounded-lg p-2 bg-light-ciel dark:bg-dark-bg ">
+        {filterUser.length === 0 && (
+          <p className="text-center opacity-50">Aucun utilisateur trouvé</p>
+        )}
         {filterUser.map((user) => (
           <li
             key={user.id}

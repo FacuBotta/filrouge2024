@@ -3,7 +3,7 @@
 import { auth } from '@/lib/auth/authConfig';
 import { createConversationService } from '@/services/conversationServices';
 import { createUserConversationService } from '@/services/userConversationServices';
-import { Role } from '@prisma/client';
+import { Conversation, Role } from '@prisma/client';
 
 /**
  * Create a new conversation.
@@ -17,22 +17,27 @@ import { Role } from '@prisma/client';
  * @param eventId - Optional event ID to associate the conversation with an event. If no event is provided,
  *                  the conversation will not be tied to any event.
  *
- * @returns The newly created conversation object or null if the conversation could not be created.
+ * @returns ok true if the conversation was created successfully, false otherwise and a message
  */
 interface createConversationProps {
   sujet: string;
   participantsId: string[] | null;
   eventId?: string;
 }
+interface createConversationResponse {
+  ok: boolean;
+  message: string;
+  newConversation?: Conversation;
+}
 export async function createConversation({
   sujet,
   participantsId,
   eventId,
-}: createConversationProps) {
+}: createConversationProps): Promise<createConversationResponse> {
   const { user } = (await auth()) || {};
   if (!user) {
     console.error('createConversation: no user found');
-    return;
+    throw new Error('No user found');
   }
   try {
     // Create the conversation, optionally associating it with an event
@@ -65,9 +70,9 @@ export async function createConversation({
       );
     }
 
-    return newConversation;
+    return { ok: true, message: 'Conversation créée', newConversation };
   } catch (error) {
     console.error('Error creating new conversation:', error);
-    return null;
+    return { ok: false, message: 'Une erreur est survenue' };
   }
 }

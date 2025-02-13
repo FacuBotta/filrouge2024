@@ -94,7 +94,7 @@ async function seedCategories() {
   console.log('Seeded categories');
 }
 
-async function seedEvents() {
+/* async function seedEvents() {
   const maxEventsPerCategory = 5;
   const users = await prisma.user.findMany();
   const categories = await prisma.category.findMany();
@@ -135,16 +135,16 @@ async function seedEvents() {
     }
   }
   console.log('Seeded events');
-}
+} */
 
 seedCategories()
   .catch((e) => {
     console.error(e);
     process.exit(1);
   })
-  .then(async () => {
+  /* .then(async () => {
     await seedEvents();
-  })
+  }) */
   .finally(async () => {
     await prisma.$disconnect();
   });
