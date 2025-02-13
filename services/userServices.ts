@@ -56,11 +56,18 @@ export const selectUserByEmailService = async ({
   email,
 }: {
   email: string;
-}): Promise<User | null> => {
+}): Promise<Partial<User> | null> => {
   try {
     return prisma.user.findUnique({
       where: {
         email,
+      },
+      select: {
+        id: true,
+        role: true,
+        password: true,
+        hasPassword: true,
+        email: true,
       },
     });
   } catch (error) {

@@ -43,7 +43,7 @@ export default function SelectUserList({
 
   const confirmSelection = () => {
     takeUsers(selectedUserIds);
-    closeModal();
+    // closeModal();
   };
 
   return (

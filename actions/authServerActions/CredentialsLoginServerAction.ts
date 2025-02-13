@@ -31,13 +31,12 @@ export const CredentialsLoginServerAction = async (formData: FormData) => {
     }
     const credentials = {
       id: user.id as string,
-      name: (user.name as string) || null,
+      role: user.role as string,
+      hasPassword: (user.hasPassword as boolean) || null,
       email: user.email as string,
-      image: (user.image as string) || null,
     };
 
-    const response = await signIn('credentials', credentials);
-    return response;
+    await signIn('credentials', credentials);
   } catch (error: unknown) {
     console.error('error in handleCredentialsSignIn', error);
     return {

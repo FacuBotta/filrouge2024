@@ -82,7 +82,6 @@ export const createEvent = async (
     /* 
     ============= CREATE CONVERSATION =============
     */
-    console.log(newEventResponse);
     const newConversation = await createConversation({
       sujet: event.title,
       eventId: newEventResponse.id,

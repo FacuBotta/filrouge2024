@@ -34,7 +34,7 @@ export default async function EventPage({
     });
   };
 
-  if (!event) {
+  if (!event || !event.user) {
     throw new Error("L'événement n'existe pas");
   }
 
@@ -44,7 +44,7 @@ export default async function EventPage({
   );
   // console.log({ event });
   const renderActionButton = () => {
-    if (event.user.id === session.user?.id) {
+    if (event.user?.id === session.user?.id) {
       return (
         // TODO : ver que hago aca...
         <div className="primary-btn mt-5">
@@ -80,7 +80,7 @@ export default async function EventPage({
     }
     const joinEventParams: JoinEventRequestProps = {
       eventId: event.id,
-      eventCreatorId: event.user.id,
+      eventCreatorId: event.user?.id as string,
       conversationId: event.conversation?.id as string,
       existingInvitationId: userInvitation?.id,
     };

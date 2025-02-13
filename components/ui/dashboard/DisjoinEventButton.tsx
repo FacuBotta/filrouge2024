@@ -2,7 +2,9 @@
 
 import { disjoinEvent } from '@/actions/eventsServerActions/disjoinEvent';
 import { EventWithUserAndCount } from '@/types/types';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 interface acceptInvitationBtnProps {
   event: EventWithUserAndCount;
@@ -15,30 +17,26 @@ export default function DisjoinEventButton({
   userId,
   className,
 }: acceptInvitationBtnProps) {
-  const [btnText, setBtnText] = useState<string>("Abandonner l'événement");
   const [btnLoading, setBtnLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
   async function handleAcceptInvitationToEvent() {
     setBtnLoading(true);
-
     const response = await disjoinEvent({ event, userId });
     if (response?.ok) {
-      setBtnText("Vous avez abandonné l'événement");
+      toast.success(response.message);
+      router.refresh();
     } else {
-      setError('Une erreur est survenue 😑');
+      toast.error(response?.message);
     }
     setBtnLoading(false);
   }
   return (
-    <>
-      <button
-        onClick={() => handleAcceptInvitationToEvent()}
-        className={`${className} primary-btn`}
-        disabled={btnLoading}
-      >
-        {btnText}
-      </button>
-      {error && <p className="text-red-500">{error}</p>}
-    </>
+    <button
+      onClick={() => handleAcceptInvitationToEvent()}
+      className={`${className} primary-btn`}
+      disabled={btnLoading}
+    >
+      Abandonner l&apos;événement
+    </button>
   );
 }

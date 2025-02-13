@@ -2,6 +2,7 @@ import { checkIsAuthenticated } from '@/actions/authServerActions/checkIsAuthent
 import { selectUserEvents } from '@/actions/eventsServerActions/selectUserEvents';
 import { selectUserEventsJoined } from '@/actions/eventsServerActions/selectUserEventsJoined';
 import { selectUserTasks } from '@/actions/TasksServerActions/selectUserTasks';
+import { selectAllBasicUserInfos } from '@/actions/userServerActions/selectAllBasicUserInfos';
 import selectUserById from '@/actions/userServerActions/selectUserById';
 import PageHeader from '@/components/layouts/PageHeader';
 import OwnerEventCard from '@/components/ui/cards/OwnerEventCard';
@@ -22,6 +23,7 @@ import { redirect } from 'next/navigation';
 import React from 'react';
 const DashboardPage: React.FC = async () => {
   const { user } = await checkIsAuthenticated();
+  const contacts = await selectAllBasicUserInfos();
   const userData: BasicProfileInformation | null = await selectUserById(
     user?.id as string
   );
@@ -90,7 +92,11 @@ const DashboardPage: React.FC = async () => {
             <p>Vous n&apos;avez pas encore créé d&apos;événement</p>
           ) : (
             userEventsCreated.map((event: EventWithUserAndCount) => (
-              <OwnerEventCard key={event.id} event={event} />
+              <OwnerEventCard
+                key={event.id}
+                event={event}
+                contacts={contacts}
+              />
             ))
           )}
 

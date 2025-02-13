@@ -184,18 +184,20 @@ enum UserInvitationStatus {
   DECLINED_BY_PARTICIPANT
 }
 model UserInvitations {
-  id String @id @default(cuid())
-  eventId String
-  participantId String
-  creatorId String
+  id             String @id @default(cuid())
+  eventId        String
+  participantId  String
+  creatorId      String
   conversationId String
-  status UserInvitationStatus @default(WAITING_CREATOR_RESPONSE)
-  createdAt DateTime @default(now())
+  status         UserInvitationStatus @default(WAITING_CREATOR_RESPONSE)
+  createdAt      DateTime @default(now())
 
-  user User @relation(fields: [participantId], references: [id], onDelete: Cascade)
-  event Events @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-  message Message? @relation("MessageInvitation")
+  user          User          @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  event         Events        @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  conversation  Conversation  @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  
+  messages      Message[] @relation("MessageInvitation")
+
   @@unique([participantId, eventId])
 }
 
@@ -297,7 +299,7 @@ model MessageStatus {
   @@index([userId])
   @@index([messageId])
 }
-
+// TODO : invitationId as unique make issues...
 model Message {
   id             String   @id @default(cuid())
   senderId       String
@@ -306,7 +308,7 @@ model Message {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
   replyToId      String?
-  invitationId   String? @unique
+  invitationId   String?
 
   replyTo        Message?  @relation("ReplyTo", fields: [replyToId], references: [id])
   replies        Message[] @relation("ReplyTo")
@@ -316,6 +318,7 @@ model Message {
   invitation      UserInvitations? @relation("MessageInvitation", fields: [invitationId], references: [id])
 
   messageStatuses MessageStatus[]
+
   @@index([senderId])
   @@index([conversationId])
 }

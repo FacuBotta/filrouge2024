@@ -8,13 +8,13 @@ const LoginPage: React.FC = async () => {
   const { auth } = await checkIsAuthenticated();
   if (auth) {
     redirect('/profile');
-  } else {
-    return (
-      <Backdrop>
-        <LogForm />
-      </Backdrop>
-    );
   }
+
+  return (
+    <Backdrop>
+      <LogForm />
+    </Backdrop>
+  );
 };
 
 export default LoginPage;

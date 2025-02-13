@@ -77,6 +77,7 @@ export const NewEventPage = ({
     setIsUserListOpen(false);
   };
   const closeModal = () => {
+    setSelectedParticipants([]);
     setIsUserListOpen(!isUserListOpen);
   };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -303,11 +304,9 @@ export const NewEventPage = ({
             </div>
           </section>
           <div className="w-full p-5">
-            <input
-              className="primary-btn w-full"
-              type="submit"
-              value="Créer l'événement"
-            />
+            <button className="primary-btn w-full" type="submit">
+              Créer l&apos;événement
+            </button>
           </div>
         </form>
         {isUserListOpen && (

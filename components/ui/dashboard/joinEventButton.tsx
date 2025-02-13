@@ -4,7 +4,9 @@ import {
   joinEventRequest,
   JoinEventRequestProps,
 } from '@/actions/eventsServerActions/jointEventRequest';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 interface joinEventBtnProps {
   joinEventParams: JoinEventRequestProps;
@@ -15,30 +17,27 @@ export default function JoinEventButton({
   joinEventParams,
   className,
 }: joinEventBtnProps) {
-  const [btnText, setBtnText] = useState<string>("Rejoindre l'événement 🚀");
   const [btnLoading, setBtnLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
   async function handleJointEventClick() {
     setBtnLoading(true);
 
     const response = await joinEventRequest(joinEventParams);
     if (response?.ok) {
-      setBtnText('Invitation envoyée !');
+      toast.success(response.message);
+      router.refresh();
     } else {
-      setError('Erreur lors de l&apos;acceptation de l&apos;invitation');
+      toast.error(response.message);
     }
     setBtnLoading(false);
   }
   return (
-    <>
-      <button
-        onClick={() => handleJointEventClick()}
-        className={`${className} primary-btn`}
-        disabled={btnLoading}
-      >
-        {btnText}
-      </button>
-      {error && <p className="text-red-500">Une erreur est survenue 😑</p>}
-    </>
+    <button
+      onClick={() => handleJointEventClick()}
+      className={`${className} primary-btn`}
+      disabled={btnLoading}
+    >
+      Rejoindre l&apos;événement 🚀
+    </button>
   );
 }

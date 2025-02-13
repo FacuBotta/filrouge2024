@@ -43,7 +43,7 @@ export default function MessagePage({
     <section className="max-w-max mx-auto h-full mb-5 mt-5 w-full flex items-start justify-start">
       {/* conversations section */}
       <div
-        className={`${currentConversation ? 'hidden' : 'flex'} mx-auto sm:min-w-[380px] lg:flex flex-col gap-2 w-screen lg:w-[40%] p-3 lg:border-r`}
+        className={`${currentConversation ? 'hidden' : 'flex'} mx-auto sm:min-w-[380px] lg:flex flex-col gap-2 w-screen lg:w-[40%] p-3 `}
       >
         <ConversationsList userId={userId} conversations={conversations} />
       </div>

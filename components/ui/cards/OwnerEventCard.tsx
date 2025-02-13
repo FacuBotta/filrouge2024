@@ -1,19 +1,27 @@
 'use client';
 
-import { EventWithUserAndCount } from '@/types/types';
+import { sendInvitationToEvent } from '@/actions/eventsServerActions/joinUserToEvent';
+import SelectUserList from '@/components/forms/SelectUserList';
+import { BasicProfileInformation, EventWithUserAndCount } from '@/types/types';
 import { Icon } from 'facu-ui';
 import { Link } from 'next-view-transitions';
 import { useState } from 'react';
+import { toast } from 'sonner';
+import Badge from '../Badge';
 import TasksProfile from '../dashboard/TasksProfile';
 import DeleteEventModal from '../modals/DeleteEventModal';
 
 export default function OwnerEventCard({
   event,
+  contacts,
 }: {
   event: EventWithUserAndCount;
+  contacts: BasicProfileInformation[];
 }) {
   const [cardOpen, setCardOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [isUserListOpen, setIsUserListOpen] = useState(false);
+
   function calculateDaysDifference(dateStart: Date) {
     const fechaActual: Date = new Date();
     const diferenciaTiempo = dateStart.getTime() - fechaActual.getTime();
@@ -25,20 +33,47 @@ export default function OwnerEventCard({
   const toggleDeleteModal = () => {
     setModalOpen(!modalOpen);
   };
-  console.log(event.UserInvitations);
+  // console.log(event.UserInvitations);
+  // Take the selected users and close the modal
+
+  const closeUserListModal = () => {
+    setIsUserListOpen(!isUserListOpen);
+  };
+  const handleTakeUsers = async (selectedUsers: string[]) => {
+    console.log({ selectedUsers });
+    const response = await sendInvitationToEvent({
+      eventId: event.id,
+      participantsIds: selectedUsers,
+    });
+    if (response?.ok) {
+      toast.success(response.message);
+    } else {
+      toast.error(response.message);
+    }
+    closeUserListModal();
+  };
   return (
-    <div className="relative flex flex-col gap-2 justify-between w-full h-fit p-5 border border-dark-bg dark:border-light-grey rounded-lg">
-      <div className="font-extralight text-lg flex flex-wrap gap-5 select-none">
+    <div className="relative flex flex-col gap-2 justify-between w-full h-fit p-5 border border-dark-bg dark:border-light-grey rounded-lg bg-card">
+      <div className="font-extralight text-lg flex flex-wrap items-center gap-5 select-none">
         <h1 className="font-bold text-2xl">{event.title}</h1>
         {daysFromToday > 0 ? (
-          <p>{daysFromToday} jours restants</p>
+          <Badge color="warning" onClick={() => setCardOpen(!cardOpen)}>
+            <p>{daysFromToday} jours restants</p>
+          </Badge>
         ) : (
-          <p>
-            Passé il fait {daysFromToday} {daysFromToday > 1 ? 'jours' : 'jour'}
-          </p>
+          <Badge color="info" onClick={() => setCardOpen(!cardOpen)}>
+            <p>
+              Passé il fait {daysFromToday}{' '}
+              {daysFromToday > 1 ? 'jours' : 'jour'}
+            </p>
+          </Badge>
         )}
-        <p>{event._count.participants} participants</p>
-        <p>{pendingTasks?.length || 0} tâches à accomplir</p>
+        <Badge onClick={() => setCardOpen(!cardOpen)} color="success">
+          {event._count.participants} participants
+        </Badge>
+        <Badge onClick={() => setCardOpen(!cardOpen)} color="error">
+          <p>{pendingTasks?.length || 0} tâches à accomplir</p>
+        </Badge>
         <div className="absolute right-5 top-7">
           {cardOpen ? (
             <Icon
@@ -65,7 +100,12 @@ export default function OwnerEventCard({
           <Link href={`/events/event/${event.id}`} className="primary-btn">
             Éditer
           </Link>
-          <button className="primary-btn">Inviter des participants</button>
+          <button
+            className="primary-btn"
+            onClick={() => setIsUserListOpen(true)}
+          >
+            Inviter des participants
+          </button>
           <button className="secondary-btn" onClick={toggleDeleteModal}>
             Supprimer
           </button>
@@ -74,6 +114,15 @@ export default function OwnerEventCard({
       </div>
       {modalOpen && (
         <DeleteEventModal eventId={event.id} toggleModal={toggleDeleteModal} />
+      )}
+      {isUserListOpen && (
+        <div className="fixed top-0 left-0 w-full h-full bg-black/80 flex justify-center items-center sm:pt-20">
+          <SelectUserList
+            users={contacts}
+            takeUsers={handleTakeUsers}
+            closeModal={closeUserListModal}
+          />
+        </div>
       )}
     </div>
   );

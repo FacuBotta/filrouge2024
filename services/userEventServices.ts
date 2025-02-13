@@ -26,14 +26,14 @@ export const deleteUserEventService = async ({
 }: {
   userId: string;
   eventId: string;
-}) => {
+}): Promise<UserEvents | null> => {
   try {
-    await prisma.userEvents.delete({
+    const userEvent = await prisma.userEvents.delete({
       where: {
         userId_eventId: { userId, eventId },
       },
     });
-    return true;
+    return userEvent;
   } catch (error) {
     console.error('deleteUserEventService: error', error);
     throw new Error('Service error: deleteUserEventService');

@@ -91,15 +91,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         }
         return {
           id: credentials.id as string,
-          email: credentials.email as string,
           role: credentials.role as string,
-          hasPassword: credentials.hasPassword as boolean,
+          hasPassword: credentials.hasPassword === 'true',
+          email: credentials.email as string,
         };
       },
     }),
   ],
 });
-
-/* 
-http://localhost:3000/api/auth/callback/nodemailer?callbackUrl=http%3A%2F%2Flocalhost%3A3000%2Flogin&token=99c1c2c206dc1bc459cc046b341da838afd75bdda03d6074b87cb43822cb71b6&email=facundo.botta.dev%40gmail.com
-*/

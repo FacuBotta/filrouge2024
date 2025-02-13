@@ -3,13 +3,13 @@
 import { CredentialsLoginServerAction } from '@/actions/authServerActions/CredentialsLoginServerAction';
 import { emailSignInServerAction } from '@/actions/authServerActions/emailSignInServerAction';
 import { handleGoogleSignIn } from '@/actions/authServerActions/googleSignInServerAction';
+import { emailSchema } from '@/lib/zodSchemas';
 import { Icon, Input } from 'facu-ui';
 import { Link } from 'next-view-transitions';
 import { useRouter } from 'next/navigation';
 import React, { useState, useTransition } from 'react';
-import Button from '../ui/Button';
-import { emailSchema } from '@/lib/zodSchemas';
 import { z } from 'zod';
+import Button from '../ui/Button';
 
 export default function LogForm() {
   const Router = useRouter();
@@ -103,7 +103,6 @@ export default function LogForm() {
             ...error,
             mail: { message: result?.message as string, value: true },
           });
-          return;
         } else if (result.ok) {
           setEmailSent(true);
         }

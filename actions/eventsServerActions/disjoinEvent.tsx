@@ -1,11 +1,11 @@
 'use server';
 
 import { auth } from '@/lib/auth/authConfig';
-import { EventWithUserAndCount } from '@/types/types';
-import { sendMessageInConversation } from '../messagesServerActions/sendMessageInConversation';
-import { updateUserInvitationService } from '@/services/userInvitationServices';
 import { deleteUserConversationService } from '@/services/userConversationServices';
 import { deleteUserEventService } from '@/services/userEventServices';
+import { updateUserInvitationService } from '@/services/userInvitationServices';
+import { EventWithUserAndCount } from '@/types/types';
+import { sendMessageInConversation } from '../messagesServerActions/sendMessageInConversation';
 
 interface DisjoinEventProps {
   event: EventWithUserAndCount;
@@ -14,6 +14,7 @@ interface DisjoinEventProps {
 
 interface DisjoinEventResponse {
   ok: boolean;
+  message: string;
 }
 
 /**
@@ -68,9 +69,9 @@ export async function disjoinEvent({
       conversationId: event.conversation?.id as string,
     });
 
-    return { ok: true };
+    return { ok: true, message: "Vous avez quitté l'événement" };
   } catch (error) {
     console.error('disjoinEvent: error', error);
-    return { ok: false };
+    return { ok: false, message: 'Une erreur est survenue' };
   }
 }

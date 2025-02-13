@@ -25,7 +25,7 @@ export interface createEventServiceProps {
 */
 export interface createUserEventServiceProps {
   userId: string;
-  eventId: string | null;
+  eventId: string;
 }
 
 /* 
