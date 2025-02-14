@@ -57,7 +57,7 @@ footer a:hover {
 }
 /* ========== Cards ========== */
 .user-card {
-  @apply bg-card flex w-[300px] flex-col items-center justify-center gap-2 p-4 border-2 border-light-borderCards dark:border-dark-borderCards rounded-lg dark:hover:bg-dark-grey/10 hover:bg-light-blue/50 transition-transform duration-500 ease-in-out shadow-lg;
+  @apply bg-card flex w-[270px] sm:w-[300px] flex-col items-center justify-center gap-2 p-4 border-2 border-light-borderCards dark:border-dark-borderCards rounded-lg dark:hover:bg-dark-grey/10 hover:bg-light-blue/50 transition-transform duration-500 ease-in-out shadow-lg;
 }
 .border-card {
   @apply border-2 border-light-borderCards dark:border-dark-borderCards;
