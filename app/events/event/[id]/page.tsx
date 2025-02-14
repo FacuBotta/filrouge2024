@@ -2,6 +2,7 @@ import { JoinEventRequestProps } from '@/actions/eventsServerActions/jointEventR
 import { selectEventById } from '@/actions/eventsServerActions/selectEventById';
 import MapInfoCard from '@/components/ui/cards/MapInfoCard';
 import AcceptInvitationButton from '@/components/ui/dashboard/AcceptInvitationButton';
+import AddToCalendarButton from '@/components/ui/dashboard/AddToCalendarButton';
 import DeclineInvitationButton from '@/components/ui/dashboard/DeclineInvitationButton';
 import DisjoinEventButton from '@/components/ui/dashboard/DisjoinEventButton';
 import JoinEventButton from '@/components/ui/dashboard/joinEventButton';
@@ -54,13 +55,12 @@ export default async function EventPage({
     }
     if (userInvitation?.status === 'JOINED') {
       return (
-        <div>
+        <div className="flex flex-wrap gap-2 items-start mt-5 ">
           <DisjoinEventButton
             eventId={event.id}
             userId={session.user?.id as string}
-            className="mt-5"
           />
-          <div>ajouter au calendrier btn coming soon</div>
+          <AddToCalendarButton event={event} />
         </div>
       );
     }
@@ -92,7 +92,7 @@ export default async function EventPage({
 
   return (
     <main className="min-h-screen w-full max-w-[1000px] pb-10 mx-auto text-dark-bg dark:text-white">
-      <section className="mx-auto w-full overflow-hidden rounded-lg border-card bg-card">
+      <section className="mx-auto w-full flex flex-col rounded-lg border-card bg-card">
         <header>
           <Image
             width={1200}
@@ -104,16 +104,16 @@ export default async function EventPage({
           />
         </header>
 
-        <div className="flex flex-col gap-4 border-b border-gray-800 p-8">
-          <div className="flex flex-wrap items-start justify-between gap-4">
-            <div className="flex-1">
+        <div className="flex flex-col w-full gap-4 border-b border-gray-800 p-2 sm:p-8">
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex flex-col">
               <h1 className="text-3xl font-bold">
                 {event.title}
                 <span className="ml-2 text-lg font-normal opacity-70">
                   - {event.category?.title}
                 </span>
               </h1>
-              <p className="mt-4 text-balance break-words">
+              <p className="mt-4 break-all whitespace-normal">
                 {event.description}
               </p>
               {renderActionButton()}
@@ -129,9 +129,13 @@ export default async function EventPage({
             <div className="flex items-center gap-3">
               <IconWrapper type="calendar" />
               <div className="space-y-1">
-                <p className="">Début: {formatDate(event.eventStart)}</p>
+                <p className="text-balance">
+                  Début: {formatDate(event.eventStart)}
+                </p>
                 {event.eventEnd && (
-                  <p className="">Fin: {formatDate(event.eventEnd)}</p>
+                  <p className="text-balance">
+                    Fin: {formatDate(event.eventEnd)}
+                  </p>
                 )}
               </div>
             </div>
@@ -156,7 +160,7 @@ export default async function EventPage({
             <IconWrapper type="mapPin" />
             <p className="text-balance break-words">{event.formattedAddress}</p>
           </div>
-          <div className="flex items-center h-[250px] w-[320px] sm:w-[380px] sm:h-[470px] border-2 rounded-lg border-card overflow-hidden">
+          <div className="flex items-center h-[350px] w-[280px] sm:w-[380px] sm:h-[470px] border-2 rounded-lg border-card overflow-hidden">
             {event.lat && event.lng ? (
               <MapInfoCard position={{ lat: event.lat, lng: event.lng }} />
             ) : (
