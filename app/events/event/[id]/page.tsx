@@ -10,8 +10,42 @@ import UserCard from '@/components/ui/dashboard/UserCard';
 import IconWrapper from '@/components/ui/IconWrapper';
 import { auth } from '@/lib/auth/authConfig';
 import type { EventWithUserAndCount, Invitation } from '@/types/types';
+import { Metadata } from 'next';
 import { Link } from 'next-view-transitions';
 import Image from 'next/image';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const event: EventWithUserAndCount | null = await selectEventById(id);
+  if (!event) {
+    throw new Error('Event not found');
+  }
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
+  return {
+    title: `EventHub | ${event.title}`,
+    description: event.description,
+    openGraph: {
+      title: `EventHub | ${event.title}`,
+      description: event.description as string,
+      url: `${baseUrl}/events/event/${id}`,
+      images: [
+        {
+          url: `${baseUrl}/${event.image}` as string,
+          width: 800,
+          height: 600,
+          alt: 'EventHub',
+        },
+      ],
+      siteName: 'EventHub',
+      locale: 'fr_FR',
+      type: 'website',
+    },
+  };
+}
 
 export default async function EventPage({
   params,
@@ -55,7 +89,7 @@ export default async function EventPage({
     }
     if (userInvitation?.status === 'JOINED') {
       return (
-        <div className="flex flex-wrap gap-2 items-start mt-5 ">
+        <div className="flex flex-col gap-5 items-start mt-5 ">
           <DisjoinEventButton
             eventId={event.id}
             userId={session.user?.id as string}
@@ -160,7 +194,7 @@ export default async function EventPage({
             <IconWrapper type="mapPin" />
             <p className="text-balance break-words">{event.formattedAddress}</p>
           </div>
-          <div className="flex items-center h-[350px] w-[280px] sm:w-[380px] sm:h-[470px] border-2 rounded-lg border-card overflow-hidden">
+          <div className="flex items-center h-[350px] w-[280px] lg:w-[350px] sm:h-[470px] border-2 rounded-lg border-card overflow-hidden">
             {event.lat && event.lng ? (
               <MapInfoCard position={{ lat: event.lat, lng: event.lng }} />
             ) : (

@@ -12,7 +12,7 @@ import {
   outlook,
   yahoo,
 } from 'calendar-link';
-import React, { useState } from 'react';
+import React from 'react';
 
 interface AddToCalendarButtonProps {
   className?: string;
@@ -20,15 +20,10 @@ interface AddToCalendarButtonProps {
 }
 
 export default function AddToCalendarButton({
-  className,
   event,
 }: AddToCalendarButtonProps): React.ReactElement {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
-  const [open, setOpen] = useState(false);
 
-  const toggleDialog = () => {
-    setOpen((prevOpen) => !prevOpen);
-  };
   const parseEvent: CalendarEvent = {
     title: event.title,
     description: event.description as string,
@@ -73,61 +68,54 @@ export default function AddToCalendarButton({
   const office365Link = office365(parseEvent);
   const outlookLink = outlook(parseEvent);
   return (
-    <div className="flex flex-wrap gap-2 items-start ">
-      <button className={`primary-btn  ${className}`} onClick={toggleDialog}>
-        Add to Calendar
-      </button>
-
-      {open && (
-        <div className="flex border border-black dark:border-dark-grey rounded-lg shadow-lg transition-opacity duration-1000 ease-in-out">
-          <ul className="flex flex-wrap text-center text-xs">
-            <li className="hover:bg-dark-borderCards/30 p-2">
-              <a
-                className="gap-1 flex flex-col justify-between"
-                href={googleLink}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <GoogleCalendarIcon />
-                <span>Google</span>
-              </a>
-            </li>
-            <li className="hover:bg-dark-borderCards/30 p-2">
-              <a
-                className="gap-1 flex flex-col justify-between"
-                href={outlookLink}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <OutlookIcon />
-                <span>Outlook</span>
-              </a>
-            </li>
-            <li className="hover:bg-dark-borderCards/30 p-2">
-              <a
-                className="gap-1 flex flex-col justify-between"
-                href={office365Link}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <Office365Icon />
-                <span>Office 365</span>
-              </a>
-            </li>
-            <li className="hover:bg-dark-borderCards/30 p-2">
-              <a
-                className="gap-1 flex flex-col justify-between"
-                href={yahooLink}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <YahooIcon />
-                <span>Yahoo</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-      )}
+    <div className="flex flex-col gap-2 text-center ">
+      <p>Ajouter à mon calendrier</p>
+      <ul className="flex flex-wrap  text-xs">
+        <li className="hover:bg-dark-borderCards/30 p-2 rounded-lg">
+          <a
+            className="gap-1 flex flex-col justify-between"
+            href={googleLink}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <GoogleCalendarIcon />
+            <span>Google</span>
+          </a>
+        </li>
+        <li className="hover:bg-dark-borderCards/30 p-2 rounded-lg">
+          <a
+            className="gap-1 flex flex-col justify-between"
+            href={outlookLink}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <OutlookIcon />
+            <span>Outlook</span>
+          </a>
+        </li>
+        <li className="hover:bg-dark-borderCards/30 p-2 rounded-lg">
+          <a
+            className="gap-1 flex flex-col justify-between"
+            href={office365Link}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <Office365Icon />
+            <span>Office 365</span>
+          </a>
+        </li>
+        <li className="hover:bg-dark-borderCards/30 p-2 rounded-lg">
+          <a
+            className="gap-1 flex flex-col justify-between"
+            href={yahooLink}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <YahooIcon />
+            <span>Yahoo</span>
+          </a>
+        </li>
+      </ul>
     </div>
   );
 }
