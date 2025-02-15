@@ -1,7 +1,8 @@
 'use client';
 
 import { Icon } from 'facu-ui';
-import { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
 
 interface SearchBarProps {
   title: string;
@@ -11,6 +12,29 @@ interface SearchBarProps {
 export default function SearchBar({ title }: SearchBarProps) {
   let placeHolder = '';
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [searchValue, setSearchValue] = useState(
+    searchParams.get('search') || ''
+  );
+  const handleSearch = useCallback(
+    (value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      if (value) {
+        params.set('search', value);
+      } else {
+        params.delete('search');
+      }
+      router.push(`?${params.toString()}`);
+    },
+    [searchParams, router]
+  );
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      handleSearch(searchValue);
+    }, 500);
+    return () => clearTimeout(timeoutId);
+  }, [searchValue, handleSearch]);
 
   switch (title) {
     case 'users':
@@ -35,6 +59,10 @@ export default function SearchBar({ title }: SearchBarProps) {
       <div className="flex items-center gap-2 w-full">
         <input
           type="search"
+          value={searchValue}
+          onChange={(e) => {
+            setSearchValue(e.target.value);
+          }}
           placeholder={placeHolder}
           className="w-full h-10 p-5 text-xl placeholder:select-none dark:placeholder:text-dark-greenLight/50 border-2 border-dark-bg dark:bg-dark-bg dark:border-light-grey rounded-lg"
         />

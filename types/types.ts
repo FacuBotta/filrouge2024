@@ -1,6 +1,12 @@
 import { User } from '@prisma/client';
 
 /* ========================================================================== */
+/* ============================ GENERAL TYPES =========================== */
+/* ========================================================================== */
+export interface ScoreGiverRef {
+  getScore: () => number;
+}
+/* ========================================================================== */
 /* ============================ CONVERSATION TYPES =========================== */
 /* ========================================================================== */
 export type UserRole = 'GUEST' | 'CREATOR';
@@ -56,6 +62,23 @@ export interface Conversation {
 /* ========================================================================== */
 /* ============================ USER TYPES ================================== */
 /* ========================================================================== */
+export interface Comment {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  content: string;
+  rating: {
+    score: number;
+  } | null;
+  author: {
+    id: string;
+    username: string | null;
+    image: string | null;
+    _count: {
+      Ratings: number;
+    };
+  };
+}
 export interface BasicProfileInformation {
   id: string;
   email: string | null;
