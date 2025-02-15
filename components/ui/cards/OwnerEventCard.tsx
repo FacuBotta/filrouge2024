@@ -8,6 +8,7 @@ import { Link } from 'next-view-transitions';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import Badge from '../Badge';
+import AddToCalendarButton from '../dashboard/AddToCalendarButton';
 import TasksProfile from '../dashboard/TasksProfile';
 import DeleteEventModal from '../modals/DeleteEventModal';
 
@@ -109,6 +110,9 @@ export default function OwnerEventCard({
           <button className="secondary-btn" onClick={toggleDeleteModal}>
             Supprimer
           </button>
+        </div>
+        <div className="flex justify-start items-center mb-10">
+          <AddToCalendarButton event={event} />
         </div>
         <TasksProfile tasks={event.Tasks || []} eventId={event.id} />
       </div>
