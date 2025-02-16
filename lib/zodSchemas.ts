@@ -117,3 +117,24 @@ export const categoryTitleSchema = z
 
 // participants: z.array(z.string()).optional(),
 // TODO: ADD EDIT PROFILE SCHEMA
+
+/* 
+=========================================================
+============ USER SERVICES OUTPUT SCHEMAS ===============
+=========================================================
+*/
+
+export const getUserServiceSchema = z.object({
+  id: z.string(),
+  email: z.string().email().nullable(),
+  username: z.string().nullable(),
+  image: z.string().nullable(),
+  description: z.string().nullable(),
+  _count: z.object({
+    Ratings: z.number(),
+    EventsCreated: z.number(),
+  }),
+});
+export type getUserServiceType = z.infer<typeof getUserServiceSchema>;
+
+export const getAllUsersServiceSchema = z.array(getUserServiceSchema);

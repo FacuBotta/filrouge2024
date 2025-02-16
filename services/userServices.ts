@@ -1,8 +1,9 @@
 import prisma from '@/lib/prisma';
-import { BasicProfileInformation } from '@/types/types';
+import { getUserServiceType } from '@/lib/zodSchemas';
 import { Prisma, User } from '@prisma/client';
 
 // TODO : type data to limit the data that can be updated
+
 export const updateUserService = async ({
   id,
   data,
@@ -26,7 +27,7 @@ export const selectUserByIdService = async ({
   id,
 }: {
   id: string;
-}): Promise<BasicProfileInformation | null> => {
+}): Promise<getUserServiceType | null> => {
   try {
     return prisma.user.findUnique({
       where: {
@@ -76,10 +77,10 @@ export const selectUserByEmailService = async ({
   }
 };
 export const selectAllUsersService = async (): Promise<
-  BasicProfileInformation[] | null
+  Partial<User>[] | null
 > => {
   try {
-    const users = await prisma.user.findMany({
+    return await prisma.user.findMany({
       select: {
         id: true,
         email: true,
@@ -94,7 +95,6 @@ export const selectAllUsersService = async (): Promise<
         },
       },
     });
-    return users;
   } catch (error) {
     console.error('selectAllUsersService', error);
     return null;
