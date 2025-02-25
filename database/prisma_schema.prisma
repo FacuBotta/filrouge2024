@@ -31,8 +31,8 @@ model User {
   Reported         Reports[]         @relation("UserReported")
   Trash            Trash[]
   Ratings          Ratings[]
-  EventsCreated    Events[]          // events created by the user
-  EventsJoined     UserEvents[]      // events joined by the user
+  EventsCreated    Events[]          
+  EventsJoined     UserEvents[]      
   Tasks            Tasks[]
   MessagesSent     Message[]         @relation("SentMessages")
   UserConversation UserConversation[]
@@ -46,11 +46,11 @@ model Tasks {
   content    String
   completed  Boolean  @default(false)
   createdAt  DateTime @default(now())
-  order      Int @default(0) // order of the task in the list
+  order      Int @default(0) 
   eventId    String?
 
-  Events     Events? @relation(fields: [eventId], references: [id])
-  User       User   @relation(fields: [userId], references: [id])
+  Events     Events? @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  User       User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 model Account {
   id                       String  @id @default(cuid())
@@ -70,7 +70,7 @@ model Account {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
   @@index([userId])
@@ -85,7 +85,7 @@ model Session {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
@@ -112,6 +112,12 @@ model Authenticator {
 
   @@id([userId, credentialID])
 }
+model Category {
+  id          String   @id @default(cuid())
+  title       String
+  description String @db.Text
+  Events      Events[]
+}
 model Ratings {
   id        String  @id @default(cuid())
   userId    String
@@ -121,8 +127,8 @@ model Ratings {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user    User     @relation(fields: [userId], references: [id])
-  comment Comments @relation(fields: [commentId], references: [id])
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comment Comments @relation(fields: [commentId], references: [id], onDelete: Cascade)
 }
 
 model Comments {
@@ -134,8 +140,8 @@ model Comments {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  author      User     @relation("CommentAuthor", fields: [authorId], references: [id])
-  recipient   User     @relation("CommentRecipient", fields: [recipientId], references: [id])
+  author      User     @relation("CommentAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+  recipient   User     @relation("CommentRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
   rating      Ratings?
   
   @@index([authorId])
@@ -157,8 +163,8 @@ model Reports {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user     User @relation("UserReports", fields: [reporterId], references: [id])
-  reported User @relation("UserReported", fields: [reportedId], references: [id])
+  user     User @relation("UserReports", fields: [reporterId], references: [id], onDelete: Cascade)
+  reported User @relation("UserReported", fields: [reportedId], references: [id], onDelete: Cascade)
 
   @@index([reporterId])
   @@index([reportedId])
@@ -169,11 +175,86 @@ model Trash {
   eventId    String
   reportedAt DateTime
 
-  user  User   @relation(fields: [userId], references: [id])
-  event Events @relation(fields: [eventId], references: [id])
+  user  User   @relation(fields: [userId], references: [id], onUpdate: Cascade)
+  event Events @relation(fields: [eventId], references: [id], onUpdate: Cascade)
 
   @@index([userId])
   @@index([eventId])
+}
+
+model Events {
+  id             String   @id @default(cuid())
+  userId         String
+  categoryId     String
+
+  title          String
+  description    String? @db.Text
+  eventStart     DateTime
+  eventEnd       DateTime?
+  isPublic       Boolean  @default(false)
+
+  image          String?
+  locationUrl    String?
+  lat            Float?
+  lng            Float?
+  vicinity       String?
+  formattedAddress String?
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  conversation   Conversation?
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category      Category    @relation(fields: [categoryId], references: [id])
+  Trash         Trash[]
+  Tasks         Tasks[]
+  participants  UserEvents[]
+  UserInvitations UserInvitations[]
+
+  @@index([userId])
+  @@index([categoryId])
+}
+model UserEvents {
+  userId String
+  eventId String
+  joinedAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event Events @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@id([userId, eventId])
+}
+
+
+model Conversation {
+  id             String   @id @default(cuid())
+  title          String?
+  eventId        String?   @unique
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  messages       Message[]
+  participants   UserConversation[]
+  UserInvitations UserInvitations[]
+  event          Events?   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}
+enum Role {
+  CREATOR
+  GUEST
+}
+
+model UserConversation {
+  id             String   @id @default(cuid())
+  userId         String
+  conversationId String
+  joinedAt       DateTime @default(now())
+  role           Role @default(GUEST)
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, conversationId])
+  @@index([userId])
+  @@index([conversationId])
 }
 enum UserInvitationStatus {
   JOINED
@@ -200,105 +281,6 @@ model UserInvitations {
 
   @@unique([participantId, eventId])
 }
-
-model UserEvents {
-  userId String
-  eventId String
-  joinedAt DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  event Events @relation(fields: [eventId], references: [id], onDelete: Cascade)
-
-  @@id([userId, eventId])
-}
-
-model Category {
-  id          String   @id @default(cuid())
-  title       String
-  description String @db.Text
-  Events      Events[]
-}
-
-model Events {
-  id             String   @id @default(cuid())
-  userId         String
-  categoryId     String
-
-  title          String
-  description    String? @db.Text
-  eventStart     DateTime
-  eventEnd       DateTime?
-  isPublic       Boolean  @default(false)
-
-  image          String?
-  locationUrl    String?
-  lat            Float?
-  lng            Float?
-  vicinity       String?
-  formattedAddress String?
-
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-
-  conversation   Conversation?
-  user          User        @relation(fields: [userId], references: [id])
-  category      Category    @relation(fields: [categoryId], references: [id])
-  Trash         Trash[]
-  Tasks         Tasks[]
-  participants  UserEvents[]
-  UserInvitations UserInvitations[]
-
-  @@index([userId])
-  @@index([categoryId])
-}
-model Conversation {
-  id             String   @id @default(cuid())
-  title          String?
-  eventId        String?   @unique
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-
-  messages       Message[]
-  participants   UserConversation[]
-  UserInvitations UserInvitations[]
-  event          Events?   @relation(fields: [eventId], references: [id])
-}
-enum Role {
-  CREATOR
-  GUEST
-}
-
-model UserConversation {
-  id             String   @id @default(cuid())
-  userId         String
-  conversationId String
-  joinedAt       DateTime @default(now())
-  role           Role @default(GUEST)
-  user         User         @relation(fields: [userId], references: [id])
-  conversation Conversation @relation(fields: [conversationId], references: [id])
-
-  @@unique([userId, conversationId])
-  @@index([userId])
-  @@index([conversationId])
-}
-enum Status {
-  UNSEEN
-  SEEN
-}
-model MessageStatus {
-  id String @id @default(cuid())
-  userId String
-  messageId String
-  status Status @default(UNSEEN)
-  updatedAt DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id])
-  message Message @relation(fields: [messageId], references: [id])
-
-  @@index([userId])
-  @@index([messageId])
-}
-// TODO : invitationId as unique make issues...
 model Message {
   id             String   @id @default(cuid())
   senderId       String
@@ -312,12 +294,29 @@ model Message {
   replyTo        Message?  @relation("ReplyTo", fields: [replyToId], references: [id])
   replies        Message[] @relation("ReplyTo")
 
-  sender          User         @relation("SentMessages", fields: [senderId], references: [id])
-  conversation    Conversation @relation(fields: [conversationId], references: [id])
-  invitation      UserInvitations? @relation("MessageInvitation", fields: [invitationId], references: [id])
+  sender          User         @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  conversation    Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  invitation      UserInvitations? @relation("MessageInvitation", fields: [invitationId], references: [id], onDelete: Cascade)
 
   messageStatuses MessageStatus[]
 
   @@index([senderId])
   @@index([conversationId])
+}
+enum Status {
+  UNSEEN
+  SEEN
+}
+model MessageStatus {
+  id String @id @default(cuid())
+  userId String
+  messageId String
+  status Status @default(UNSEEN)
+  updatedAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  message Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([messageId])
 }
