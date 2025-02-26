@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import SlideData from '@/components/ui/SlideData'; // Importa el server component
 
 const SliderHome: React.FC = () => {
@@ -11,11 +11,11 @@ const SliderHome: React.FC = () => {
   // Llama a SlideData para obtener los datos de los slides
   const slides = SlideData();
 
-  const startAutoSlide = () => {
+  const startAutoSlide = useCallback(() => {
     intervalRef.current = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
     }, 3000);
-  };
+  }, [slides.length]);
 
   const stopAutoSlide = () => {
     if (intervalRef.current) {
@@ -36,11 +36,10 @@ const SliderHome: React.FC = () => {
 
   useEffect(() => {
     startAutoSlide();
-
     return () => {
       stopAutoSlide();
     };
-  }, []);
+  }, [startAutoSlide]);
 
   return (
     <div

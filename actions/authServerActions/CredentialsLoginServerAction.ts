@@ -1,6 +1,6 @@
 'use server';
 
-import { emailSchema } from '@/lib/zodSchemas';
+import { emailSchema } from '@/lib/zod/zodSchemas';
 import { signIn } from '../../lib/auth/authConfig';
 import { checkPassword } from '../userServerActions/checkPassword';
 import selectUserByMail from '../userServerActions/selectUserByMail';
@@ -18,10 +18,10 @@ export const CredentialsLoginServerAction = async (formData: FormData) => {
         message: "Cet email n'est pas associé à un compte",
       };
     }
-    const matchPassword = await checkPassword(
-      password,
-      user.password as string
-    );
+    const matchPassword = await checkPassword({
+      inputPassword: password,
+      hashedPassword: user.password as string,
+    });
     if (!matchPassword) {
       return {
         ok: false,

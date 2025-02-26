@@ -12,7 +12,6 @@ import { deleteUserTask } from '../TasksServerActions/deleteUserTask';
 interface deleteEventProps {
   eventId: string;
 }
-// TODO : ver si esto funciona o falta eliminar las conversaciones, userInvitations, userEvents
 export const deleteEvent = async ({ eventId }: deleteEventProps) => {
   const session = await auth();
   if (!session) {
@@ -35,10 +34,7 @@ export const deleteEvent = async ({ eventId }: deleteEventProps) => {
         };
       }
     }
-    // delete image of the event
-    if (eventToDelete.image) {
-      await deleteImage(eventToDelete.image);
-    }
+
     if (eventToDelete.conversation) {
       await deleteConversationService(eventToDelete.conversation.id);
     }
@@ -48,6 +44,10 @@ export const deleteEvent = async ({ eventId }: deleteEventProps) => {
       );
     }
     await deleteEventService(eventId);
+    // delete image of the event
+    if (eventToDelete.image) {
+      await deleteImage(eventToDelete.image);
+    }
     return { ok: true, message: 'Événement supprimé avec succès' };
   } catch (error) {
     console.error(error);

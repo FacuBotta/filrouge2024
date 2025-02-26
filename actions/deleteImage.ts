@@ -1,18 +1,20 @@
 import { unlink } from 'fs/promises';
 import path from 'path';
 
-export async function deleteImage(imagePath: string) {
-  try {
-    // Asegúrate de tener el path absoluto
-    const absolutePath = path.resolve('public', imagePath);
+/**
+ * Deletes an image from the server.
+ *
+ * @param {string} imagePath - The relative path to the image file to be deleted.
+ * @returns {Promise<void>} Resolves if the image is successfully deleted.
+ * @throws {Error} If there is an error deleting the image.
+ */
+export async function deleteImage(imagePath: string): Promise<void> {
+  const absolutePath = path.join(process.cwd(), 'public', imagePath);
 
+  try {
     await unlink(absolutePath);
-    return { success: true };
   } catch (error) {
-    console.error("Erreur lors de la suppression de l'image:", error);
-    return {
-      success: false,
-      error: "Erreur lors de la suppression de l'image",
-    };
+    console.error('Error deleting the image:', error);
+    throw new Error("Erreur lors de la suppression de l'image");
   }
 }

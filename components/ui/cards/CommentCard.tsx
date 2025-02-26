@@ -1,10 +1,9 @@
 import { UserAvatar } from '@/public/images/UserAvatar';
-import { Comment } from '@/types/types';
+import { UserComment } from '@/types/types';
 import { Link } from 'next-view-transitions';
 import RantingUser from '../RantingUser';
 
-export default function CommentCard({ comment }: { comment: Comment }) {
-  console.log({ author: comment });
+export default function CommentCard({ comment }: { comment: UserComment }) {
   return (
     <div
       key={comment.id}

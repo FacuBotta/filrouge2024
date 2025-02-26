@@ -1,36 +1,43 @@
 'use server';
 
 import { signIn } from '@/lib/auth/authConfig';
-import { emailSchema } from '@/lib/zodSchemas';
-import { z } from 'zod';
-import selectUserByMail from '../userServerActions/selectUserByMail';
+import { handleError } from '@/lib/zod/handleError';
+import { emailSchema } from '@/lib/zod/zodSchemas';
+import { selectUserByEmailService } from '@/services/userServices';
 
-export async function emailSignInServerAction(email: string) {
+/**
+ * Handles the email sign-in process.
+ *
+ * This function sends an email to the provided email address with a link to sign in.
+ *
+ * @param {string} email - The email address to sign in with.
+ * @returns {Promise<{ ok: boolean, message?: string }>} An object indicating the result of the sign-in process.
+ */
+export async function emailSignInServerAction(
+  email: string
+): Promise<{ ok: boolean; message: string }> {
   try {
+    // Validate the email using Zod schema
     emailSchema.parse({ email });
-    const user = await selectUserByMail(email);
+
+    // Check if the user already exists
+    const user = await selectUserByEmailService({ email });
     if (user) {
-      return { ok: false, message: 'Cet email est déjà associé à un compte' };
+      return {
+        ok: false,
+        message: 'Un compte existe déjà avec cet email',
+      };
     }
+
+    // Proceed with the sign-in process
     await signIn('nodemailer', {
       email,
       callbackUrl: '/profile',
       redirect: false,
     });
-    return { ok: true };
-  } catch (error: unknown) {
-    if (error instanceof z.ZodError) {
-      const firstError = error.errors[0];
-      const field = firstError.path[0];
-      if (field === 'email') {
-        return { ok: false, message: firstError.message };
-      }
-    } else {
-      console.error(error); // dev purpose
-    }
-    return {
-      ok: false,
-      message: 'Une erreur est survenue veuillez verifier votre e-mail',
-    };
+
+    return { ok: true, message: 'Email envoyé' };
+  } catch (error) {
+    return handleError(error);
   }
 }

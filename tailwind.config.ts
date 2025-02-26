@@ -42,7 +42,7 @@ const config: Config = {
         light: {
           cards: '#90CCF4',
           borderCards: '#232323',
-          ciel: '#90CCF4',
+          ciel: '#acd6f2',
           blue: '#5DA2D5',
           grey: '#ECECEC',
           yellow: '#F3D250',

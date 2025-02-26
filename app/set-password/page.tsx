@@ -4,28 +4,28 @@ import Backdrop from '@/components/layouts/Backdrop';
 import { redirect } from 'next/navigation';
 
 export default async function SetPasswordPage() {
-  const { auth, user } = await checkIsAuthenticated();
-  if (!auth && !user) {
+  const { user } = await checkIsAuthenticated();
+  if (!user) {
     redirect('/login');
   }
-  const isUpdated = user?.hasPassword !== null;
+  const isUpdate = user?.hasPassword || false;
   return (
     <div className="bg-light-ciel dark:bg-dark-bg h-screen">
       <Backdrop>
         <div className="flex flex-col items-center justify-center self-start gap-10 p-24 ">
           <h1 className="text-6xl font-bold text-light-grey text-balance text-center">
-            {isUpdated
+            {isUpdate
               ? 'Modification de mot de passe'
               : 'Bienvenue sur EventHub !'}
           </h1>
           <div className="text-center text-light-grey">
             <p className="text-2xl">
-              {isUpdated
+              {isUpdate
                 ? 'Tu peux choisir un nouveau mot de passe'
                 : "Vous devez d'abord créer un mot de passe pour pouvoir commencer."}
             </p>
           </div>
-          <PasswordForm isUpdated={isUpdated} id={user?.id as string} />
+          <PasswordForm isUpdate={user.hasPassword} id={user.id} />
         </div>
       </Backdrop>
     </div>

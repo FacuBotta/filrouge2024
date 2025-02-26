@@ -15,7 +15,8 @@
     "react",
     "prettier",
     "testing-library",
-    "jest"
+    "jest",
+    "cypress"
   ],
   "rules": {
     "semi": ["error", "always"],
@@ -36,7 +37,8 @@
     }
   },
   "env": {
-    "jest": true
+    "jest": true,
+    "cypress/globals": true
   },
   "globals": {
     "jest": "readonly",

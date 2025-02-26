@@ -7,7 +7,6 @@ export async function middleware(req: NextRequest) {
   const hasPassword = token?.hasPassword === true;
   const isAdmin = token?.role === 'admin';
   const isAdminPage = req.nextUrl.pathname.startsWith('/admin');
-
   if (isAdminPage) {
     if (isAuth && isAdmin) {
       return NextResponse.next();

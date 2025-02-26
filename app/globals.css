@@ -52,8 +52,19 @@ footer a:hover {
 }
 
 /* ============= Dashboard layout ============= */
-.dashboard-main {
+.main-container {
   @apply min-h-screen w-full  flex flex-col gap-2 bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] dark:bg-none dark:bg-dark-bg;
+}
+/* ========== Forms ========== */
+.primary-form {
+  @apply relative flex flex-col items-center gap-3 w-full max-w-md p-5 mx-2 bg-light-ciel border rounded-lg border-dark-bg dark:border-light-yellow dark:bg-dark-bg;
+}
+.primary-input {
+  @apply bg-light-grey dark:bg-dark-bg border-[1px] rounded-lg p-2 border-dark-bg dark:border-dark-grey focus:border-light-blue focus:dark:border-light-yellow disabled:opacity-50;
+}
+
+.newEventInput {
+  @apply p-2 mt-2 border-2 rounded-lg w-full border-dark-bg dark:border-dark-grey/50 bg-white dark:bg-dark-cards dark:placeholder:text-dark-greenLight/50;
 }
 /* ========== Cards ========== */
 .user-card {
@@ -163,7 +174,3 @@ footer a:hover {
 =============== Events ================================
 =======================================================
 */
-
-.newEventInput {
-  @apply p-2 mt-2 border-2 rounded-lg w-full border-dark-bg dark:border-dark-grey/50 bg-white dark:bg-dark-cards dark:placeholder:text-dark-greenLight/50;
-}

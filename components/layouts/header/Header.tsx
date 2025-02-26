@@ -21,7 +21,7 @@ export default async function Header() {
               <NavMenuButton />
             </label>
             <ul className="mr-[-1.25rem] sm:mr-0 gap-4 font-bold text-dark-bg dark:text-dark-grey sm:flex sm:flex-row">
-              <NavItem href="/">Home</NavItem>
+              <NavItem href="/">Accueil</NavItem>
               {auth && <NavItem href="/profile">Profile</NavItem>}
               {auth && <NavItem href="/communaute">Communauté</NavItem>}
               {auth ? (

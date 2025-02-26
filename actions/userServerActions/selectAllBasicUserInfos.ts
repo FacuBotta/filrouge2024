@@ -26,10 +26,11 @@ export const selectAllBasicUserInfos = async (
           user.description !== null
       );
     }
-    return allUsers.filter(
-      (user: BasicProfileInformation) =>
+    return allUsers.filter((user): user is BasicProfileInformation =>
+      Boolean(
         user.username?.toLowerCase().includes(search.toLowerCase()) ||
-        user.email?.toLowerCase().includes(search.toLowerCase())
+          user.email?.toLowerCase().includes(search.toLowerCase())
+      )
     );
   } catch (error) {
     console.error(error);

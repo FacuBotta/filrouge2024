@@ -1,0 +1,43 @@
+name: Deploy Next.js to Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # Ajusta según tu versión de Node.js
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Next.js app
+        run: npm run build
+
+      - name: Deploy to server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: '.next,package.json,package-lock.json,next.config.js,public'
+          target: '/path/to/your/website'
+
+      - name: Execute remote SSH commands
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /path/to/your/website
+            npm install --production
+            pm2 restart your-app-name  # O el comando para reiniciar tu aplicación

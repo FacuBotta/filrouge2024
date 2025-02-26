@@ -1,48 +1,109 @@
 'use client';
 
+import { checkPassword } from '@/actions/userServerActions/checkPassword';
 import { updatePassword } from '@/actions/userServerActions/updatePassword';
-import { passwordRegex, passwordSchema } from '@/lib/zodSchemas';
-import { PasswordInput } from 'facu-ui';
+import { handleError } from '@/lib/zod/handleError';
+import {
+  passwordRegex,
+  passwordRegexMessage,
+  passwordSchema,
+} from '@/lib/zod/zodSchemas';
+import { getFormDataStringValue } from '@/utils/getFormDataValue';
+import { Input, PasswordInput } from 'facu-ui';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import React, { useState, useTransition } from 'react';
 import { toast } from 'sonner';
-import { z } from 'zod';
 import Button from '../ui/Button';
 
 type PasswordFormProps = {
   id: string;
-  isUpdated: boolean;
+  isUpdate: boolean;
 };
-export default function PasswordForm({ id, isUpdated }: PasswordFormProps) {
-  const router = useRouter();
-  const { update } = useSession();
+export default function PasswordForm({ id, isUpdate }: PasswordFormProps) {
+  const { update, data: session } = useSession();
 
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const [passwordChecked, setPasswordChecked] = useState(!isUpdate);
   const [error, setError] = useState({
     password: { message: '', value: false },
+    oldPassword: { message: '', value: false },
   });
 
-  const handlePasswordSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const checkOldPassword = async (password: string) => {
+    if (!password) {
+      setError({
+        ...error,
+        oldPassword: { message: 'Mot de passe manquant', value: true },
+      });
+      setPasswordChecked(false);
+      return;
+    }
+    startTransition(async () => {
+      if (!session?.user.email) {
+        setError((prev) => ({
+          ...prev,
+          oldPassword: { message: 'Utilisateur non connecte', value: true },
+        }));
+        return;
+      }
+      try {
+        passwordSchema.safeParse({ password });
+        const result = await checkPassword({
+          inputPassword: password,
+          email: session.user.email,
+        });
+        if (!result) {
+          setError((prev) => ({
+            ...prev,
+            oldPassword: {
+              message: 'Ancienne mot de passe incorrect',
+              value: true,
+            },
+          }));
+          setPasswordChecked(false);
+        } else {
+          setPasswordChecked(true);
+          setError({
+            password: { message: '', value: false },
+            oldPassword: { message: '', value: false },
+          });
+        }
+      } catch (error) {
+        console.error('Error checking old password:', error);
+        setError((prev) => ({
+          ...prev,
+          oldPassword: {
+            message: 'Erreur lors de la vérification',
+            value: true,
+          },
+        }));
+      }
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError({
       password: { message: '', value: false },
+      oldPassword: { message: '', value: false },
     });
+    if (!passwordChecked) {
+      setError({
+        ...error,
+        oldPassword: { message: 'Mot de passe manquant', value: true },
+      });
+    }
 
     const formData = new FormData(e.currentTarget);
 
-    const password: string = formData
-      .get('password')
-      ?.toString()
-      .trim() as string;
-
-    const confirmPassword: string = formData
-      .get('confirmPassword')
-      ?.toString()
-      .trim() as string;
+    const password = getFormDataStringValue(formData, 'password');
+    const confirmPassword = getFormDataStringValue(formData, 'confirmPassword');
 
     if (password !== confirmPassword) {
       setError({
+        ...error,
         password: {
           message: 'Les mots de passe ne correspondent pas',
           value: true,
@@ -50,64 +111,87 @@ export default function PasswordForm({ id, isUpdated }: PasswordFormProps) {
       });
       return;
     }
+
     try {
       passwordSchema.parse({ password });
       startTransition(async () => {
         const result = await updatePassword(formData);
-        if (!result?.ok) {
-          setError({
-            password: { message: result?.message as string, value: true },
-          });
-        } else if (result.ok) {
+        if (result?.ok) {
           await update({ hasPassword: true });
           router.push('/profile');
           toast.success('Mot de passe modifié');
+        } else {
+          setError({
+            ...error,
+            password: { message: result?.message as string, value: true },
+          });
         }
       });
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        const firstError = error.errors[0];
-        const field = firstError.path[0];
-        if (field === 'password') {
-          setError({
-            password: { message: firstError.message, value: true },
-          });
-        }
-      } else {
-        console.error(error);
-      }
+      const errorHandled = handleError(error);
+      console.log({ errorHandled });
+      setError({
+        password: {
+          message: errorHandled.message,
+          value: true,
+        },
+        oldPassword: { message: '', value: false },
+      });
     }
   };
+
   return (
-    <form
-      className="relative flex flex-col items-center gap-3 w-full max-w-md p-5 mx-2 bg-light-blue border rounded-lg border-light-yellow dark:bg-dark-bg"
-      onSubmit={handlePasswordSubmit}
-    >
+    <form className="primary-form" onSubmit={handleSubmit}>
       <input type="hidden" name="id" value={id} />
+
+      {isUpdate && (
+        <Input
+          className="primary-input"
+          autoFocus={isUpdate}
+          onBlur={(e) => checkOldPassword(e.target.value)}
+          required={true}
+          label="Ancienne mot de passe"
+          type="password"
+          name="oldPassword"
+          placeholder="Mot de passe"
+          disabled={isPending}
+          autoComplete="current-password"
+          success={{
+            message: 'Mot de passe vérifié',
+            value: passwordChecked,
+          }}
+          error={{
+            message: error.oldPassword?.message,
+            value: error.oldPassword?.value,
+          }}
+        />
+      )}
+
       <PasswordInput
+        autoFocus={!isUpdate}
         regexp={{
-          message:
-            '8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial, \\\' \\" _ - ne sont pas autorisés',
+          message: passwordRegexMessage,
           pattern: passwordRegex,
         }}
         label="Nouveau mot de passe"
-        className="bg-light-grey dark:bg-dark-bg border-[1px] rounded-lg p-2 border-light-blue dark:border-dark-grey focus:border-light-yellow  focus:dark:border-light-yellow"
+        className="primary-input"
         name="password"
         placeholder="Nouveau mot de passe"
-        disabled={isPending}
+        disabled={!passwordChecked}
       />
       <PasswordInput
+        disabled={!passwordChecked}
+        className="primary-input"
         label="Confirmer le mot de passe"
-        className="bg-light-grey dark:bg-dark-bg border-[1px] rounded-lg p-2 border-light-blue dark:border-dark-grey focus:border-light-yellow  focus:dark:border-light-yellow"
         name="confirmPassword"
         placeholder="Confirmer le mot de passe"
-        disabled={isPending}
+        error={{
+          message: error.password?.message,
+          value: error.password?.value,
+        }}
       />
-      {error.password?.value ? (
-        <p className="text-red-500">{error.password.message}</p>
-      ) : null}
-      <Button type="submit" disabled={isPending}>
-        {isUpdated ? 'Modifier mot de passe' : 'Créer un mot de passe'}
+      <Button type="submit" disabled={isPending || !passwordChecked}>
+        {isUpdate ? 'Modifier mot de passe' : 'Créer un mot de passe'}
       </Button>
     </form>
   );

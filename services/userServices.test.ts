@@ -10,7 +10,7 @@ import {
 import {
   getAllUsersServiceSchema,
   getUserServiceSchema,
-} from '@/lib/zodSchemas';
+} from '@/lib/zod/zodSchemas';
 
 jest.mock('@/lib/prisma', () => ({
   __esModule: true,
@@ -23,7 +23,7 @@ const mockUser = {
   id: '1',
   email: 'user@example.com',
   username: 'testuser',
-  // password: 'secretpassword', TODO: check if password is returned
+  password: 'secretpassword',
   image: null,
   description: null,
   _count: { Ratings: 2, EventsCreated: 1 },
@@ -53,7 +53,33 @@ describe('User Services', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
+  describe('UpdateUserService', () => {
+    it('should update a user successfully', async () => {
+      const newData = {
+        username: 'newUserName',
+        description: 'new description',
+      };
 
+      prismaMock.user.update.mockResolvedValue({
+        ...mockUser,
+        ...newData,
+      });
+
+      const result = await updateUserService({
+        id: '1',
+        data: newData,
+      });
+
+      expect(prismaMock.user.update).toHaveBeenCalledWith({
+        where: { id: '1' },
+        data: newData,
+      });
+      expect(result).toEqual({
+        ...mockUser,
+        ...newData,
+      });
+    });
+  });
   describe('selectUserByIdService', () => {
     it('should select a user by id successfully (zod schema ok and password not returned)', async () => {
       prismaMock.user.findUnique.mockResolvedValue(mockUser);
@@ -90,7 +116,6 @@ describe('User Services', () => {
       );
       expect(result).not.toBeNull();
       expect(Object.keys(result!)).not.toContain('password');
-      console.log(result);
     });
 
     it('should return null when user is not found', async () => {
@@ -126,33 +151,7 @@ describe('User Services', () => {
       expect(result).toBeNull();
     });
   });
-  describe('UpdateUserService', () => {
-    it('should update a user successfully', async () => {
-      const newData = {
-        username: 'newUserName',
-        description: 'new description',
-      };
 
-      prismaMock.user.update.mockResolvedValue({
-        ...mockUser,
-        ...newData,
-      });
-
-      const result = await updateUserService({
-        id: '1',
-        data: newData,
-      });
-
-      expect(prismaMock.user.update).toHaveBeenCalledWith({
-        where: { id: '1' },
-        data: newData,
-      });
-      expect(result).toEqual({
-        ...mockUser,
-        ...newData,
-      });
-    });
-  });
   describe('selectAllUsersService', () => {
     const originalError = console.error;
 

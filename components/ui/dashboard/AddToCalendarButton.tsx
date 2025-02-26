@@ -4,7 +4,7 @@ import { GoogleCalendarIcon } from '@/public/images/icons/GoogleCalendarIcon';
 import { Office365Icon } from '@/public/images/icons/Office365Icon';
 import { OutlookIcon } from '@/public/images/icons/OutlookIcon';
 import { YahooIcon } from '@/public/images/icons/YahooIcon';
-import { EventWithUserAndCount } from '@/types/types';
+import { BasicEventData } from '@/types/types';
 import {
   CalendarEvent,
   google,
@@ -16,7 +16,7 @@ import React from 'react';
 
 interface AddToCalendarButtonProps {
   className?: string;
-  event: EventWithUserAndCount;
+  event: BasicEventData;
 }
 
 export default function AddToCalendarButton({

@@ -1,7 +1,7 @@
 'use server';
 
 import { auth } from '@/lib/auth/authConfig';
-import { NewEventForm, newEventSchema } from '@/lib/zodSchemas';
+import { NewEventForm, newEventSchema } from '@/lib/zod/zodSchemas';
 import { createEventService } from '@/services/eventServices';
 import { createMessageService } from '@/services/messagesServices';
 import { createUserInvitationService } from '@/services/userInvitationServices';
@@ -50,12 +50,9 @@ export const createEvent = async (
     /* 
     ============= UPLOAD IMAGE =============
     */
-    const safeTitle = event.title.replace(/[^a-zA-Z0-9-_]/g, '_');
-    const imageName = `${safeTitle}_${Date.now()}.jpg`;
-    const imagePath = `/uploads/${imageName}`;
 
-    const success = await uploadImage(imageFile, imageName);
-    if (!success) {
+    const { imagePath } = await uploadImage(imageFile, event.title);
+    if (!imagePath) {
       throw new Error("Erreur lors du téléchargement de l'image");
     }
 
@@ -95,6 +92,7 @@ export const createEvent = async (
     /* 
     ============= CREATE USER INVITATIONS =============
     */
+    // TODO : pasar esto a otro controller... que reciba el conversationId y los participantsId
     if (newConversation) {
       const userInvitationsArray = await Promise.all(
         event.participants.map(async (participantId) => {

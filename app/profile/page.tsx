@@ -1,10 +1,5 @@
-import { checkIsAuthenticated } from '@/actions/authServerActions/checkIsAuthenticated';
-import selectUserReceivedComments from '@/actions/commentsServerActions/selectUserReceivedComments';
-import { selectUserEvents } from '@/actions/eventsServerActions/selectUserEvents';
-import { selectUserEventsJoined } from '@/actions/eventsServerActions/selectUserEventsJoined';
-import { selectUserTasks } from '@/actions/TasksServerActions/selectUserTasks';
 import { selectAllBasicUserInfos } from '@/actions/userServerActions/selectAllBasicUserInfos';
-import selectUserById from '@/actions/userServerActions/selectUserById';
+import selectProfileData from '@/actions/userServerActions/selectUserData';
 import PageHeader from '@/components/layouts/PageHeader';
 import CommentCard from '@/components/ui/cards/CommentCard';
 import OwnerEventCard from '@/components/ui/cards/OwnerEventCard';
@@ -14,38 +9,32 @@ import TasksProfile from '@/components/ui/dashboard/TasksProfile';
 import IconWrapper from '@/components/ui/IconWrapper';
 import RantingUser from '@/components/ui/RantingUser';
 import { UserAvatar } from '@/public/images/UserAvatar';
-import {
-  BasicProfileInformation,
-  Comment,
-  EventWithUserAndCount,
-} from '@/types/types';
-import { Tasks } from '@prisma/client';
+import { BasicEventData, UserComment, UserData } from '@/types/types';
 import { Link } from 'next-view-transitions';
 import { redirect } from 'next/navigation';
 import React from 'react';
-const DashboardPage: React.FC = async () => {
-  const { user } = await checkIsAuthenticated();
-  const contacts = await selectAllBasicUserInfos();
-  const userData: BasicProfileInformation | null = await selectUserById(
-    user?.id as string
-  );
+
+const ProfilePage: React.FC = async () => {
+  const userData: UserData | null = await selectProfileData();
+
   if (!userData) {
     redirect('/login');
   }
-  const { description, username, email, image } = userData;
-  const userTasks: Tasks[] = await selectUserTasks();
-  const userEventsCreated: EventWithUserAndCount[] = await selectUserEvents({
-    userId: user?.id as string,
-  });
-  const comments: Comment[] | [] = await selectUserReceivedComments({
-    userId: user?.id as string,
-  });
-  // TODO : ver si es necesario o que... puedo recuperar directamente desde las userInvitation
-  const userEventsJoined: EventWithUserAndCount[] =
-    await selectUserEventsJoined();
+  const contacts = await selectAllBasicUserInfos();
 
+  const {
+    description,
+    username,
+    email,
+    image,
+    comments,
+    eventsCreated,
+    eventsJoined,
+    tasks,
+    score,
+  } = userData;
   return (
-    <section className="min-h-screen mt-10 relative px-2 w-full max-w-max mx-auto flex flex-col sm:!flex-row justify-start gap-5 divide-y sm:divide-y-0 sm:divide-x ">
+    <section className="min-h-screen mt-10 relative px-2 w-full max-w-max mx-auto flex flex-col sm:!flex-row justify-start gap-5 divide-light-borderCards dark:divide-dark-borderCards divide-y sm:divide-y-0 sm:divide-x ">
       {/* profile section - left side */}
       <aside className="w-full sm:sticky top-24 max-w-[400px] h-fit p-5 flex justify-center">
         <div className="flex flex-col items-center justify-center pt-5 gap-2">
@@ -61,7 +50,7 @@ const DashboardPage: React.FC = async () => {
             <UserAvatar src={image} className="size-[200px]" />
           </div>
           <h1 className="font-bold text-2xl">{username || email}</h1>
-          <RantingUser ranting={4} />
+          <RantingUser ranting={score} />
 
           <h2 className="font-bold text-2xl">Bio</h2>
           {description && description.length > 0 ? (
@@ -86,7 +75,7 @@ const DashboardPage: React.FC = async () => {
             <h1 className="font-bold text-2xl">Mes notes</h1>
           </div>
         </header>
-        <TasksProfile tasks={userTasks} />
+        <TasksProfile tasks={tasks} />
 
         <div className="flex flex-col gap-5 w-full ">
           <div className="flex w-full justify-between">
@@ -95,10 +84,12 @@ const DashboardPage: React.FC = async () => {
               Creer un événement 📅
             </Link>
           </div>
-          {userEventsCreated?.length === 0 ? (
-            <p>Vous n&apos;avez pas encore créé d&apos;événement</p>
+          {eventsCreated?.length === 0 ? (
+            <p className="opacity-50">
+              Vous n&apos;avez pas encore créé d&apos;événement
+            </p>
           ) : (
-            userEventsCreated.map((event: EventWithUserAndCount) => (
+            eventsCreated.map((event: BasicEventData) => (
               <OwnerEventCard
                 key={event.id}
                 event={event}
@@ -112,12 +103,14 @@ const DashboardPage: React.FC = async () => {
               Découvrir les événements 🚀
             </Link>
           </div>
-          {userEventsJoined?.length === 0 ? (
+          {eventsJoined?.length === 0 ? (
             <div>
-              <p>Vous n&apos;avez pas encore rejoint des événements</p>
+              <p className="opacity-50">
+                Vous n&apos;avez pas encore rejoint des événements
+              </p>
             </div>
           ) : (
-            userEventsJoined.map((event: EventWithUserAndCount) => (
+            eventsJoined.map((event: BasicEventData) => (
               <EventCard
                 key={event.id}
                 event={event}
@@ -129,7 +122,7 @@ const DashboardPage: React.FC = async () => {
           <h1 className="font-bold text-2xl">Mes avis</h1>
           <div className="flex flex-wrap gap-5 w-full ">
             {comments?.length > 0 ? (
-              comments?.map((comment: Comment) => (
+              comments?.map((comment: UserComment) => (
                 <CommentCard key={comment.id} comment={comment} />
               ))
             ) : (
@@ -142,4 +135,4 @@ const DashboardPage: React.FC = async () => {
   );
 };
 
-export default DashboardPage;
+export default ProfilePage;

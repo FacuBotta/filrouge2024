@@ -8,10 +8,28 @@ import Header from '../components/layouts/header/Header';
 import './globals.css';
 import { Providers } from './providers';
 
+// const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
 export const metadata: Metadata = {
   title: 'EventHub',
   description:
-    "EventHub is your solution for event management and appointment booking. Simplify your organization's activities with our modern and intuitive interface. With EventHub, you can easily sync your events with Google Calendar, manage your tasks, and communicate effectively with your colleagues. Whether you're planning a small gathering or a large event, EventHub offers the necessary tools to succeed.",
+    "EventHub est votre solution pour la gestion d'événements et la planification de rendez-vous. Simplifiez les activités de votre organisation avec notre interface moderne et intuitive. Que vous planifiiez un petit rassemblement ou un grand événement, EventHub offre les outils nécessaires pour réussir.",
+  /* openGraph: {
+    title: 'EventHub',
+    description:
+      "EventHub est votre solution pour la gestion d'événements et la planification de rendez-vous. Simplifiez les activités de votre organisation avec notre interface moderne et intuitive.",
+    url: 'eventhub.facudev.fr',
+    siteName: 'EventHub',
+    images: [
+      {
+        url: 'eventhub.facudev.fr/images/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'EventHub logo',
+      },
+    ],
+    type: 'website',
+  }, */
 };
 
 export default async function RootLayout({
@@ -31,7 +49,7 @@ export default async function RootLayout({
         <body className={`${Fredoka.variable} font-fredoka `}>
           <Providers>
             <Header />
-            <main className="dashboard-main">{children}</main>
+            <main className="main-container">{children}</main>
             {auth}
             <Toaster
               richColors
@@ -46,6 +64,3 @@ export default async function RootLayout({
     </ViewTransitions>
   );
 }
-/* 
-<div class="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"></div>
-*/

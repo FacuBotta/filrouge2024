@@ -96,6 +96,24 @@ export const getConversationByIdService = async (
     throw new Error('Service error: getConversationByIdService');
   }
 };
+export const selectConversationsCreatedByUserService = async (
+  userId: string
+) => {
+  try {
+    return await prisma.userConversation.findMany({
+      where: {
+        userId,
+        role: 'CREATOR',
+      },
+      select: {
+        conversationId: true,
+      },
+    });
+  } catch (error) {
+    console.error('selectConversationsCreatedByUserService: error', error);
+    throw new Error('Service error: selectConversationsCreatedByUserService');
+  }
+};
 
 // TODO : type response
 export const selectConversationsByUserService = async (userId: string) => {

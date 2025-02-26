@@ -12,19 +12,13 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'lh3.googleusercontent.com',
+        hostname: 'lh3.googleusercontent.com', // Images from google, avatar and maps API
         port: '',
         pathname: '/**',
       },
       {
         protocol: 'https',
-        hostname: 'avatars.githubusercontent.com',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'randomuser.me',
+        hostname: 'randomuser.me', // API to generate random user data and images when seed data
         port: '',
         pathname: '/api/**',
       },

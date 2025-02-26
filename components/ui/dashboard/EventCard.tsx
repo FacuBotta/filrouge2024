@@ -1,5 +1,5 @@
 import { UserAvatar } from '@/public/images/UserAvatar';
-import { EventWithUserAndCount } from '@/types/types';
+import { BasicEventData } from '@/types/types';
 import { Link } from 'next-view-transitions';
 import React from 'react';
 export default async function EventCard({
@@ -7,7 +7,7 @@ export default async function EventCard({
   event,
 }: {
   category: { id: string; title: string };
-  event: EventWithUserAndCount;
+  event: BasicEventData;
 }): Promise<React.JSX.Element> {
   return (
     <Link
@@ -23,7 +23,7 @@ export default async function EventCard({
         </div>
         <div className="">
           <p className="text-sm mb-2">
-            {event._count.participants} participants
+            {event._count?.participants} participants
           </p>
           <p className="text-sm">
             Début le : {event.eventStart.toLocaleDateString()} a{' '}
@@ -37,12 +37,9 @@ export default async function EventCard({
           )}
         </div>
         <div className="flex items-center gap-2 my-2">
-          <UserAvatar src={event.user?.image} />
+          <UserAvatar src={event.creator?.image} />
           <div>
-            <p className="text-sm">Cree par {event.user?.username}</p>
-            <p className="text-sm">
-              {event.user?._count?.Ratings} avis sur ce sujet
-            </p>
+            <p className="text-sm">Cree par {event.creator?.username}</p>
           </div>
         </div>
         <p className="text-sm text-balance break-words line-clamp-3">
