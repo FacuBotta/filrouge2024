@@ -78,7 +78,7 @@ export const updateUserProfile = async (
       id: session.user.id,
       data: userData,
     });
-    return { ok: true, message: 'Profile mis à jour' };
+    return { ok: true, message: 'Profil mis à jour' };
   } catch (error) {
     const customError = handleError(error);
     return { ok: customError.ok, message: customError.message };

@@ -44,7 +44,7 @@ const EditProfilePage = async () => {
             className="w-full flex justify-center text-red-600"
             href={'/profile/delete'}
           >
-            Supprimer ma compte
+            Supprimer mon compte
           </Link>
         </div>
       </div>

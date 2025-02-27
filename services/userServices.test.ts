@@ -1,16 +1,16 @@
+import {
+  getAllUsersServiceSchema,
+  getUserServiceSchema,
+} from '@/lib/zod/zodSchemas';
+import { expect } from '@jest/globals';
 import { PrismaClient } from '@prisma/client';
 import { mockDeep } from 'jest-mock-extended';
-import { expect } from '@jest/globals';
 import {
   selectAllUsersService,
   selectUserByEmailService,
   selectUserByIdService,
   updateUserService,
 } from './userServices';
-import {
-  getAllUsersServiceSchema,
-  getUserServiceSchema,
-} from '@/lib/zod/zodSchemas';
 
 jest.mock('@/lib/prisma', () => ({
   __esModule: true,
@@ -23,7 +23,7 @@ const mockUser = {
   id: '1',
   email: 'user@example.com',
   username: 'testuser',
-  password: 'secretpassword',
+  // password: 'secretpassword',
   image: null,
   description: null,
   _count: { Ratings: 2, EventsCreated: 1 },
@@ -151,7 +151,6 @@ describe('User Services', () => {
       expect(result).toBeNull();
     });
   });
-
   describe('selectAllUsersService', () => {
     const originalError = console.error;
 

@@ -112,6 +112,7 @@ export default function LogForm() {
       });
     } catch (error) {
       const handledError = handleError(error);
+      console.log({ handledError });
       setError((prevError) => ({
         ...prevError,
         mail: { message: handledError.message, value: true },

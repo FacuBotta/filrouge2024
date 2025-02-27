@@ -58,10 +58,10 @@ const ProfilePage: React.FC = async () => {
           ) : (
             <div className="h-[200px] flex items-center justify-center p-2 border-2 border-dark-bg dark:border-white bg-dark-grey/40 rounded-xl">
               <p className="text-center">
-                Il semble que tu n&apos;as pas encore ajouté ton bio! Prende un
-                moment pour compléter ton profil et accéder à toutes les
+                Il semble que tu n&apos;aies pas encore ajouté ta bio ! Prends
+                un moment pour compléter ton profil et accéder à toutes les
                 fonctionnalités de l&apos;application. Nous avons hâte de mieux
-                te connaître!
+                te connaître !
               </p>
             </div>
           )}
@@ -98,7 +98,7 @@ const ProfilePage: React.FC = async () => {
             ))
           )}
           <div className="flex w-full justify-between">
-            <h1 className="font-bold text-2xl">Mes événements a venir</h1>
+            <h1 className="font-bold text-2xl">Mes événements à venir</h1>
             <Link className="primary-btn" href={'/events'}>
               Découvrir les événements 🚀
             </Link>

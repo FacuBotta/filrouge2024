@@ -47,7 +47,7 @@ export default function SearchBar({ title }: SearchBarProps) {
       placeHolder = 'Un conversation ? Un sujet ?';
       break;
     case 'all':
-      placeHolder = 'Un mot clé, un contact, une tache ?';
+      placeHolder = 'Un mot clé, un contact, une tâche ?';
       break;
     default:
       placeHolder = 'Un mot clé ?';

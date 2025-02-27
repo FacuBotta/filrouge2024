@@ -58,7 +58,7 @@ export default function PasswordForm({ id, isUpdate }: PasswordFormProps) {
           setError((prev) => ({
             ...prev,
             oldPassword: {
-              message: 'Ancienne mot de passe incorrect',
+              message: 'Ancien mot de passe incorrect',
               value: true,
             },
           }));
@@ -150,7 +150,7 @@ export default function PasswordForm({ id, isUpdate }: PasswordFormProps) {
           autoFocus={isUpdate}
           onBlur={(e) => checkOldPassword(e.target.value)}
           required={true}
-          label="Ancienne mot de passe"
+          label="Ancien mot de passe"
           type="password"
           name="oldPassword"
           placeholder="Mot de passe"
