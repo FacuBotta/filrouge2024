@@ -29,7 +29,10 @@ export const updateUserService = async ({
   data,
 }: {
   id: string;
-  data: Prisma.UserUpdateInput;
+  data: Pick<
+    Prisma.UserUpdateInput,
+    'image' | 'description' | 'username' | 'hasPassword' | 'password'
+  >;
 }) => {
   try {
     return prisma.user.update({

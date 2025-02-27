@@ -11,7 +11,7 @@ export default async function EventsPage({
   category: Category;
 }) {
   return (
-    <section className="animate max-w-[1000px]  mx-auto flex flex-col px-2">
+    <section className="animate-scroll max-w-[1000px]  mx-auto flex flex-col px-2">
       <PageHeader title={category.title} searchType="events" />
       <p className="text-left max-w-[700px] ml-0 sm:mt-5 4xl:mt-0 sm:pl-10 font-light">
         {category.description}
