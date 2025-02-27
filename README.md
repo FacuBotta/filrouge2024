@@ -28,6 +28,12 @@ Le but de ce projet est de valider les competences pour la obtention du titre Co
 
 Cet projet a pour fonctionnalité principal d'intégrer un système de gestion des événements pour les utilisateurs. La application permettre de créer et gérer des événements dans la plateforme et les synchroniser avec le calendrier de google. Il y a aussi un système de commentaires et ponctuation pour les utilisateurs, ainsi comme un système de messagerie et notifications.
 
+### Liens
+
+- [Site](https://filrouge2024.vercel.app/)
+- [Figma](https://www.figma.com/design/dKas1GBEozCmW0RuG331EI/fil-rouge-2024?node-id=0-1&t=OdAsUR6EVt98mwsm-1)
+- [Mémoire](https://docs.google.com/document/d/1DcWckybC7697-RW4LytWSzO_2fi7GIXWQsl40YLe4oQ/edit?usp=sharing)
+
 # Instructions pour l'installation
 
 ## Requirements
