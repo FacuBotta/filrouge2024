@@ -1,5 +1,12 @@
 {
-  "cSpell.words": ["extralight", "fredoka"],
+  "cSpell.words": [
+    "cuid",
+    "extralight",
+    "filrouge",
+    "fredoka",
+    "mysql",
+    "phpmyadmin"
+  ],
   "CodeGPT.apiKey": "Ollama",
   "dimmer.enabled": false
 }

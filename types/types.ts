@@ -1,5 +1,11 @@
-import { User } from '@prisma/client';
+import { User, UserInvitations } from '@prisma/client';
 
+/* ========================================================================== */
+/* ============================ GENERAL TYPES =========================== */
+/* ========================================================================== */
+export interface ScoreGiverRef {
+  getScore: () => number;
+}
 /* ========================================================================== */
 /* ============================ CONVERSATION TYPES =========================== */
 /* ========================================================================== */
@@ -56,6 +62,23 @@ export interface Conversation {
 /* ========================================================================== */
 /* ============================ USER TYPES ================================== */
 /* ========================================================================== */
+export interface Comment {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  content: string;
+  rating: {
+    score: number;
+  } | null;
+  author: {
+    id: string;
+    username: string | null;
+    image: string | null;
+    _count: {
+      Ratings: number;
+    };
+  };
+}
 export interface BasicProfileInformation {
   id: string;
   email: string | null;
@@ -182,4 +205,48 @@ export interface EventByUser {
   _count: {
     participants: number;
   };
+}
+export interface BasicEventData {
+  id: string;
+  title: string;
+  description: string | null;
+  creator?: { id: string; username: string; image: string | null };
+  eventStart: Date;
+  eventEnd: Date | null;
+  isPublic: boolean;
+  image: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  conversation: { id: string } | null;
+  participants?: { userId: string }[] | null;
+  formattedAddress: string | null;
+  tasks?: Tasks[] | null;
+  UserInvitations?: Partial<UserInvitations>[] | null;
+  category: {
+    id: string;
+    title: string;
+  };
+  _count?: {
+    participants: number;
+  };
+}
+export interface UserComment {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  content: string;
+  author: { id: string; username: string | null; image: string | null };
+  rating?: { score: number } | null;
+}
+export interface UserData {
+  id: string;
+  email: string | null;
+  username: string | null;
+  image: string | null;
+  description: string | null;
+  eventsCreated: BasicEventData[];
+  eventsJoined: BasicEventData[];
+  tasks: Tasks[];
+  comments: UserComment[];
+  score: number;
 }

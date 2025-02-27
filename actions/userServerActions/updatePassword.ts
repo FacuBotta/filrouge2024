@@ -1,30 +1,45 @@
 'use server';
-import { auth } from '@/lib/auth/authConfig';
-import { passwordSchema } from '@/lib/zodSchemas';
-import { updateUserService } from '@/services/userServices';
-import bcrypt from 'bcrypt';
-import { z } from 'zod';
 
+import { auth } from '@/lib/auth/authConfig';
+import { handleError } from '@/lib/zod/handleError';
+import { passwordSchema } from '@/lib/zod/zodSchemas';
+import { updateUserService } from '@/services/userServices';
+import { getFormDataStringValue } from '@/utils/getFormDataValue';
+import bcrypt from 'bcrypt';
+
+/**
+ * Updates or create the user's password.
+ *
+ * @param {FormData} formData - The FormData object containing the user ID and new password.
+ * @returns {Promise<{ ok: boolean, message?: string }>}
+ */
 export const updatePassword = async (formData: FormData) => {
   const session = await auth();
-  if (!session) {
+
+  const id = getFormDataStringValue(formData, 'id');
+  const password = getFormDataStringValue(formData, 'password');
+
+  if (!session || session.user.id !== id) {
     return {
       ok: false,
-      message: 'Vous devez être connecté pour modifier votre mot de passe',
+      message: 'Non connecté',
     };
   }
-  const id = formData.get('id') as string;
-  const password = formData.get('password') as string;
 
-  async function hashPassword(password: string) {
+  async function hashPassword(password: string): Promise<string> {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     return hashedPassword;
   }
 
   try {
+    // Validate the password using Zod schema
     passwordSchema.parse({ password });
+
+    // Hash the password
     const hashedPassword = await hashPassword(password);
+
+    // Update the user's password
     await updateUserService({
       id,
       data: {
@@ -32,17 +47,9 @@ export const updatePassword = async (formData: FormData) => {
         hasPassword: true,
       },
     });
-    return { ok: true, message: 'Mot de passe modifié' };
-  } catch (error: unknown) {
-    if (error instanceof z.ZodError) {
-      const firstError = error.errors[0];
-      const field = firstError.path[0];
-      if (field === 'password') {
-        return { ok: false, message: firstError.message };
-      }
-    } else {
-      console.error(error); // dev purpose
-      return { ok: false, message: 'Une erreur est survenue' };
-    }
+
+    return { ok: true, message: 'Mot de passe mis à jour avec succès' };
+  } catch (error) {
+    return handleError(error);
   }
 };

@@ -3,10 +3,11 @@
 import { Link } from 'next-view-transitions';
 import { usePathname } from 'next/navigation';
 import { NotificationSpan } from '../NotificationSpan';
+import React from 'react';
 interface NavItemProps {
   href: string;
   notifications?: number;
-  children: JSX.Element;
+  children: React.JSX.Element;
 }
 
 export default function NavItem(props: NavItemProps) {

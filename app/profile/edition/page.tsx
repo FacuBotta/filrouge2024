@@ -3,7 +3,6 @@ import selectUserById from '@/actions/userServerActions/selectUserById';
 import { EditProfileForm } from '@/components/forms/EditProfileForm';
 import Backdrop from '@/components/layouts/Backdrop';
 import IconWrapper from '@/components/ui/IconWrapper';
-import { UserAvatar } from '@/public/images/UserAvatar';
 import { BasicProfileInformation } from '@/types/types';
 import { Link } from 'next-view-transitions';
 import { redirect } from 'next/navigation';
@@ -28,17 +27,24 @@ const EditProfilePage = async () => {
             className="transform rotate-45 absolute right-[10px] top-[10px]"
           />
         </Link>
-        <h1 className="text-3xl font-semibold">Edition de votre profil</h1>
-        <UserAvatar src={image} className="size-32 my-5" />
+        <h1 className="text-3xl font-semibold">Edition de mon profil</h1>
         <div className="items-center justify-center gap-5 w-full max-w-[500px] mx-auto">
           <EditProfileForm
-            username={username as string}
+            username={username}
             image={image as string}
             description={description as string}
           />
-          <Link className="w-full flex justify-center" href={'/set-password'}>
-            {/* TODO: send email to verify the user before changing the password */}
-            Changer de mot de passe
+          <Link
+            className="w-full flex justify-center mt-5"
+            href={'/set-password'}
+          >
+            Modifier mon mot de passe
+          </Link>
+          <Link
+            className="w-full flex justify-center text-red-600"
+            href={'/profile/delete'}
+          >
+            Supprimer mon compte
           </Link>
         </div>
       </div>

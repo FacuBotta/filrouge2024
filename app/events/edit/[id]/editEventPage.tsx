@@ -3,7 +3,7 @@
 import { updateEvent } from '@/actions/eventsServerActions/updateEvent';
 import SelectUserList from '@/components/forms/SelectUserList';
 import AutocompletedMapCard from '@/components/ui/cards/AutocompleteMapCard';
-import { NewEventForm, newEventSchema } from '@/lib/zodSchemas';
+import { NewEventForm, newEventSchema } from '@/lib/zod/zodSchemas';
 import {
   BasicProfileInformation,
   EventAddress,
@@ -96,7 +96,6 @@ export const EditEventPage = ({
     return `${year}-${month}-${day}T${hours}:${minutes}`;
   };
 
-  console.log({ event });
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError({

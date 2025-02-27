@@ -2,12 +2,13 @@
 
 import { sendInvitationToEvent } from '@/actions/eventsServerActions/joinUserToEvent';
 import SelectUserList from '@/components/forms/SelectUserList';
-import { BasicProfileInformation, EventWithUserAndCount } from '@/types/types';
+import { BasicEventData, BasicProfileInformation } from '@/types/types';
 import { Icon } from 'facu-ui';
 import { Link } from 'next-view-transitions';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import Badge from '../Badge';
+import AddToCalendarButton from '../dashboard/AddToCalendarButton';
 import TasksProfile from '../dashboard/TasksProfile';
 import DeleteEventModal from '../modals/DeleteEventModal';
 
@@ -15,7 +16,7 @@ export default function OwnerEventCard({
   event,
   contacts,
 }: {
-  event: EventWithUserAndCount;
+  event: BasicEventData;
   contacts: BasicProfileInformation[];
 }) {
   const [cardOpen, setCardOpen] = useState(false);
@@ -29,7 +30,7 @@ export default function OwnerEventCard({
     return diferenciaDias;
   }
   const daysFromToday = calculateDaysDifference(event.eventStart);
-  const pendingTasks = event.Tasks?.filter((task) => !task.completed);
+  const pendingTasks = event.tasks?.filter((task) => !task.completed);
   const toggleDeleteModal = () => {
     setModalOpen(!modalOpen);
   };
@@ -69,7 +70,7 @@ export default function OwnerEventCard({
           </Badge>
         )}
         <Badge onClick={() => setCardOpen(!cardOpen)} color="success">
-          {event._count.participants} participants
+          {event._count?.participants} participants
         </Badge>
         <Badge onClick={() => setCardOpen(!cardOpen)} color="error">
           <p>{pendingTasks?.length || 0} tâches à accomplir</p>
@@ -110,7 +111,10 @@ export default function OwnerEventCard({
             Supprimer
           </button>
         </div>
-        <TasksProfile tasks={event.Tasks || []} eventId={event.id} />
+        <div className="flex justify-start items-center mb-10">
+          <AddToCalendarButton event={event} />
+        </div>
+        <TasksProfile tasks={event.tasks || []} eventId={event.id} />
       </div>
       {modalOpen && (
         <DeleteEventModal eventId={event.id} toggleModal={toggleDeleteModal} />

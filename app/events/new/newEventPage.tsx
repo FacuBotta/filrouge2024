@@ -3,7 +3,7 @@
 import { createEvent } from '@/actions/eventsServerActions/createEvent';
 import SelectUserList from '@/components/forms/SelectUserList';
 import AutocompletedMapCard from '@/components/ui/cards/AutocompleteMapCard';
-import { NewEventForm, newEventSchema } from '@/lib/zodSchemas';
+import { NewEventForm, newEventSchema } from '@/lib/zod/zodSchemas';
 import { BasicProfileInformation, EventAddress } from '@/types/types';
 import { Category } from '@prisma/client';
 import { Icon } from 'facu-ui';

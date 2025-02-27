@@ -1,6 +1,7 @@
 import prisma from '@/lib/prisma';
 import { createUserEventServiceProps } from '@/types/servicesTypes/types';
 import { UserEvents } from '@prisma/client';
+import 'server-only';
 
 export const createUserEventService = async ({
   userId,

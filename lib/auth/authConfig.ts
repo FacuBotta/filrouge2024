@@ -20,7 +20,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     updateAge: 60 * 60 * 24 * 7, // 7 days
   },
   pages: {
-    signIn: '/app/login',
+    signIn: '/login',
+    error: '/login/error',
   },
   callbacks: {
     jwt: async ({ token, trigger, session, user }) => {

@@ -2,7 +2,7 @@
 
 import { auth } from '@/lib/auth/authConfig';
 import prisma from '@/lib/prisma';
-import { NewEventForm } from '@/lib/zodSchemas';
+import { NewEventForm } from '@/lib/zod/zodSchemas';
 import { updateEventService } from '@/services/eventServices';
 import { createEventServiceProps } from '@/types/servicesTypes/types';
 import { deleteImage } from '../deleteImage';
@@ -48,12 +48,9 @@ export const updateEvent = async ({ eventData, eventId }: UpdateEventProps) => {
     if (eventData.image.type === 'image/jpeg' && eventData.image.size > 0) {
       const imageFile = eventData.image as File;
       // upload the new image
-      const safeTitle = eventData.title.replace(/[^a-zA-Z0-9-_]/g, '_');
-      const imageName = `${safeTitle}_${Date.now()}.jpg`;
-      const imagePath = `/uploads/${imageName}`;
 
-      const success = await uploadImage(imageFile, imageName);
-      if (!success) {
+      const { imagePath } = await uploadImage(imageFile, eventData.title);
+      if (!imagePath) {
         throw new Error("Erreur lors du téléchargement de l'image");
       }
       // delete the old image

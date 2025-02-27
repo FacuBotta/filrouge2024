@@ -3,12 +3,13 @@
 import { CredentialsLoginServerAction } from '@/actions/authServerActions/CredentialsLoginServerAction';
 import { emailSignInServerAction } from '@/actions/authServerActions/emailSignInServerAction';
 import { handleGoogleSignIn } from '@/actions/authServerActions/googleSignInServerAction';
-import { emailSchema } from '@/lib/zodSchemas';
+import { handleError } from '@/lib/zod/handleError';
+import { emailSchema } from '@/lib/zod/zodSchemas';
+import { getFormDataStringValue } from '@/utils/getFormDataValue';
 import { Icon, Input } from 'facu-ui';
 import { Link } from 'next-view-transitions';
 import { useRouter } from 'next/navigation';
 import React, { useState, useTransition } from 'react';
-import { z } from 'zod';
 import Button from '../ui/Button';
 
 export default function LogForm() {
@@ -92,12 +93,14 @@ export default function LogForm() {
       return;
     }
 
-    const formData = new FormData(e.currentTarget);
-    const email = formData.get('email');
     try {
+      const formData = new FormData(e.currentTarget);
+      const email = getFormDataStringValue(formData, 'email');
+      // validate email
       emailSchema.parse({ email });
+
       startTransition(async () => {
-        const result = await emailSignInServerAction(email as string);
+        const result = await emailSignInServerAction(email);
         if (!result?.ok) {
           setError({
             ...error,
@@ -108,22 +111,12 @@ export default function LogForm() {
         }
       });
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        error.errors.forEach((error) => {
-          const field = error.path[0];
-          if (field === 'email') {
-            setError((prevError) => ({
-              ...prevError,
-              mail: { message: error.message, value: true },
-            }));
-          }
-        });
-      } else {
-        setError((prevError) => ({
-          ...prevError,
-          mail: { message: 'Une erreur est survenue', value: true },
-        }));
-      }
+      const handledError = handleError(error);
+      console.log({ handledError });
+      setError((prevError) => ({
+        ...prevError,
+        mail: { message: handledError.message, value: true },
+      }));
     }
   };
 
@@ -143,7 +136,7 @@ export default function LogForm() {
         </div>
       ) : (
         <form
-          className="relative flex flex-col items-center gap-3 w-full max-w-md p-5 mx-2 bg-light-blue border rounded-lg border-light-yellow dark:bg-dark-bg"
+          className="primary-form"
           onSubmit={
             formType === 'Sign-Up' ? handleSignUpSubmit : handleLogInSubmit
           }
@@ -160,7 +153,7 @@ export default function LogForm() {
               : 'Bienvenue sur EventHub !'}
           </h2>
           <Input
-            className={inputClasses}
+            className="primary-input"
             required={true}
             label={
               formType === 'Sign-In'
@@ -173,7 +166,6 @@ export default function LogForm() {
             placeholder="Email"
             disabled={isPending}
             autoComplete="email"
-            // errorStyles={{ color: 'red', fontSize: '1rem' }}
             error={{ message: error.mail?.message, value: error.mail?.value }}
           />
           {formType === 'Sign-In' ? (
@@ -186,14 +178,13 @@ export default function LogForm() {
               placeholder="Password"
               disabled={isPending}
               autoComplete="current-password"
-              // errorStyles={{ color: 'red', fontSize: '1rem' }}
               error={{
                 message: error.password?.message,
                 value: error.password?.value,
               }}
             />
           ) : (
-            <>
+            <div className="self-start text-sm">
               <label htmlFor="terms" className="flex gap-2">
                 <input
                   type="checkbox"
@@ -212,7 +203,7 @@ export default function LogForm() {
                   {error.conditions?.message}
                 </span>
               )}
-            </>
+            </div>
           )}
           <Button width="100%" type="submit">
             {formType === 'Sign-In'

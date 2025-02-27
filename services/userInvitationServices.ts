@@ -1,9 +1,10 @@
 import prisma from '@/lib/prisma';
-import { UserInvitations } from '@prisma/client';
 import {
   createUserInvitationServiceProps,
   updateUserInvitationServiceProps,
 } from '@/types/servicesTypes/types';
+import { UserInvitations } from '@prisma/client';
+import 'server-only';
 
 export const createUserInvitationService = async (
   invitationProps: createUserInvitationServiceProps

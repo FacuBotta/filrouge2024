@@ -1,6 +1,6 @@
 'use server';
 
-import { categoryTitleSchema } from '@/lib/zodSchemas';
+import { categoryTitleSchema } from '@/lib/zod/zodSchemas';
 import { selectCategoryByTitleService } from '@/services/categoriesServices';
 import { selectEventsByCategoryService } from '@/services/eventServices';
 import { EventWithUserAndCount } from '@/types/types';

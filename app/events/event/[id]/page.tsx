@@ -9,7 +9,11 @@ import JoinEventButton from '@/components/ui/dashboard/joinEventButton';
 import UserCard from '@/components/ui/dashboard/UserCard';
 import IconWrapper from '@/components/ui/IconWrapper';
 import { auth } from '@/lib/auth/authConfig';
-import type { EventWithUserAndCount, Invitation } from '@/types/types';
+import type {
+  BasicEventData,
+  EventWithUserAndCount,
+  Invitation,
+} from '@/types/types';
 import { Metadata } from 'next';
 import { Link } from 'next-view-transitions';
 import Image from 'next/image';
@@ -24,17 +28,17 @@ export async function generateMetadata({
   if (!event) {
     throw new Error('Event not found');
   }
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
+  // const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
   return {
     title: `EventHub | ${event.title}`,
     description: event.description,
-    openGraph: {
+    /* openGraph: {
       title: `EventHub | ${event.title}`,
       description: event.description as string,
-      url: `${baseUrl}/events/event/${id}`,
+      url: `eventhub.facudev.fr/events/event/${event.id}`,
       images: [
         {
-          url: `${baseUrl}/${event.image}` as string,
+          url: `eventhub.facudev.fr/${event.image}` as string,
           width: 800,
           height: 600,
           alt: 'EventHub',
@@ -43,7 +47,7 @@ export async function generateMetadata({
       siteName: 'EventHub',
       locale: 'fr_FR',
       type: 'website',
-    },
+    }, */
   };
 }
 
@@ -94,7 +98,7 @@ export default async function EventPage({
             eventId={event.id}
             userId={session.user?.id as string}
           />
-          <AddToCalendarButton event={event} />
+          <AddToCalendarButton event={event as BasicEventData} />
         </div>
       );
     }
@@ -143,7 +147,7 @@ export default async function EventPage({
             <div className="flex flex-col">
               <h1 className="text-3xl font-bold">
                 {event.title}
-                <span className="ml-2 text-lg font-normal opacity-70">
+                <span className="ml-2 text-lg font-thin">
                   - {event.category?.title}
                 </span>
               </h1>

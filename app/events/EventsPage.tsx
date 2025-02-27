@@ -1,6 +1,6 @@
 import PageHeader from '@/components/layouts/PageHeader';
 import EventCard from '@/components/ui/dashboard/EventCard';
-import { EventWithUserAndCount } from '@/types/types';
+import { BasicEventData, EventWithUserAndCount } from '@/types/types';
 import { Category } from '@prisma/client';
 import { Link } from 'next-view-transitions';
 export default async function EventsPage({
@@ -26,7 +26,11 @@ export default async function EventsPage({
       ) : (
         <div className="flex flex-wrap gap-10 mt-5 mb-10">
           {events.map((event) => (
-            <EventCard key={event.id} event={event} category={category} />
+            <EventCard
+              key={event.id}
+              event={event as BasicEventData}
+              category={category}
+            />
           ))}
         </div>
       )}

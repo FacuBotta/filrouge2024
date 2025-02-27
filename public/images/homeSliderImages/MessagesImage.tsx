@@ -1,11 +1,7 @@
-export default function MessagesImage () {
+export default function MessagesImage() {
   return (
-    <svg
-      viewBox="0 0 831 712"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <g id="messagesImage" clipPath="url(#clip0_347_1082)" >
+    <svg viewBox="0 0 831 712" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g id="messagesImage" clipPath="url(#clip0_347_1082)">
         <g id="messages_bottom">
           <g id="message_container">
             <g id="message_border" filter="url(#filter0_d_347_1082)">
@@ -300,6 +296,5 @@ export default function MessagesImage () {
         </clipPath>
       </defs>
     </svg>
-
   );
 }
