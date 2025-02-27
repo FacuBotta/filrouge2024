@@ -2,47 +2,6 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-/* async function seedUsers() {
-  const numberOfUsers = 20;
-
-  try {
-    const response = await fetch(
-      `https://randomuser.me/api/?results=${numberOfUsers}`
-    );
-    const data = await response.json();
-
-    if (!data.results || !Array.isArray(data.results)) {
-      throw new Error("API don't have results...");
-    }
-
-    for (const user of data.results) {
-      try {
-        await prisma.user.create({
-          data: {
-            email: user.email,
-            username: `${user.name.first} ${user.name.last}`,
-            password: '123456',
-            image: user.picture.medium,
-            description:
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.',
-            ranting: Math.floor(Math.random() * 5),
-          },
-        });
-      } catch (error) {
-        console.error(`Error in user ${user.email}:`, error);
-      }
-    }
-    console.log('Users seeded successfully');
-  } catch (error) {
-    console.error('Seed users failed:', error);
-  } finally {
-    await prisma.$disconnect();
-    console.log('Conexión con Prisma cerrada.');
-  }
-} */
-
-// seedUsers();
-
 async function seedCategories() {
   await prisma.category.create({
     data: {
@@ -94,6 +53,57 @@ async function seedCategories() {
   console.log('Seeded categories');
 }
 
+async function seedUsers() {
+  const numberOfUsers = 20;
+
+  try {
+    const response = await fetch(
+      `https://randomuser.me/api/?results=${numberOfUsers}`
+    );
+    const data = await response.json();
+
+    if (!data.results || !Array.isArray(data.results)) {
+      throw new Error("API don't have results...");
+    }
+
+    for (const user of data.results) {
+      try {
+        await prisma.user.create({
+          data: {
+            email: user.email,
+            username: `${user.name.first} ${user.name.last}`,
+            password: '123456',
+            image: user.picture.medium,
+            description:
+              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.',
+          },
+        });
+      } catch (error) {
+        console.error(`Error in user ${user.email}:`, error);
+      }
+    }
+    console.log('Users seeded successfully');
+  } catch (error) {
+    console.error('Seed users failed:', error);
+  } finally {
+    await prisma.$disconnect();
+    console.log('Prisma connection closed.');
+  }
+}
+seedCategories()
+  .then(async () => {
+    await seedUsers();
+  })
+  .then(async () => {
+    await prisma.$disconnect();
+  })
+  .catch(async (e) => {
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit(1);
+  });
+// seedUsers();
+
 /* async function seedEvents() {
   const maxEventsPerCategory = 5;
   const users = await prisma.user.findMany();
@@ -136,15 +146,3 @@ async function seedCategories() {
   }
   console.log('Seeded events');
 } */
-
-seedCategories()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  /* .then(async () => {
-    await seedEvents();
-  }) */
-  .finally(async () => {
-    await prisma.$disconnect();
-  });

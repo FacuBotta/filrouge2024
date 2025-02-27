@@ -22,7 +22,7 @@ export const updatePassword = async (formData: FormData) => {
   if (!session || session.user.id !== id) {
     return {
       ok: false,
-      message: 'You must be logged in to change your password',
+      message: 'Non connecté',
     };
   }
 
@@ -48,7 +48,7 @@ export const updatePassword = async (formData: FormData) => {
       },
     });
 
-    return { ok: true, message: 'Password updated successfully' };
+    return { ok: true, message: 'Mot de passe mis à jour avec succès' };
   } catch (error) {
     return handleError(error);
   }

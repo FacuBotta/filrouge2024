@@ -1,10 +1,13 @@
 # Concepteur Web ADRAR 2024
+
 Project fil rouge - Gesteur des événements
 
 ### Objectifs
+
 Le but de ce projet est de valider les competences pour la obtention du titre Concepteur Web - bac+3 dans le cadre du concours ADRAR 2024.
 
 ### Technologies
+
 <div>
   <img height="50" src="https://user-images.githubusercontent.com/25181517/183898674-75a4a1b1-f960-4ea9-abcb-637170a00a75.png">
   <img height="50" src="https://user-images.githubusercontent.com/25181517/192158954-f88b5814-d510-4564-b285-dff7d6400dad.png">
@@ -25,15 +28,44 @@ Le but de ce projet est de valider les competences pour la obtention du titre Co
 
 Cet projet a pour fonctionnalité principal d'intégrer un système de gestion des événements pour les utilisateurs. La application permettre de créer et gérer des événements dans la plateforme et les synchroniser avec le calendrier de google. Il y a aussi un système de commentaires et ponctuation pour les utilisateurs, ainsi comme un système de messagerie et notifications.
 
-### Charte graphique
-<img src="./tpFiles/images-readme/charte-graphique.png" width="100%">
+# Instructions pour l'installation
 
-### Maquette
+## Requirements
 
-<div style="display: flex; flex-direction: row; justify-content: space-around;">
-<img src="./tpFiles/images-readme/home ligth.png" width="45%">
-<img src="./tpFiles/images-readme/home dark.png" width="45%">
-</div>
+- Node.js version 16.x
+- Docker desktop
 
+## Installation
 
-## Travail en cours...
+- Cloner le projet `git clone https://github.com/FacuBotta/filrouge2024.git`
+- Renommer le fichier `.env.example` en `.env`
+
+- #### Configuration de variables d'environnement
+
+  ### Google API
+
+  - Créer un mot de passe d'application dans votre [compte google](https://myaccount.google.com/security) pour les variables d'environnement `EMAIL_SERVER_USER` et `EMAIL_SERVER_PASSWORD` (account/settings/security/two-step-verification/app-passwords)
+  - Créer un projet dans votre compte [google console](https://console.cloud.google.com/welcome?_gl=1*1vr2jyh*_up*MQ..&gclid=CjwKCAiAt4C-BhBcEiwA8Kp0CTv4ZuMssDGWGkDPXxaQVxpVz3RvM8-tJ8tiEQKc3TR1xHTT-fkqGxoC-UIQAvD_BwE&gclsrc=aw.ds&inv=1&invt=AbqsTQ&project=filrouge2024&pli=1) et activer les API suivants :\
+    <img src="./tpFiles/images-readme/google_console_api.png" width="80%">
+  - Ajouter la configuration suivante et récupérer la clé de l'API Google Maps pour la variable d'environnement `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` :\
+    <img src="./tpFiles/images-readme/google_console_config_maps.png" width="80%">
+  - Ajouter la configuration suivante et récupérer la clé et le secret de l'application pour les variables d'environnement `AUTH_GOOGLE_ID` et `AUTH_GOOGLE_SECRET` :\
+    <img src="./tpFiles/images-readme/google_console_config_auth.png" width="80%">
+
+  - Creer un chaîne de caractères aléatoire pour la variable `AUTH_SECRET` avec la commande suivante sur powershell :
+  - `openssl rand -base64 33`
+  - ### Remplir les variables dans le fichier .env
+
+- Installer les dépendances avec `npm install`
+- Aller sur le repertoire `database` et lancer la commande `docker compose up -d` pour démarrer la base de données
+- Revenir à la racine du projet et lancer les commandes suivantes :
+  - `npx prisma db push` pour créer les tables de la base de données
+  - `npx prisma generate` pour générer le client de prisma
+  - `npx prisma db seed` pour remplir la base de données avec les categories et des utilisateurs fictifs
+- Lancer la commande `npm run dev` pour démarrer le serveur de développement
+
+## ⚠️ Certains éléments sont encore en cours de développement ⚠️
+
+- Le système de recherche marche seulement dans la page 'Communauté'
+- Le dashboard Administrateur n'est pas encore implémenté
+- La messagerie marche mais le websocket n'est pas encore implémenté

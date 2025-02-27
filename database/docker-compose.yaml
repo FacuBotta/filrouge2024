@@ -8,6 +8,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: filrouge2024
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: adminpassword
     ports:
       - '3306:3306'
     volumes:
@@ -19,8 +21,8 @@ services:
     environment:
       PMA_HOST: db
       PMA_PORT: 3306
-      PMA_USER: root
-      PMA_PASSWORD: password
+      PMA_USER: admin
+      PMA_PASSWORD: adminpassword
     ports:
       - '8080:80'
 
