@@ -30,9 +30,12 @@ Cet projet a pour fonctionnalité principal d'intégrer un système de gestion d
 
 ### Liens
 
-- [Site](https://filrouge2024.vercel.app/)
+<!-- - [Site](https://filrouge2024.vercel.app/) -->
+
 - [Figma](https://www.figma.com/design/dKas1GBEozCmW0RuG331EI/fil-rouge-2024?node-id=0-1&t=OdAsUR6EVt98mwsm-1)
 - [Mémoire](https://docs.google.com/document/d/1DcWckybC7697-RW4LytWSzO_2fi7GIXWQsl40YLe4oQ/edit?usp=sharing)
+- [Mon porfolio](https://facubotta.netlify.app/fr/)
+- [Mon linkedIn](https://www.linkedin.com/in/facundo-botta/)
 
 # Instructions pour l'installation
 
