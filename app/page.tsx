@@ -24,10 +24,10 @@ export default async function Home() {
               gestion d&apos;événements et de RDV. Simplifiez
               l&apos;organisation de vos activités avec notre interface moderne
               et intuitive. Vous pouvez facilement synchroniser vos événements
-              avec Google Calendar, gérer vos tâches, et communiquer avec vos
-              collègues. Que vous planifiez un petit rassemblement ou un grand
-              événement, EventHub vous offre les outils nécessaires pour réussir
-              !
+              avec votre calendrier de preference, gérer vos tâches, et
+              communiquer avec vos collègues. Que vous planifiez un petit
+              rassemblement ou un grand événement, EventHub vous offre les
+              outils nécessaires pour réussir !
             </p>
             <div className="flex gap-8 mt-4 justify-center lg:!justify-start">
               {auth ? (
