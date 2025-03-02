@@ -12,7 +12,7 @@
     "seed": "ts-node database/seed.mjs",
     "test": "jest --verbose",
     "test:watch": "jest --watch",
-    "vercel-build": "prisma generate && next build"
+    "vercel-build": "prisma generate && prisma migrate deploy && next build"
   },
   "prisma": {
     "schema": "database/prisma_schema.prisma",
