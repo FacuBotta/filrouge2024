@@ -3,15 +3,12 @@ import selectUserById from '@/actions/userServerActions/selectUserById';
 import { EditProfileForm } from '@/components/forms/EditProfileForm';
 import Backdrop from '@/components/layouts/Backdrop';
 import IconWrapper from '@/components/ui/IconWrapper';
-import { BasicProfileInformation } from '@/types/types';
 import { Link } from 'next-view-transitions';
 import { redirect } from 'next/navigation';
 const EditProfilePage = async () => {
   const { user } = await checkIsAuthenticated();
 
-  const userData: BasicProfileInformation | null = await selectUserById(
-    user?.id as string
-  );
+  const userData = await selectUserById(user?.id as string);
   if (!userData) {
     redirect('/login');
   }

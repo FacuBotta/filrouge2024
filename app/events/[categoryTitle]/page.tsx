@@ -1,5 +1,5 @@
 import { selectEventsByCategory } from '@/actions/eventsServerActions/selectEventsByCategory';
-import { EventWithUserAndCount } from '@/types/types';
+import { BasicEventData } from '@/types/types';
 import { Category } from '@prisma/client';
 import EventsPage from '../EventsPage';
 
@@ -16,7 +16,7 @@ export default async function CategoryPage({
   const {
     events,
     category,
-  }: { events: EventWithUserAndCount[] | []; category: Category | null } =
+  }: { events: BasicEventData[] | []; category: Category | null } =
     await selectEventsByCategory(categoryTitle);
 
   if (!category) {

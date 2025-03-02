@@ -3,13 +3,13 @@
 import { categoryTitleSchema } from '@/lib/zod/zodSchemas';
 import { selectCategoryByTitleService } from '@/services/categoriesServices';
 import { selectEventsByCategoryService } from '@/services/eventServices';
-import { EventWithUserAndCount } from '@/types/types';
+import { BasicEventData } from '@/types/types';
 import { Category } from '@prisma/client';
 
 export const selectEventsByCategory = async (
   category: string
 ): Promise<{
-  events: EventWithUserAndCount[] | [];
+  events: BasicEventData[] | [];
   category: Category | null;
 }> => {
   try {
@@ -24,8 +24,9 @@ export const selectEventsByCategory = async (
       return { events: [], category: null };
     }
 
-    const events: EventWithUserAndCount[] | [] =
-      await selectEventsByCategoryService(categoryData.id);
+    const events: BasicEventData[] | [] = await selectEventsByCategoryService(
+      categoryData.id
+    );
 
     return { events, category: categoryData };
   } catch (error) {

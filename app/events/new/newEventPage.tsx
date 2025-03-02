@@ -102,6 +102,21 @@ export const NewEventPage = ({
     const formData = new FormData(e.currentTarget);
 
     const endSameDay = formData.get('endSameDay') === 'on';
+    if (!endSameDay && formData.get('eventEnd') === '') {
+      setError({
+        ...error,
+        eventEnd: { message: 'La date de fin est obligatoire', value: true },
+      });
+      return;
+    }
+    console.log(formData.get('category'));
+    if (formData.get('category') === 'Catégorie') {
+      setError({
+        ...error,
+        category: { message: 'La catégorie est obligatoire', value: true },
+      });
+      return;
+    }
 
     const eventData: NewEventForm = {
       title: formData.get('title') as string,
@@ -209,7 +224,7 @@ export const NewEventPage = ({
                   ))}
                 </select>
                 {error.category?.value && (
-                  <span className="text-red-500 text-[1.2rem] mx-auto">
+                  <span className="text-red-500 text-[1.2rem]">
                     {error.category?.message}
                   </span>
                 )}
@@ -244,7 +259,7 @@ export const NewEventPage = ({
               >
                 Commence le:
                 <input
-                  className="newEventInput w-[250px] sm:w-[320px] sm:ml-3"
+                  className="newEventInput !w-[250px] sm:w-[320px] sm:ml-3"
                   type="datetime-local"
                   name="eventStart"
                   placeholder="Date de début"
@@ -261,7 +276,7 @@ export const NewEventPage = ({
               >
                 Se termine le:
                 <input
-                  className="newEventInput w-[250px] sm:w-[320px] sm:ml-3"
+                  className="newEventInput !w-[250px] sm:w-[320px] sm:ml-3"
                   type="datetime-local"
                   name="eventEnd"
                   placeholder="Date de fin"
@@ -279,6 +294,11 @@ export const NewEventPage = ({
                 />
                 Se termine la même journée
               </label>
+              {error.eventEnd?.value && (
+                <span className="text-red-500 text-[1.2rem]">
+                  {error.eventEnd?.message}
+                </span>
+              )}
             </fieldset>
           </section>
           <section className="flex gap-5 w-full justify-between items-start mt-2 flex-wrap px-5 ">

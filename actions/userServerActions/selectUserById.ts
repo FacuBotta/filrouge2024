@@ -1,14 +1,20 @@
 'use server';
 
-import { selectUserByIdService } from '@/services/userServices';
-import { BasicProfileInformation } from '@/types/types';
+import { selectUserDataService } from '@/services/userServices';
+import { UserDataService } from '@/types/servicesTypes/types';
+import { UserData } from '@/types/types';
+import { mapUserData } from '@/utils/adapters/userAdapters';
 
 export default async function selectUserById(
   id: string
-): Promise<BasicProfileInformation | null> {
+): Promise<UserData | null> {
   try {
-    const user = await selectUserByIdService({ id });
-    return user as BasicProfileInformation;
+    const userData: UserDataService | null = await selectUserDataService({
+      id,
+    });
+    if (!userData) return null;
+    const parsedUserData = mapUserData(userData);
+    return parsedUserData;
   } catch (error) {
     console.error(error);
     return null;

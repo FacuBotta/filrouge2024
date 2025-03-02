@@ -78,7 +78,7 @@ const ProfilePage: React.FC = async () => {
         <TasksProfile tasks={tasks} />
 
         <div className="flex flex-col gap-5 w-full ">
-          <div className="flex w-full justify-between">
+          <div className="flex w-full justify-between flex-wrap gap-2">
             <h1 className="font-bold text-2xl">Mes événements crées</h1>
             <Link className="primary-btn" href={'/events/new'}>
               Creer un événement 📅
@@ -97,7 +97,7 @@ const ProfilePage: React.FC = async () => {
               />
             ))
           )}
-          <div className="flex w-full justify-between">
+          <div className="flex w-full justify-between flex-wrap gap-2">
             <h1 className="font-bold text-2xl">Mes événements à venir</h1>
             <Link className="primary-btn" href={'/events'}>
               Découvrir les événements 🚀

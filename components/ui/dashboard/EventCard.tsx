@@ -9,6 +9,7 @@ export default async function EventCard({
   category: { id: string; title: string };
   event: BasicEventData;
 }): Promise<React.JSX.Element> {
+  console.log({ event });
   return (
     <Link
       href={`/events/event/${event.id}`}

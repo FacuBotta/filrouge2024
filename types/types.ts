@@ -206,11 +206,16 @@ export interface EventByUser {
     participants: number;
   };
 }
+export interface EventCreator {
+  id: string;
+  username: string | null;
+  image: string | null;
+}
 export interface BasicEventData {
   id: string;
   title: string;
   description: string | null;
-  creator?: { id: string; username: string; image: string | null };
+  creator?: EventCreator;
   eventStart: Date;
   eventEnd: Date | null;
   isPublic: boolean;

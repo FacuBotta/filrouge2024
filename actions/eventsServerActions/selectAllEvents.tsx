@@ -1,14 +1,15 @@
 'use server';
 
 import { selectAllEventsService } from '@/services/eventServices';
-import { EventWithUserAndCount } from '@/types/types';
+import { BasicEventDataService } from '@/types/servicesTypes/types';
+import { BasicEventData } from '@/types/types';
+import { mapBasicEventData } from '@/utils/adapters/eventAdapters';
 
-export const selectAllEvents = async (): Promise<
-  EventWithUserAndCount[] | []
-> => {
+export const selectAllEvents = async (): Promise<BasicEventData[] | []> => {
   try {
-    // TODO : agregar props pour les filtres
-    const events: EventWithUserAndCount[] | [] = await selectAllEventsService();
+    const eventsData: BasicEventDataService[] | [] =
+      await selectAllEventsService();
+    const events = eventsData.map((event) => mapBasicEventData(event));
     return events;
   } catch (error) {
     console.error(error);

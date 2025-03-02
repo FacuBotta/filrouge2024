@@ -1,5 +1,8 @@
 import prisma from '@/lib/prisma';
-import { createEventServiceProps } from '@/types/servicesTypes/types';
+import {
+  BasicEventDataService,
+  createEventServiceProps,
+} from '@/types/servicesTypes/types';
 import { EventWithUserAndCount } from '@/types/types';
 import { Events } from '@prisma/client';
 
@@ -115,61 +118,29 @@ export const selectEventsJoinedByUserService = async (
 };
 
 export const selectAllEventsService = async (): Promise<
-  EventWithUserAndCount[] | []
+  BasicEventDataService[] | []
 > => {
   try {
-    const events: EventWithUserAndCount[] | [] = await prisma.events.findMany({
+    const events: BasicEventDataService[] | [] = await prisma.events.findMany({
       select: {
         id: true,
         title: true,
         description: true,
+        user: { select: { id: true, username: true, image: true } },
         eventStart: true,
         eventEnd: true,
         isPublic: true,
         image: true,
-        locationUrl: true,
-        lat: true,
-        lng: true,
-        vicinity: true,
-        formattedAddress: true,
         createdAt: true,
         updatedAt: true,
-        conversation: {
-          select: {
-            id: true,
-          },
-        },
-        category: {
-          select: {
-            id: true,
-            title: true,
-          },
-        },
-        user: {
-          select: {
-            id: true,
-            email: true,
-            username: true,
-            image: true,
-            description: true,
-            _count: {
-              select: {
-                EventsCreated: true,
-                Ratings: true,
-              },
-            },
-          },
-        },
-        _count: {
-          select: {
-            participants: true,
-          },
-        },
+        formattedAddress: true,
+        conversation: { select: { id: true } },
+        category: { select: { id: true, title: true } },
+        _count: { select: { participants: true } },
       },
-      // TODO : mettre ca en place quand on aura des événements publics
-      /* where: {
+      where: {
         isPublic: true,
-      }, */
+      },
       orderBy: {
         title: 'asc',
       },
@@ -266,58 +237,28 @@ export const selectEventByIdService = async (
 
 export const selectEventsByCategoryService = async (
   categoryId: string
-): Promise<EventWithUserAndCount[] | []> => {
+): Promise<BasicEventDataService[] | []> => {
   try {
     const events = await prisma.events.findMany({
       select: {
         id: true,
         title: true,
         description: true,
+        user: { select: { id: true, username: true, image: true } },
         eventStart: true,
         eventEnd: true,
         isPublic: true,
         image: true,
-        locationUrl: true,
-        lat: true,
-        lng: true,
-        vicinity: true,
-        formattedAddress: true,
         createdAt: true,
         updatedAt: true,
-        conversation: {
-          select: {
-            id: true,
-          },
-        },
-        category: {
-          select: {
-            id: true,
-            title: true,
-          },
-        },
-        user: {
-          select: {
-            id: true,
-            email: true,
-            username: true,
-            image: true,
-            description: true,
-            _count: {
-              select: {
-                EventsCreated: true,
-                Ratings: true,
-              },
-            },
-          },
-        },
-        _count: {
-          select: {
-            participants: true,
-          },
-        },
+        formattedAddress: true,
+        conversation: { select: { id: true } },
+        category: { select: { id: true, title: true } },
+        _count: { select: { participants: true } },
       },
       where: {
         categoryId,
+        isPublic: true,
       },
       orderBy: {
         title: 'asc',

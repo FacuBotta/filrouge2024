@@ -34,14 +34,11 @@ export default function OwnerEventCard({
   const toggleDeleteModal = () => {
     setModalOpen(!modalOpen);
   };
-  // console.log(event.UserInvitations);
-  // Take the selected users and close the modal
 
   const closeUserListModal = () => {
     setIsUserListOpen(!isUserListOpen);
   };
   const handleTakeUsers = async (selectedUsers: string[]) => {
-    console.log({ selectedUsers });
     const response = await sendInvitationToEvent({
       eventId: event.id,
       participantsIds: selectedUsers,
@@ -69,9 +66,12 @@ export default function OwnerEventCard({
             </p>
           </Badge>
         )}
-        <Badge onClick={() => setCardOpen(!cardOpen)} color="success">
-          {event._count?.participants} participants
-        </Badge>
+        {event.participants && (
+          <Badge onClick={() => setCardOpen(!cardOpen)} color="success">
+            {event.participants.length}{' '}
+            {event.participants.length > 1 ? 'participants' : 'participant'}
+          </Badge>
+        )}
         <Badge onClick={() => setCardOpen(!cardOpen)} color="error">
           <p>{pendingTasks?.length || 0} tâches à accomplir</p>
         </Badge>
