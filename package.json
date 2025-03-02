@@ -11,8 +11,7 @@
     "cypress:open": "cypress open",
     "seed": "ts-node database/seed.mjs",
     "test": "jest --verbose",
-    "test:watch": "jest --watch",
-    "vercel-build": "prisma generate && prisma db push && next build"
+    "test:watch": "jest --watch"
   },
   "prisma": {
     "schema": "database/prisma_schema.prisma",
