@@ -1,6 +1,10 @@
-datasource db {
+/* datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+} */
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 generator client {
@@ -59,12 +63,12 @@ model Account {
   type                     String
   provider                 String
   providerAccountId        String
-  refresh_token            String? @db.Text
-  access_token             String? @db.Text
+  refresh_token            String?
+  access_token             String?
   expires_at               Int?
   token_type               String?
   scope                    String?
-  id_token                 String? @db.Text
+  id_token                 String?
   session_state            String?
   refresh_token_expires_in Int?
 
@@ -116,7 +120,7 @@ model Authenticator {
 model Category {
   id          String   @id @default(cuid())
   title       String
-  description String @db.Text
+  description String
   Events      Events[]
 }
 model Ratings {
@@ -189,7 +193,7 @@ model Events {
   categoryId     String
 
   title          String
-  description    String? @db.Text
+  description    String?
   eventStart     DateTime
   eventEnd       DateTime?
   isPublic       Boolean  @default(false)
@@ -286,7 +290,7 @@ model Message {
   id             String   @id @default(cuid())
   senderId       String
   conversationId String
-  content        String @db.Text
+  content        String
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
   replyToId      String?
