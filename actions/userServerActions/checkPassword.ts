@@ -1,8 +1,8 @@
 'use server';
 
+import { emailSchema } from '@/lib/zod/zodSchemas';
 import bcrypt from 'bcrypt';
 import selectUserByMail from './selectUserByMail';
-import { emailSchema } from '@/lib/zod/zodSchemas';
 
 /**
  * Verifies the user's password by comparing it with the stored hash.
@@ -26,11 +26,12 @@ export const checkPassword = async ({
   email?: string;
 }): Promise<boolean> => {
   try {
-    emailSchema.parse({ email });
     if (hashedPassword) {
       const match = await bcrypt.compare(inputPassword, hashedPassword);
       return match;
     } else if (!hashedPassword && email) {
+      emailSchema.parse({ email });
+
       const user = await selectUserByMail(email);
       if (!user?.password) {
         return false;

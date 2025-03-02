@@ -4,7 +4,7 @@ import { CredentialsLoginServerAction } from '@/actions/authServerActions/Creden
 import { emailSignInServerAction } from '@/actions/authServerActions/emailSignInServerAction';
 import { handleGoogleSignIn } from '@/actions/authServerActions/googleSignInServerAction';
 import { handleError } from '@/lib/zod/handleError';
-import { emailSchema } from '@/lib/zod/zodSchemas';
+import { emailSchema, passwordSchema } from '@/lib/zod/zodSchemas';
 import { getFormDataStringValue } from '@/utils/getFormDataValue';
 import { Icon, Input } from 'facu-ui';
 import { Link } from 'next-view-transitions';
@@ -25,7 +25,6 @@ export default function LogForm() {
   });
 
   // Login with credentials
-  // TODO: sometimes give a render error. to many renders...
   const handleLogInSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError({
@@ -37,6 +36,12 @@ export default function LogForm() {
     const formData = new FormData(e.currentTarget);
 
     try {
+      const email = getFormDataStringValue(formData, 'email');
+      const password = getFormDataStringValue(formData, 'password');
+
+      emailSchema.parse({ email });
+      passwordSchema.parse({ password });
+      console.log({ email, password });
       const response = await CredentialsLoginServerAction(formData);
       if (!response?.ok) {
         setError((prevError) => ({
