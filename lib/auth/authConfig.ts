@@ -11,7 +11,7 @@ import { html, text } from '../emailTemplate';
 const prisma = new PrismaClient();
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  trustHost: true, // This is required for NextAuth to work properly in localHost
+  trustHost: false, // This is required for NextAuth to work properly in localHost
   adapter: PrismaAdapter(prisma) as Adapter,
   secret: process.env.NEXTAUTH_SECRET,
   session: {
