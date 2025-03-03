@@ -13,7 +13,7 @@ const prisma = new PrismaClient();
 export const { handlers, auth, signIn, signOut } = NextAuth({
   trustHost: true, // This is required for NextAuth to work properly in localHost
   adapter: PrismaAdapter(prisma) as Adapter,
-  secret: process.env.AUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: 'jwt',
     maxAge: 60 * 60 * 24 * 7, // 7 days

@@ -61,7 +61,7 @@ Cet projet a pour fonctionnalité principal d'intégrer un système de gestion d
   - Ajouter la configuration suivante et récupérer la clé et le secret de l'application pour les variables d'environnement `AUTH_GOOGLE_ID` et `AUTH_GOOGLE_SECRET` :\
     <img src="./tpFiles/images-readme/google_console_config_auth.png" width="80%">
 
-  - Creer un chaîne de caractères aléatoire pour la variable `AUTH_SECRET` avec la commande suivante sur powershell :
+  - Creer un chaîne de caractères aléatoire pour la variable `NEXTAUTH_SECRET` avec la commande suivante sur powershell :
   - `openssl rand -base64 33`
   - ### Remplir les variables dans le fichier .env
 
