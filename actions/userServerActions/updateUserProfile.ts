@@ -59,7 +59,7 @@ export const updateUserProfile = async (
     const userData = {
       username,
       description,
-      image: oldImagePath, // Keep the old image path by default
+      image: '', // Keep the old image path by default
     };
 
     if (newImageFile) {
