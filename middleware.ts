@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function middleware(req: NextRequest) {
   const token = await getToken({ req, secret: process.env.AUTH_SECRET });
   const isAuth = !!token;
+  console.log({ token });
   const hasPassword = token?.hasPassword === true;
   const isAdmin = token?.role === 'admin';
   const isAdminPage = req.nextUrl.pathname.startsWith('/admin');

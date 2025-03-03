@@ -20,7 +20,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     updateAge: 60 * 60 * 24 * 7, // 7 days
   },
   pages: {
-    signIn: '/login',
+    signIn: '/profile',
     error: '/login/error',
   },
   callbacks: {
